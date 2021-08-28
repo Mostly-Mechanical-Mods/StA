@@ -1,0 +1,7 @@
+﻿StA_AI_authority_crutch = {
+	default = off_authority_crutch
+	
+	off_authority_crutch = {}
+	AI_authority_crutch = {}
+	full_authority_crutch = {}
+}
