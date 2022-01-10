@@ -1,17 +1,6 @@
 ﻿on_game_start_after_lobby = {
 	on_actions = {
-		on_game_start_StA
 		monthly_tick_authority_init
-	}
-}
-
-# Set global variable that tracks if mod is active, useful for compatibility
-on_game_start_StA = {
-	effect = {
-		set_global_variable = {
-			name = mod_StA_active
-			value = yes
-		}
 	}
 }
 
