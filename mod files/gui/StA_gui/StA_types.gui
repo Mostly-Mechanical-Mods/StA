@@ -350,7 +350,7 @@ types StA_widget_vassal_list {
 
 								text_single = {
 									layoutpolicy_horizontal = expanding
-									text = "[Character.GetUINameNoTooltip]"
+									text = "SHARED_UNIUI_CHAR_UINAMENOTT"
 									using = Font_Size_Medium
 									autoresize = no
 									fontsize_min = 13
