@@ -1,0 +1,31 @@
+﻿StA_update_title_realm_law = {
+	scope = title
+	effect = {
+		var:StA_title_realm_law = {
+			switch = {
+				trigger = scope:obligation
+				flag:StA_realm_tax = { set_variable = { name = StA_realm_tax value = scope:level }}
+				flag:StA_realm_levies = { set_variable = { name = StA_realm_levies value = scope:level }}
+			}
+		}
+		switch = {
+			trigger = scope:obligation
+			flag:StA_realm_tax = { set_variable = { name = StA_realm_tax value = scope:level }}
+			flag:StA_realm_levies = { set_variable = { name = StA_realm_levies value = scope:level }}
+		}
+		holder = {
+			every_vassal = {
+				limit = {
+					has_government = feudal_government
+					var:StA_title_allegiance = ROOT
+					var:StA_custom_contract = no
+				}
+				switch = {
+					trigger = scope:obligation
+					flag:StA_realm_tax = { vassal_contract_set_obligation_level = { type = feudal_government_taxes level = scope:level }}
+					flag:StA_realm_levies = { vassal_contract_set_obligation_level = { type = feudal_government_levies level = scope:level }}
+				}
+			}
+		}
+	}
+}

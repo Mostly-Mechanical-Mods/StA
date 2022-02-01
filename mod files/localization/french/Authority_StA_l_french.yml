@@ -96,3 +96,10 @@
 
   liege_authority_gain_title: "L'Autorité de votre souverain a augmenté"
   liege_authority_loss_title: "L'Autorité de votre souverain a diminué"
+
+
+
+# NEW 2.0
+
+  TITLE_REALM_LAWS: "Title Realm Laws"
+  TITLE_REALM_LAWS_DESC: "Laws applicable in the [Title.GetName]"

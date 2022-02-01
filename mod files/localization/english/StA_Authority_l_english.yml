@@ -120,3 +120,41 @@
   setting_AI_authority_crutch_desc: "AI gets a bonus to Authority depending on cultural era, capped depending on rank"
   setting_full_authority_crutch: "On (AI and Player)"
   setting_full_authority_crutch_desc: "AI and player get a bonus to Authority depending on cultural era, cappend depending on rank"
+
+
+
+# NEW 2.0
+
+  TITLE_REALM_LAWS: "Title Realm Laws"
+  TITLE_REALM_LAWS_DESC: "Laws applicable in the [Title.GetBaseName]"
+
+  StA_realm_tax: "[Concept('tax','Feudal Taxes')] @gold_icon!"
+  StA_realm_levies: "[Concept('levies','Feudal Levies')] @soldier_icon!"
+
+  StA_realm_tax_0: "Exempt"
+  StA_realm_tax_1: "Low"
+  StA_realm_tax_2: "Normal"
+  StA_realm_tax_3: "High"
+  StA_realm_tax_4: "Massive"
+
+  StA_realm_levies_0: "Exempt"
+  StA_realm_levies_1: "Low"
+  StA_realm_levies_2: "Normal"
+  StA_realm_levies_3: "High"
+  StA_realm_levies_4: "Massive"
+
+
+  StA_tree_obligation_exempt: "Exempt"
+  StA_tree_obligation_low: "Low"
+  StA_tree_obligation_normal: "Normal"
+  StA_tree_obligation_high: "High"
+  StA_tree_obligation_massive: "Massive"
+
+
+  feudal_tax_title_law: "Realm Law"
+  feudal_tax_title_law_short: "Realm Law"
+  feudal_tax_title_law_desc: "Realm Law"
+
+  feudal_levies_title_law: "Realm Law"
+  feudal_levies_title_law_short: "Realm Law"
+  feudal_levies_title_law_desc: "Realm Law"

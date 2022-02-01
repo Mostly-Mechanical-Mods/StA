@@ -1,226 +1,226 @@
-﻿on_game_start_after_lobby = {
-	on_actions = {
-		monthly_tick_authority_init
-	}
-}
+﻿# on_game_start_after_lobby = {
+# 	on_actions = {
+# 		monthly_tick_authority_init
+# 	}
+# }
 
-# 3 monthy ticks with increasing delay triggered every quarter
-quarterly_playable_pulse = {
-	on_actions = {
-		monthly_tick_authority
-		delay = { months = 1 }
-		monthly_tick_authority
-		delay = { months = 2 }
-		monthly_tick_authority
-	}
-}
+# # 3 monthy ticks with increasing delay triggered every quarter
+# quarterly_playable_pulse = {
+# 	on_actions = {
+# 		monthly_tick_authority
+# 		delay = { months = 1 }
+# 		monthly_tick_authority
+# 		delay = { months = 2 }
+# 		monthly_tick_authority
+# 	}
+# }
 
-# initialization on game start to avoid GUI errors
-monthly_tick_authority_init = {
-	effect = {
-		every_ruler = {
-			limit = { realm_law_use_realm_authority = yes }
-			trigger_event = { on_action = monthly_tick_authority }
-		}
-	}
-}
+# # initialization on game start to avoid GUI errors
+# monthly_tick_authority_init = {
+# 	effect = {
+# 		every_ruler = {
+# 			limit = { realm_law_use_realm_authority = yes }
+# 			trigger_event = { on_action = monthly_tick_authority }
+# 		}
+# 	}
+# }
 
-monthly_tick_authority = {
-	trigger = { realm_law_use_realm_authority = yes }
-	effect = {
-		# starting authority = target / 4, to be sure that starting authority is below the innovation lock values (resp. 25 and 50)
-		if = {
-			limit = { NOT = { exists = var:ticking_authority }}
-			set_variable = {
-				name = ticking_authority
-				value = {
-					add = realm_authority
-					if = {
-						limit = { sw_is_loaded = no }
-						if = {
-							limit = {
-								realm_law_use_crown_authority = yes
-								culture = { NOT = { has_innovation = innovation_plenary_assemblies }}
-							}
-							max = 25
-						}
-						else_if = {
-							limit = {
-								realm_law_use_crown_authority = yes
-								culture = { NOT = { has_innovation = innovation_royal_prerogative }}
-							}
-							max = 50
-						}
-						else = {}
-					}
-					else_if = {
-						limit = { sw_is_loaded = yes }
-						if = {
-							limit = {
-								realm_law_use_crown_authority = yes
-								culture = { NOT = { has_innovation = innovation_gavelkind }}
-							}
-							max = 25
-						}
-						else_if = {
-							limit = {
-								realm_law_use_crown_authority = yes
-								culture = { NOT = { has_innovation = innovation_hereditary_rule }}
-							}
-							max = 50
-						}
-						else_if = {
-							limit = {
-								realm_law_use_crown_authority = yes
-								culture = { NOT = { has_innovation = innovation_heraldry }}
-							}
-							max = 75
-						}
-						else = {}
-					}
-					else = {}
-				}
-			}
-		}
-		else_if = {
-			limit = { authority_ticks_up = yes }
-			change_variable = {
-				name = ticking_authority
-				add = monthly_auth_var_increase
-			}
-		}
-		else_if = {
-			limit = { authority_ticks_down = yes }
-			change_variable = {
-				name = ticking_authority
-				add = monthly_auth_var_decrease
-			}
-		}
-		if = {
-			limit = { realm_law_use_crown_authority = yes }
-			update_crown_authority = yes
-		}
-		else_if = {
-			limit = { realm_law_use_crown_authority = no }
-			update_tribal_authority = yes
-		}
+# monthly_tick_authority = {
+# 	trigger = { realm_law_use_realm_authority = yes }
+# 	effect = {
+# 		# starting authority = target / 4, to be sure that starting authority is below the innovation lock values (resp. 25 and 50)
+# 		if = {
+# 			limit = { NOT = { exists = var:ticking_authority }}
+# 			set_variable = {
+# 				name = ticking_authority
+# 				value = {
+# 					add = realm_authority
+# 					if = {
+# 						limit = { sw_is_loaded = no }
+# 						if = {
+# 							limit = {
+# 								realm_law_use_crown_authority = yes
+# 								culture = { NOT = { has_innovation = innovation_plenary_assemblies }}
+# 							}
+# 							max = 25
+# 						}
+# 						else_if = {
+# 							limit = {
+# 								realm_law_use_crown_authority = yes
+# 								culture = { NOT = { has_innovation = innovation_royal_prerogative }}
+# 							}
+# 							max = 50
+# 						}
+# 						else = {}
+# 					}
+# 					else_if = {
+# 						limit = { sw_is_loaded = yes }
+# 						if = {
+# 							limit = {
+# 								realm_law_use_crown_authority = yes
+# 								culture = { NOT = { has_innovation = innovation_gavelkind }}
+# 							}
+# 							max = 25
+# 						}
+# 						else_if = {
+# 							limit = {
+# 								realm_law_use_crown_authority = yes
+# 								culture = { NOT = { has_innovation = innovation_hereditary_rule }}
+# 							}
+# 							max = 50
+# 						}
+# 						else_if = {
+# 							limit = {
+# 								realm_law_use_crown_authority = yes
+# 								culture = { NOT = { has_innovation = innovation_heraldry }}
+# 							}
+# 							max = 75
+# 						}
+# 						else = {}
+# 					}
+# 					else = {}
+# 				}
+# 			}
+# 		}
+# 		else_if = {
+# 			limit = { authority_ticks_up = yes }
+# 			change_variable = {
+# 				name = ticking_authority
+# 				add = monthly_auth_var_increase
+# 			}
+# 		}
+# 		else_if = {
+# 			limit = { authority_ticks_down = yes }
+# 			change_variable = {
+# 				name = ticking_authority
+# 				add = monthly_auth_var_decrease
+# 			}
+# 		}
+# 		if = {
+# 			limit = { realm_law_use_crown_authority = yes }
+# 			update_crown_authority = yes
+# 		}
+# 		else_if = {
+# 			limit = { realm_law_use_crown_authority = no }
+# 			update_tribal_authority = yes
+# 		}
 
-		# reset barons contract to current defaults authority to prevent locking them with Title Revocation Protection rights
-		every_vassal = {
-			limit = {
-				has_government = feudal_government
-				highest_held_title_tier = tier_barony
-			}
-			StA_reset_feudal_contract = yes
-		}
-	}
-}
+# 		# reset barons contract to current defaults authority to prevent locking them with Title Revocation Protection rights
+# 		every_vassal = {
+# 			limit = {
+# 				has_government = feudal_government
+# 				highest_held_title_tier = tier_barony
+# 			}
+# 			StA_reset_feudal_contract = yes
+# 		}
+# 	}
+# }
 
-# Contract reset triggered when a liege gets a new vassal, except if by inheritance
-# contract_reset_rank_up necessary because on_vassal_gained does not seem to trigger with scope:transfer_type = flag:granted
+# # Contract reset triggered when a liege gets a new vassal, except if by inheritance
+# # contract_reset_rank_up necessary because on_vassal_gained does not seem to trigger with scope:transfer_type = flag:granted
 
-on_vassal_gained = { on_actions = { contract_reset_on_vassal_gained }}
-on_rank_up = { on_actions = { contract_reset_rank_up }}
+# on_vassal_gained = { on_actions = { contract_reset_on_vassal_gained }}
+# on_rank_up = { on_actions = { contract_reset_rank_up }}
 
-contract_reset_on_vassal_gained = {
-	trigger = {
-		scope:vassal = { has_government = feudal_government }
-		OR = {
-			scope:transfer_type = flag:conquest
-			scope:transfer_type = flag:conquest_holy_war
-			scope:transfer_type = flag:conquest_claim
-			scope:transfer_type = flag:granted
-			scope:transfer_type = flag:swear_fealty
-			scope:transfer_type = flag:usurped
-			scope:transfer_type = flag:faction_demand
-		}
-	}
-	effect = {
-		# debug_log = "dbg_log contract reset vassal gained"
-		debug_log_scopes = no
-		liege = { debug_log_scopes = no }
-		scope:transfer_type = { debug_log_scopes = no }
-		scope:vassal = {
-			trigger_event = {
-				id = contract_event.0001
-				days = 1
-			}
-		}
-	}
-}
+# contract_reset_on_vassal_gained = {
+# 	trigger = {
+# 		scope:vassal = { has_government = feudal_government }
+# 		OR = {
+# 			scope:transfer_type = flag:conquest
+# 			scope:transfer_type = flag:conquest_holy_war
+# 			scope:transfer_type = flag:conquest_claim
+# 			scope:transfer_type = flag:granted
+# 			scope:transfer_type = flag:swear_fealty
+# 			scope:transfer_type = flag:usurped
+# 			scope:transfer_type = flag:faction_demand
+# 		}
+# 	}
+# 	effect = {
+# 		# debug_log = "dbg_log contract reset vassal gained"
+# 		debug_log_scopes = no
+# 		liege = { debug_log_scopes = no }
+# 		scope:transfer_type = { debug_log_scopes = no }
+# 		scope:vassal = {
+# 			trigger_event = {
+# 				id = contract_event.0001
+# 				days = 1
+# 			}
+# 		}
+# 	}
+# }
 
-contract_reset_rank_up = {
-	effect = {
-		if = {
-			limit = {
-				has_government = feudal_government
-				NOT = { scope:transfer_type = flag:inheritance }
-				NOT = { exists = scope:title }
-				is_independent_ruler = no
-			}
-			# debug_log = "dbg_log contract reset rank up"
-			debug_log_scopes = no
-			liege = { debug_log_scopes = no }
-			trigger_event = {
-				id = contract_event.0002
-				days = 1
-			}	
-		}
-	}
-}
+# contract_reset_rank_up = {
+# 	effect = {
+# 		if = {
+# 			limit = {
+# 				has_government = feudal_government
+# 				NOT = { scope:transfer_type = flag:inheritance }
+# 				NOT = { exists = scope:title }
+# 				is_independent_ruler = no
+# 			}
+# 			# debug_log = "dbg_log contract reset rank up"
+# 			debug_log_scopes = no
+# 			liege = { debug_log_scopes = no }
+# 			trigger_event = {
+# 				id = contract_event.0002
+# 				days = 1
+# 			}	
+# 		}
+# 	}
+# }
 
-# character just about to die in root scope
-# if a killer is know, it's set as scope:killer
-# Triggered by code
-on_death = { on_actions = { authority_inheritance }}
-authority_inheritance = {
-	trigger = { realm_law_use_realm_authority = yes }
-	effect = {
-		save_temporary_scope_as = dying_character
-		every_heir = {
-			if = {
-				limit = {
-					OR = {
-						is_landed = no
-						realm_law_use_realm_authority = no
-					}
-				}
-				set_variable = {
-					name = temp_authority
-					value = {
-						add = scope:dying_character.var:ticking_authority
-						subtract = 25
-						min = 0
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					any_heir_title = {
-						holder = scope:dying_character
-						tier > PREV.highest_held_title_tier
-					}
-				}
-				set_variable = {
-					name = temp_authority
-					value = {
-						add = scope:dying_character.var:ticking_authority
-						subtract = 25
-						min = var:ticking_authority
-					}
-				}
-			}
-			else = {
-				set_variable = {
-					name = temp_authority
-					value = var:ticking_authority
-				}
-			}
-			set_variable = {
-				name = ticking_authority
-				value = var:temp_authority
-			}
-			remove_variable = temp_authority
-		}
-	}
-}
+# # character just about to die in root scope
+# # if a killer is know, it's set as scope:killer
+# # Triggered by code
+# on_death = { on_actions = { authority_inheritance }}
+# authority_inheritance = {
+# 	trigger = { realm_law_use_realm_authority = yes }
+# 	effect = {
+# 		save_temporary_scope_as = dying_character
+# 		every_heir = {
+# 			if = {
+# 				limit = {
+# 					OR = {
+# 						is_landed = no
+# 						realm_law_use_realm_authority = no
+# 					}
+# 				}
+# 				set_variable = {
+# 					name = temp_authority
+# 					value = {
+# 						add = scope:dying_character.var:ticking_authority
+# 						subtract = 25
+# 						min = 0
+# 					}
+# 				}
+# 			}
+# 			else_if = {
+# 				limit = {
+# 					any_heir_title = {
+# 						holder = scope:dying_character
+# 						tier > PREV.highest_held_title_tier
+# 					}
+# 				}
+# 				set_variable = {
+# 					name = temp_authority
+# 					value = {
+# 						add = scope:dying_character.var:ticking_authority
+# 						subtract = 25
+# 						min = var:ticking_authority
+# 					}
+# 				}
+# 			}
+# 			else = {
+# 				set_variable = {
+# 					name = temp_authority
+# 					value = var:ticking_authority
+# 				}
+# 			}
+# 			set_variable = {
+# 				name = ticking_authority
+# 				value = var:temp_authority
+# 			}
+# 			remove_variable = temp_authority
+# 		}
+# 	}
+# }

@@ -1,0 +1,8 @@
+types StA_new_types {
+	type StA_title_realm_law_button = button_letter {
+		size = { 100 40 }
+		background = {
+			using = Background_Area_Dark
+		}
+	}
+}
