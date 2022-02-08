@@ -8,17 +8,6 @@ window = {
 	alwaystransparent = no
 
 	visible = "[And(GetVariableSystem.Exists('StA_confirm_title_law'),GetPlayer.MakeScope.Var('StA_confirm_title_window_on').IsSet)]"
-
-	# state = {
-	# 	name = _hide
-	# 	on_start = "[GetVariableSystem.Clear('StA_confirm_title_law')]"
-	# 	on_start = "[GetScriptedGui('StA_cancel_title_law_change').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-	# }
-
-	# button = {
-	# 	size = { 100% 100% }
-	# 	onclick = [GameDialog.Decline]
-	# }
 	
 	using = Background_Fade
 

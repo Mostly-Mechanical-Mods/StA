@@ -1,0 +1,34 @@
+﻿reverse_tier = {
+	subtract = tier
+}
+
+neg_ai_boldness = {
+	subtract = ai_boldness
+}
+
+neg_dread = {
+	subtract = dread
+}
+
+neg_tyranny = {
+	subtract = tyranny
+}
+
+neg_ai_vengefulness = {
+	subtract = ai_vengefulness
+}
+
+neg_ai_zeal = {
+	subtract = ai_zeal
+}
+
+abs_ai_zeal = {
+	add = {
+		add = ai_zeal
+		min = 0
+	}
+	subtract = {
+		add = ai_zeal
+		max = 0
+	}
+}

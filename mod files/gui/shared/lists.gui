@@ -1688,15 +1688,16 @@ types Lists
 							}
 
 							text_single = {
-								state = {
-									name = _mouse_enter
-									on_start = "[GetVariableSystem.Set('character_script_value_breakdown','StA_submission')]"
-									on_start = "[GetScriptedGui(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('character',Character.MakeScope).End))]"
-								}
-								datacontext = "[GuiScope.SetRoot(GetPlayer.MakeScope).GetScriptValueBreakdown(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip'))]"
-								tooltipwidget = {
-									widget_value_breakdown_tooltip = {}
-								}
+								# state = {
+								# 	name = _mouse_enter
+								# 	on_start = "[GetVariableSystem.Set('character_script_value_breakdown','StA_submission')]"
+								# 	on_start = "[GetScriptedGui(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('character',Character.MakeScope).End))]"
+								# }
+								# datacontext = "[GuiScope.SetRoot(GetPlayer.MakeScope).GetScriptValueBreakdown(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip'))]"
+								# tooltipwidget = {
+								# 	widget_value_breakdown_tooltip = {}
+								# }
+								tooltip = "[Character.MakeScope.GetScriptValueDesc('StA_submission')]"
 								text = "STA_VASSAL_SUBMISSION"
 							}
 						}

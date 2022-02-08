@@ -1,0 +1,5 @@
+template UniUI_StA_realm_window_on_show {
+	on_start = "[GetVariableSystem.Set('character_script_value_breakdown','StA_submission')]"
+		on_start = "[GetScriptedGui(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('character',GetPlayer.MakeScope).End))]"
+		on_start = "[GetScriptedGui('StA_vassal_opinion').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('title',GetPlayer.GetPrimaryTitle.MakeScope).End)]"
+}
