@@ -1,0 +1,180 @@
+﻿StA_title_realm_law = {
+	on_setup = {
+		set_variable = {
+			name = StA_title
+			value = story_owner.var:StA_title
+		}
+		set_variable = {
+			name = StA_ruler
+			value = story_owner
+		}
+		story_owner = { save_scope_as = StA_ruler }
+		story_owner = { remove_variable = StA_title }
+
+		var:StA_title = {
+			set_variable = {
+				name = StA_title_realm_law
+				value = scope:story
+			}
+			# For primary titles, update ruler allegiance
+			if = {
+				limit = { THIS = scope:story.var:StA_ruler.primary_title }
+				StA_remove_allegiance_from_non_primary_titles = yes
+				# Ruler had allegiance
+				if = {
+					limit = { has_variable = StA_title_allegiance }
+					# but ruler is now independent
+					if = {
+						limit = { scope:story.var:StA_ruler = { is_independent_ruler = yes }}
+						# break previous allegiance
+						StA_remove_current_title_allegiance = yes
+					}
+					# ruler is a vassal and his allegiance has changed
+					else_if = {
+						limit = { NOT = { var:StA_title_allegiance.holder = scope:story.var:StA_ruler.liege }}
+						StA_remove_current_title_allegiance = yes
+						StA_set_title_allegiance_to_liege = { LIEGE = scope:story.var:StA_ruler }
+					}
+				}
+				# check vassals allegiance
+				scope:story.var:StA_ruler = {
+					every_vassal = {
+						primary_title = {
+							if = {
+								# break outside allegiances
+								limit = {
+									has_variable = StA_title_allegiance
+									NOT = { var:StA_title_allegiance.holder = scope:story.var:StA_ruler }
+								}
+								StA_remove_current_title_allegiance = yes
+								StA_set_title_allegiance_to_liege = { LIEGE = scope:story.var:StA_ruler }
+							}
+							else_if = {
+								limit = { NOT = { has_variable = StA_title_allegiance }}
+								StA_remove_allegiance_from_non_primary_titles = yes
+								StA_set_title_allegiance_to_liege = { LIEGE = scope:story.var:StA_ruler }
+							}
+						}
+					}
+				}
+			}
+			else = {
+				scope:story.var:StA_ruler = {
+					every_vassal = {
+						limit = {
+							primary_title = {
+								has_variable = StA_title_allegiance
+								scope:story.var:StA_title = {
+									is_de_jure_liege_or_above_target = PREV
+									NOT = { is_de_jure_liege_or_above_target = PREV.var:StA_title_allegiance }
+								}
+							}
+						}
+						primary_title = {
+							StA_remove_current_title_allegiance = yes
+							StA_set_title_allegiance_to_liege = { LIEGE = scope:story.var:StA_ruler }
+						}
+					}
+				}
+			}
+		}
+
+		if = {
+			limit = { story_owner = { has_variable = StA_transfer_realm_laws }}
+			set_variable = {
+				name = StA_realm_tax
+				value = var:StA_transfer_realm_laws.var:StA_realm_tax
+			}
+			set_variable = {
+				name = StA_realm_levies
+				value = var:StA_transfer_realm_laws.var:StA_realm_levies
+			}
+			set_variable = {
+				name = succession_rights
+				value = var:StA_transfer_realm_laws.var:succession_rights
+			}
+			set_variable = {
+				name = title_revocation_rights
+				value = var:StA_transfer_realm_laws.var:title_revocation_rights
+			}
+			set_variable = {
+				name = war_declaration_rights
+				value = var:StA_transfer_realm_laws.var:war_declaration_rights
+			}
+			set_variable = {
+				name = council_rights
+				value = var:StA_transfer_realm_laws.var:council_rights
+			}
+		}
+		else_if = {
+			limit = { var:StA_title = { has_variable = StA_title_allegiance }}
+			set_variable = {
+				name = StA_realm_tax
+				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:StA_realm_tax
+			}
+			set_variable = {
+				name = StA_realm_levies
+				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:StA_realm_levies
+			}
+			set_variable = {
+				name = succession_rights
+				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:succession_rights
+			}
+			set_variable = {
+				name = title_revocation_rights
+				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:title_revocation_rights
+			}
+			set_variable = {
+				name = war_declaration_rights
+				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights
+			}
+			set_variable = {
+				name = council_rights
+				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:council_rights
+			}
+		}
+		else = {
+			set_variable = {
+				name = StA_realm_tax
+				value = 2
+			}
+			set_variable = {
+				name = StA_realm_levies
+				value = 2
+			}
+			set_variable = {
+				name = succession_rights
+				value = 0
+			}
+			set_variable = {
+				name = title_revocation_rights
+				value = 1
+			}
+			set_variable = {
+				name = war_declaration_rights
+				value = 1
+			}
+			set_variable = {
+				name = council_rights
+				value = 0
+			}
+		}
+		set_variable = {
+			name = StA_title_realm_authority
+			value = var:StA_title.StA_title_realm_authority
+		}
+	}
+	on_end = {
+	}
+	on_owner_death = {
+	}
+}
+
+StA_obligation_levels = {
+	on_setup = {
+	}
+	on_end = {
+	}
+	on_owner_death = {
+	}
+}

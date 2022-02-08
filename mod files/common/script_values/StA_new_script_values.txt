@@ -1,3 +1,0 @@
-﻿reverse_tier = {
-	subtract = tier
-}

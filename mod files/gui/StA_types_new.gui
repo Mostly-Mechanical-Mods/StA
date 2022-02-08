@@ -5,4 +5,95 @@ types StA_new_types {
 			using = Background_Area_Dark
 		}
 	}
+
+	type nested_widget_value_breakdown_tooltip = widget {
+		
+		name = "values_grid"
+		size = { 50 50 }
+		alwaystransparent = no
+
+		background = {
+			using = Background_Area_Border_Solid
+		}
+
+		vbox = {
+			datamodel = "[GetGlobalList('StA_submission_dread')]"
+			alwaystransparent = no
+			set_parent_size_to_minimum = yes
+			margin = { 17 10 }
+			spacing = 3
+
+			block "header" {}
+
+			item = {
+				hbox = {
+					name = "value_breakdown"
+					layoutpolicy_horizontal = expanding
+
+					text_single = {
+						name = "name"
+						layoutpolicy_horizontal = expanding
+						text = "StA_submission_dread"
+						min_width = 180
+						max_width = 250
+						fonttintcolor = "[TooltipInfo.GetTintColor]"
+						margin_right = 10
+					}
+
+					# text_single= {
+					# 	# visible = "[And(ValueBreakdown.HasTooltip, ValueBreakdown.ShouldShowValue)]"
+					# 	name = "value_with_tooltip"
+					# 	text = "[GetPlayer.MakeScope.ScriptValue(Scope.GetFlagName)]"
+					# 	align = right
+					# 	fonttintcolor = "[TooltipInfo.GetTintColor]"
+
+					# 	using = tooltip_below
+					
+
+					# 	tooltipwidget = {
+					# 		recursive = yes
+
+					# 		widget_value_breakdown_tooltip = {}
+					# 	}
+					# }
+
+					# text_single = {
+					# 	visible = "[And( Not(ValueBreakdown.HasTooltip), ValueBreakdown.ShouldShowValue )]"
+					# 	name = "value_with_no_tooltip"
+					# 	text = "[ValueBreakdown.GetValue]"
+					# 	align = right
+					# 	fonttintcolor = "[TooltipInfo.GetTintColor]"
+					# }
+				}
+			}
+		}
+	}
+
+	type StA_progressbar_red = progressbar {
+        min = 0
+        max = 100
+        value = 35
+        size = { 50 20}
+
+        progresstexture = "gfx/interface/progressbars/progress_red.dds"
+        noprogresstexture = "gfx/interface/progressbars/progress_black.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 6 6 }
+
+        icon = {
+            name = "overlay"
+            texture = "gfx/interface/progressbars/progress_overlay.dds"
+            spriteType = Corneredstretched
+            spriteborder = { 2 2 }
+            size = { 100% 100% }
+        }
+    }
+}
+
+template script_value_breakdown {
+	datacontext = "[GuiScope.SetRoot(GetPlayer.MakeScope).GetScriptValueBreakdown(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip'))]"
+	tooltipwidget = {
+		widget_value_breakdown_tooltip = {}
+	}
+	text = "[Character.MakeScope.ScriptValue(GetVariableSystem.Get('character_script_value_breakdown'))]"
 }

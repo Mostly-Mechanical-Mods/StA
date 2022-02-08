@@ -1,0 +1,26 @@
+﻿namespace = StA_error_suppression
+
+StA_error_suppression.0001 = {
+	hidden = yes
+	orphan = yes
+
+	trigger = {
+		has_variable = average_submission
+		has_variable = StA_title_window_allegiance
+		has_variable = mods_loaded
+		has_variable = StA_obligation_levels
+		has_variable = StA_title_tree_obligation
+		has_variable = tree_obligation
+		has_variable = boolean_obligation
+		has_variable = StA_change_law_cost
+		has_variable = flag
+	}
+
+	immediate = {
+		set_variable = StA_custom_contract
+		set_variable = StA_transfer_realm_laws
+		fix_variable_error = { X = succession_rights }
+		fix_variable_error = { X = war_declaration_rights }
+		fix_variable_error = { X = title_revocation_rights }
+	}
+}

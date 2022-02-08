@@ -121,57 +121,206 @@ StA_title_realm_law_init = {
 		}
 
 		every_ruler = {
-			limit = { has_government = feudal_government }
+			limit = { is_landless_ruler = no }
+			save_scope_as = liege
 			ordered_held_title = {
-				limit = {
-					any_this_title_or_de_jure_above = {
-						NOR = {
-							THIS = PREV
-							has_variable = StA_title_realm_law
-						}
-					}
-				}
+				limit = { tier >= tier_county }
 				order_by = tier
 				max = 99
 				check_range_bounds = no
-				PREV = {
-					set_variable = {
-						name = StA_title
-						value = PREV
+				if = {
+					limit = {
+						any_this_title_or_de_jure_above = {
+							NOT = { THIS = PREV }
+							has_variable = StA_title_realm_law
+							count = 0
+						}
 					}
-					create_story = StA_title_realm_law
+					scope:liege = {
+						set_variable = {
+							name = StA_title
+							value = PREV
+						}
+						create_story = StA_title_realm_law
+					}
 				}
 			}
-			every_vassal = {
-				limit = { has_government = feudal_government }
-				save_scope_as = StA_init_vassal
-				primary_title = {
-					ordered_this_title_or_de_jure_above = {
-						limit = {
-							NOT = { THIS = PREV }
-							holder = scope:StA_init_vassal.liege
-						}
-						order_by = reverse_tier
-						scope:StA_init_vassal = {
+		}
+
+		every_ruler = {
+			limit = {
+				has_government = feudal_government
+				is_independent_ruler = no
+				# highest_held_title_tier >= tier_county
+				primary_title = { has_variable = StA_title_allegiance }
+				primary_title.var:StA_title_allegiance = { has_variable = StA_title_realm_law }
+			}
+			vassal_contract_set_obligation_level = { type = feudal_government_taxes level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:StA_realm_tax }
+			vassal_contract_set_obligation_level = { type = feudal_government_levies level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:StA_realm_levies }
+			vassal_contract_set_obligation_level = { type = title_revocation_rights level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:title_revocation_rights }
+			vassal_contract_set_obligation_level = { type = war_declaration_rights level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights }
+			vassal_contract_set_obligation_level = { type = succession_rights level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:succession_rights }
+		}
+	}
+}
+
+on_title_gain = {
+	on_actions = {
+		StA_on_title_gain
+	}
+}
+
+# A title is transferred to a new character
+# root = the new holder
+# scope:title = the title that changes hands
+# scope:previous_holder = previous holder. Might be dead
+StA_on_title_gain = {
+	effect = {
+		save_scope_as = new_holder
+		scope:title = {
+			if = {
+				limit = { has_variable = StA_title_realm_law }
+				if = {
+					limit = { exists = scope:previous_holder }
+					scope:previous_holder = {
+						# scope:previous_holder doesn't have a primary title realm law, create one, all the rest is handled in the story_cycle on_setup
+						if = {
+							limit = { NOT = { primary_title = { has_variable = StA_title_realm_law }}}
 							set_variable = {
-								name = StA_title_allegiance
-								value = PREV
+								name = StA_title
+								value = primary_title
+							}
+							create_story = StA_title_realm_law
+						}
+						# scope:previous_holder has a primary title realm law, check vassal allegiance
+						else = {
+							every_vassal = {
+								limit = { NOT = { primary_title.var:StA_title_allegiance.holder = scope:previous_holder }}
+								primary_title = {
+									StA_remove_current_title_allegiance = yes
+									StA_set_title_allegiance_to_liege = { LIEGE = scope:previous_holder }
+								}
 							}
 						}
 					}
 				}
-				if = {
-					limit = { NOT = { has_variable = StA_title_allegiance }}
+				# transfer story to scope:new_holder
+				var:StA_title_realm_law = {
+					make_story_owner = scope:new_holder
 					set_variable = {
-						name = StA_title_allegiance
-						value = liege.primary_title
+						name = StA_ruler
+						value = scope:new_holder
+					}
+					# update allegiance of pledged titles
+					every_in_list = {
+						variable = StA_pledge_allegiance
+						# remove allegiance of titles owned by scope:new_holder
+						if = {
+							limit = { holder = scope:new_holder }
+							PREV = {
+								remove_list_variable = {
+									name = StA_pledge_allegiance
+									target = PREV
+								}
+							}
+						}
+						# update allegiance of vassals of scope:new_holder
+						else_if = {
+							limit = { holder.liege = scope:new_holder }
+							if = {
+								StA_remove_current_title_allegiance = yes
+								StA_set_title_allegiance_to_liege = { LIEGE = scope:new_holder }
+							}
+						}
+						# remove allegiance of independent rulers
+						else_if = {
+							limit = { is_independent_ruler = yes }
+							StA_remove_current_title_allegiance = yes
+						}
+						# update allegiance of vassals external to the sub_realm
+						else = {
+							StA_remove_current_title_allegiance = yes
+							StA_set_title_allegiance_to_liege = { LIEGE = holder.liege }
+						}
+					}
+					if = {
+						limit = {
+							variable_list_size = {
+								name = StA_pledge_allegiance
+								value = 0
+							}
+						}
+						end_story = yes
 					}
 				}
-				set_variable = {
-					name = StA_custom_contract
-					value = no
+			}
+			StA_remove_current_title_allegiance = yes
+			if = {
+				limit = { THIS = scope:new_holder.primary_title }
+				StA_remove_allegiance_from_non_primary_titles = yes
+				if = {
+					limit = { scope:new_holder = { is_independent_ruler = no }}
+					StA_set_title_allegiance_to_liege = { LIEGE = scope:new_holder.liege }
+					scope:new_holder = {
+						set_variable = {
+							name = StA_title
+							value = scope:title
+						}
+						create_story = StA_title_realm_law
+					}
 				}
 			}
+			else_if = {
+				limit = {
+					any_this_title_or_de_jure_above = {
+						NOT = { THIS = PREV }
+						holder = scope:new_holder
+						count = 0
+					}
+				}
+				scope:new_holder = {
+					set_variable = {
+						name = StA_title
+						value = scope:title
+					}
+					create_story = StA_title_realm_law
+				}
+			}
+		}
+		every_vassal = {
+			limit = { primary_title = { target_is_de_jure_liege_or_above = scope:title }}
+			primary_title = {
+				StA_remove_current_title_allegiance = yes
+				StA_set_title_allegiance_to_liege = { LIEGE = ROOT }
+			}
+		}
+	}
+}
+
+on_vassal_gained = {
+	on_actions = {
+		StA_on_vassal_gained
+	}
+}
+
+# A character gains a vassal
+# root = character gaining vassal
+# scope:vassal = vassal being gained
+# scope:old_liege = the previous liege of the vassal. Might be the null character (vassal used to be a non-ruler or independent), so make sure to use "exists" checks where relevant
+StA_on_vassal_gained = {
+	effect = {
+		save_scope_as = new_liege
+		scope:vassal.primary_title = {
+			if = {
+				limit = {
+					has_variable = StA_title_allegiance
+					NOT = { var:StA_title_allegiance.holder = scope:old_liege }
+				}
+				debug_log = "(StA_debug) StA_on_vassal_gained // vassal was pledging allegiance to a title not held by his old liege"
+				debug_log_scopes = yes
+			}
+			StA_remove_current_title_allegiance = yes
+			StA_set_title_allegiance_to_liege = { LIEGE = ROOT }
 		}
 	}
 }

@@ -43,3 +43,9 @@ submissiveness_vengefulness = {
 
 submissiveness_dread = {
 }
+
+authority_capacity = {	
+}
+
+authority_spent = {
+}

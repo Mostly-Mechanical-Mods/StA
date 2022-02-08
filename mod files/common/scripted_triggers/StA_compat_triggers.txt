@@ -1,7 +1,0 @@
-﻿mod_StA_active = {
-	always = yes
-}
-
-sw_is_loaded = {
-	always = yes
-}

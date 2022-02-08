@@ -17,3 +17,42 @@ StA_compat = {
 		}
 	}
 }
+
+on_title_gain = {
+	on_actions = {
+		test_on_title_gain
+	}
+}
+
+test_on_title_gain = {
+	effect = {
+		debug_log = "(TEST) on_title_gain"
+		debug_log_scopes = yes
+	}
+}
+
+on_vassal_gained = {
+	on_actions = {
+		test_on_vassal_gained
+	}
+}
+
+test_on_vassal_gained = {
+	effect = {
+		debug_log = "(TEST) on_vassal_gained"
+		debug_log_scopes = yes
+	}
+}
+
+on_title_lost = {
+	on_actions = {
+		test_on_title_lost
+	}
+}
+
+test_on_title_lost = {
+	effect = {
+		debug_log = "(TEST) on_title_lost"
+		debug_log_scopes = yes
+	}
+}

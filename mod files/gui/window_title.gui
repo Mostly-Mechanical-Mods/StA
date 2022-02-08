@@ -15,10 +15,38 @@ window = {
 		on_start = "[GetVariableSystem.Clear( 'display_allegiance' )]"
 		on_start = "[GetVariableSystem.Set( 'hide_bottom_left_HUD', 'true' )]"
 		on_start = "[GetVariableSystem.Set( 'title_view_tab', 'de_jure_tab' )]"
+		on_start = "[GetVariableSystem.Set('StA_title_window_tracker',TitleViewWindow.GetTitle.GetKey)]"
+		on_start = "[GetScriptedGui('StA_vassal_opinion').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('title',TitleViewWindow.GetTitle.MakeScope).End)]"
+		on_start = "[GetVariableSystem.Set('character_script_value_breakdown','StA_submission')]"
+		on_start = "[GetScriptedGui(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('character',GetPlayer.MakeScope).End))]"
+		on_start = "[GetScriptedGui('StA_title_window_player').Execute( GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('title',TitleViewWindow.GetTitle.MakeScope).End)]"
+		on_start = "[GetScriptedGui('StA_title_window_allegiance').Execute( GuiScope.SetRoot(TitleViewWindow.GetTitle.MakeScope).End)]"
+		
 
 		using = Animation_FadeIn_Quick
 		using = Sound_WindowShow_Standard
 	}
+
+	state = {
+		name = "StA_title_window"
+		trigger_when = "[Not(GetVariableSystem.HasValue('StA_title_window_tracker',TitleViewWindow.GetTitle.GetKey))]"
+		on_start = "[GetVariableSystem.Set('StA_title_window_tracker',TitleViewWindow.GetTitle.GetKey)]"
+		on_start = "[GetScriptedGui('StA_vassal_opinion').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('title',TitleViewWindow.GetTitle.MakeScope).End)]"
+		on_start = "[GetScriptedGui('StA_title_window_player').Execute( GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('title',TitleViewWindow.GetTitle.MakeScope).End)]"
+		on_start = "[GetScriptedGui('StA_title_window_allegiance').Execute( GuiScope.SetRoot(TitleViewWindow.GetTitle.MakeScope).End)]"
+	}
+
+	state = {
+		name = "StA_title_window_fallback"
+		trigger_when = "[Not(And(TitleViewWindow.GetTitle.MakeScope.Var('StA_title_realm_law').IsSet,GreaterThanOrEqualTo_int32(TitleViewWindow.GetTitle.GetTierFrame,'(int32)4')))]"
+		on_start = "[GetVariableSystem.Set('title_view_tab','de_jure_tab')]"
+	}
+
+	# state = {
+	# 	name = "StA_title_window_tab"
+	# 	trigger_when = "[Not(TitleViewWindow.GetTitle.MakeScope.Var('StA_title_realm_law').IsSet)]"
+	# 	on_start = "[GetVariableSystem.Set('title_view_tab','de_jure_tab')]"
+	# }
 
 	state = {
 		name = _hide
@@ -47,6 +75,7 @@ window = {
 			state = {
 				name = _show
 				using = Animation_FadeIn_Quick
+				
 			}
 
 			state = {
@@ -359,7 +388,7 @@ window = {
 				### TABS ###
 				hbox = {
 					name = "tabs"
-					visible = "[Not(IsDataModelEmpty(TitleViewWindow.GetTitleAllegianceVassals))]"
+					# visible = "[Not(IsDataModelEmpty(TitleViewWindow.GetTitleAllegianceVassals))]"
 					layoutpolicy_horizontal = expanding
 
 					button_tab = {
@@ -369,7 +398,6 @@ window = {
 						default_format = "#weak"
 						down = "[GetVariableSystem.HasValue( 'title_view_tab', 'de_jure_tab' ) )]"
 						onclick = "[GetVariableSystem.Set( 'title_view_tab', 'de_jure_tab' )]"
-						
 					}
 
 					button_tab = {
@@ -379,6 +407,7 @@ window = {
 						default_format = "#weak"
 						down = "[GetVariableSystem.HasValue( 'title_view_tab', 'vassals_tab' ) )]"
 						onclick = "[GetVariableSystem.Set( 'title_view_tab', 'vassals_tab' )]"
+						enabled = "[And(TitleViewWindow.GetTitle.MakeScope.Var('StA_title_realm_law').IsSet,GreaterThanOrEqualTo_int32(TitleViewWindow.GetTitle.GetTierFrame,'(int32)4'))]"
 					}
 
 					# [UniUI] [StA]
@@ -389,6 +418,7 @@ window = {
 						default_format = "#weak"
 						down = "[GetVariableSystem.HasValue( 'title_view_tab', 'StA_realm_law_tab' ) )]"
 						onclick = "[GetVariableSystem.Set( 'title_view_tab', 'StA_realm_law_tab' )]"
+						enabled = "[And(TitleViewWindow.GetTitle.MakeScope.Var('StA_title_realm_law').IsSet,GreaterThanOrEqualTo_int32(TitleViewWindow.GetTitle.GetTierFrame,'(int32)4'))]"
 					}
 					# [/StA] [/UniUI]
 				}
@@ -514,29 +544,85 @@ window = {
 					spacing = 15
 
 					text_label_center = {
+						visible = "[Not(Title.MakeScope.Var('StA_title_realm_law').IsSet)]"
+						text = "TITLE_SWEARS_ALLEGIANCE_TO"
+					}
+					
+					text_label_center = {
+						visible = "[Title.MakeScope.Var('StA_title_realm_law').IsSet]"
 						text = "TITLE_ALLEGIANCE_VASSAL_LIST"
+					}
+
+					hbox = {
+						spacing = 5
+						icon = {
+							size = { 25 25 }
+							texture = "gfx/interface/icons/icon_soldier.dds"
+						}
+
+						text_single = {
+							min_width = 50
+							text = "[Title.MakeScope.Var('StA_title_realm_law').Var('total_strength').GetValue|0]"
+						}
+
+						spacer = { size = { 50 0 }}
+
+						icon = {
+							visible = "[GreaterThanOrEqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('average_submission').GetValue,'(CFixedPoint)0')]"
+							name = "submission_icon_up"
+							size = { 30 30 }
+							texture = "gfx/interface/icons/message_feed/tier_up.dds"
+						}
+
+						icon = {
+							visible = "[LessThan_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('average_submission').GetValue,'(CFixedPoint)0')]"
+							name = "submission_icon_down"
+							size = { 30 30 }
+							texture = "gfx/interface/icons/message_feed/tier_down.dds"
+						}
+
+						text_single = {
+							min_width = 50
+							text = "STA_TITLE_SUBMISSION"
+						}
 					}
 
 					scrollbox = {
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
-						minimumsize = { 0 300 }
+						minimumsize = { 500 300 }
 
 						blockoverride "scrollbox_content" {
 							vbox = {
-								datamodel = "[TitleViewWindow.GetTitleAllegianceVassals]"
+								datamodel = "[TitleViewWindow.GetTitle.MakeScope.Var('StA_title_realm_law').GetList('StA_title_window_allegiance')]"
 								layoutpolicy_horizontal = expanding
 								spacing = 3
 
 								item = {
 									button_standard_list = {
+										datacontext = "[Scope.Title.GetHolder]"
 										layoutpolicy_horizontal = expanding
 										minimumsize = { 0 50 }
 										onclick = "[DefaultOnCharacterClick(Character.GetID)]"
 										onrightclick = "[DefaultOnCharacterRightClick(Character.GetID)]"
 										button_ignore = none
 
+										# hbox = {
+										
+										# 	text_single = {
+										# 	text = "[Scope.Title.GetBaseName]"
+										# }
+
+										# expand = {}
+
+										# text_single = {
+										# 	text = "[Scope.Title.GetHolder.GetNameNoTooltip]"
+										# }
+
+										# }
+
 										hbox = {
+											layoutpolicy_horizontal = expanding
 											margin = { 5 0 }
 											position = {0 -2 }
 
@@ -547,6 +633,70 @@ window = {
 												layoutpolicy_horizontal = expanding
 												margin = { 10 0 }
 											}
+											expand = {}
+
+											hbox = {
+												visible = "[Not(Character.GetPrimaryTitle.IsBarony)]"
+												icon = {
+													size = { 25 25 }
+													texture = "gfx/interface/icons/icon_soldier.dds"
+												}
+	
+												text_single = {
+													min_width = 50
+													text = "[Character.MakeScope.ScriptValue('StA_max_mil_strength')|0]"
+												}
+												
+												
+												button = {
+													state = {
+														name = _mouse_enter
+														on_start = "[GetVariableSystem.Set('character_script_value_breakdown','StA_submission')]"
+														on_start = "[GetScriptedGui(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('character',Character.MakeScope).End))]"
+													}
+													datacontext = "[GuiScope.SetRoot(GetPlayer.MakeScope).GetScriptValueBreakdown(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip'))]"
+													tooltipwidget = {
+														widget_value_breakdown_tooltip = {}
+													}
+													min_width = 30
+													visible = "[GreaterThanOrEqualTo_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0')]"
+													name = "submission_icon_up"
+													size = { 30 30 }
+													texture = "gfx/interface/icons/message_feed/tier_up.dds"
+													alpha = "[Multiply_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0.01')]"
+												}
+												button = {
+													state = {
+														name = _mouse_enter
+														on_start = "[GetVariableSystem.Set('character_script_value_breakdown','StA_submission')]"
+														on_start = "[GetScriptedGui(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('character',Character.MakeScope).End))]"
+													}
+													datacontext = "[GuiScope.SetRoot(GetPlayer.MakeScope).GetScriptValueBreakdown(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip'))]"
+													tooltipwidget = {
+														widget_value_breakdown_tooltip = {}
+													}
+													min_width = 30
+													visible = "[LessThan_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0')]"
+													name = "submission_icon_down"
+													size = { 30 30 }
+													texture = "gfx/interface/icons/message_feed/tier_down.dds"
+													alpha = "[Abs_CFixedPoint(Multiply_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0.01'))]"
+												}
+												# spacer = { size = { 20 0 }}
+												# text_single = {
+												# 	state = {
+												# 		name = _mouse_enter
+												# 		on_start = "[GetVariableSystem.Set('character_script_value_breakdown','StA_submission')]"
+												# 		on_start = "[GetScriptedGui(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('character',Character.MakeScope).End))]"
+												# 	}
+												# 	datacontext = "[GuiScope.SetRoot(GetPlayer.MakeScope).GetScriptValueBreakdown(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip'))]"
+												# 	tooltipwidget = {
+												# 		widget_value_breakdown_tooltip = {}
+												# 	}
+												# 	min_width = 20
+												# 	text = "[Character.MakeScope.ScriptValue('StA_submission')]"
+												# }
+											}
 										}
 									}
 								}
@@ -555,22 +705,89 @@ window = {
 					}
 				}
 
+				# [UniUI] [StA]
+				
 				vbox = {
+					visible = "[And(GetVariableSystem.HasValue( 'title_view_tab', 'StA_realm_law_tab' ), Title.MakeScope.Var('StA_title_realm_law').IsSet)]"
 					layoutpolicy_vertical = expanding
-					spacer = { size = { 10 25 }}
+					layoutpolicy_horizontal = expanding
+					margin_top = 10
+					spacing = 10
 					text_label_center = {
 						text = "TITLE_REALM_LAWS_DESC"
 					}
-					spacer = { size = { 10 25 }}
+
+					vbox = {
+						layoutpolicy_horizontal = fixed
+						text_label_center = {
+							tooltip = "[Title.MakeScope.GetScriptValueDesc('StA_title_realm_authority_capacity')]"
+							text = "STA_AUTHORITY_CAPACITY"
+						}
+						container = {
+							widget = {
+								size = { 240 30 }
+								
+								progressbar_red = {
+									visible = "[GreaterThanOrEqualTo_CFixedPoint(Title.MakeScope.ScriptValue('StA_title_realm_authority'),Title.MakeScope.ScriptValue('StA_title_realm_authority_capacity'))]"
+									# name = "authority"
+									size = { 240 30 }
+		
+									min = 0
+									max = 10000
+									value = "[FixedPointToProgressbarValue(Title.MakeScope.ScriptValue('StA_title_realm_authority'))]"
+								}
+								progressbar_green = {
+									visible = "[LessThan_CFixedPoint(Title.MakeScope.ScriptValue('StA_title_realm_authority'),Title.MakeScope.ScriptValue('StA_title_realm_authority_capacity'))]"
+									# name = "authority"
+									size = { 240 30 }
+		
+									min = 0
+									max = 10000
+									value = "[FixedPointToProgressbarValue(Title.MakeScope.ScriptValue('StA_title_realm_authority'))]"
+								}
+								container = {
+									state = {
+										name = "target"
+										next = "target"
+										trigger_on_create = yes
+										position_x = "[Multiply_CFixedPoint(Title.MakeScope.ScriptValue('StA_title_realm_authority_capacity'),'(CFixedPoint)2.35')]"
+										duration = 0
+									}
+									alwaystransparent = yes
+									icon = {
+										parentanchor = top
+										alwaystransparent = yes
+										texture = "gfx/interface/window_factions/faction_progress_threshold.dds"
+									}
+								}
+							}
+						}
+
+						text_label_center = {
+							tooltip = "[Title.MakeScope.GetScriptValueDesc('StA_title_realm_authority')]"
+							text = "STA_AUTHORITY_SPENT"
+						}
+					}
+
+					spacer = { size = { 0 5 }}
+
+					# progressbar_frozen = {
+					# 	name = "authority"
+					# 	size = { 240 15 }
+
+					# 	min = 0
+					# 	max = 10000
+					# 	value = 500
+					# }
+
+
+					# spacer = { size = { 10 25 }}
 					vbox = {
 						margin = { 20 5 }
 						using = Background_Letter
 						name = "StA_realm_law_tab_contents"
-						visible = "[GetVariableSystem.HasValue( 'title_view_tab', 'StA_realm_law_tab' )]"
 						layoutpolicy_horizontal = expanding
-						# layoutpolicy_vertical = expanding
-						margin_top = 10
-						spacing = 5
+					
 	
 						vbox = {
 							text_single = {
@@ -597,9 +814,11 @@ window = {
 												parentanchor = center
 												position = {0 -3 }
 											}
-											enabled = "[Or(EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_tax').GetValue,Add_CFixedPoint(Scope.Var('value').GetValue,'(CFixedPoint)1'),EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_tax').GetValue,Subtract_CFixedPoint(Scope.Var('value').GetValue,'(CFixedPoint)1')]"
+											enabled = "[Or(EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_tax').GetValue,Add_CFixedPoint(Scope.Var('value').GetValue,'(CFixedPoint)1')),EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_tax').GetValue,Subtract_CFixedPoint(Scope.Var('value').GetValue,'(CFixedPoint)1')))]"
 											down = "[EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_tax').GetValue,Scope.Var('value').GetValue)]"
-											onclick = "[GetScriptedGui( 'StA_update_title_realm_law' ).Execute( GuiScope.SetRoot( Title.MakeScope ).AddScope( 'obligation', MakeScopeFlag( 'StA_realm_tax' )).AddScope( 'level',MakeScopeValue(Scope.Var('value').GetValue )).End)]"
+											onclick = "[GetScriptedGui( 'StA_change_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('title',Title.MakeScope).AddScope( 'obligation', MakeScopeFlag( 'StA_realm_tax' )).AddScope( 'level',MakeScopeValue(Scope.Var('value').GetValue )).End)]"
+											onclick = "[GetVariableSystem.Set('StA_confirm_title_law','StA_realm_tax')]"
+											onclick = "[GetVariableSystem.Set('StA_confirm_title_law_level',Scope.Var('flag').GetFlagName)]"
 										}
 									}
 								}
@@ -630,9 +849,11 @@ window = {
 												parentanchor = center
 												position = {0 -3 }
 											}
-											enabled = "[Or(EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_levies').GetValue,Add_CFixedPoint(Scope.Var('value').GetValue,'(CFixedPoint)1'),EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_levies').GetValue,Subtract_CFixedPoint(Scope.Var('value').GetValue,'(CFixedPoint)1')]"
+											enabled = "[Or(EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_levies').GetValue,Add_CFixedPoint(Scope.Var('value').GetValue,'(CFixedPoint)1')),EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_levies').GetValue,Subtract_CFixedPoint(Scope.Var('value').GetValue,'(CFixedPoint)1')))]"
 											down = "[EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_levies').GetValue,Scope.Var('value').GetValue)]"
-											onclick = "[GetScriptedGui( 'StA_update_title_realm_law' ).Execute( GuiScope.SetRoot( Title.MakeScope ).AddScope( 'obligation', MakeScopeFlag( 'StA_realm_levies' )).AddScope( 'level',MakeScopeValue(Scope.Var('value').GetValue )).End)]"
+											onclick = "[GetScriptedGui( 'StA_change_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('title',Title.MakeScope).AddScope( 'obligation', MakeScopeFlag( 'StA_realm_levies' )).AddScope( 'level',MakeScopeValue(Scope.Var('value').GetValue )).End)]"
+											onclick = "[GetVariableSystem.Set('StA_confirm_title_law','StA_realm_levies')]"
+											onclick = "[GetVariableSystem.Set('StA_confirm_title_law_level',Scope.Var('flag').GetFlagName)]"
 										}
 									}
 								}
@@ -652,7 +873,7 @@ window = {
 								hbox = {
 									layoutpolicy_horizontal = expanding
 									text_single = {
-										text = "succession_rights"
+										text = "StA_succession_rights"
 										using = Font_Size_Medium
 										default_format = "#light_background"
 									}
@@ -662,19 +883,36 @@ window = {
 									using = Background_Letter
 									layoutpolicy_horizontal = expanding
 									button_checkbox_label = {
-										# Order dependent, first select the unselected level then set it as the new selected one
-										onclick = "[ObligationLevelCheckbox.AccessLevel( ObligationLevelCheckbox.GetUnselectedLevelIndex ).Select]"
-										onclick = "[ObligationLevelCheckbox.ToggleSelection]"
+										visible = "[EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('succession_rights').GetValue,'(CFixedPoint)0')]"
+										onclick = "[GetScriptedGui( 'StA_change_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('title',Title.MakeScope).AddScope( 'obligation', MakeScopeFlag( 'succession_rights' )).AddScope( 'level',MakeScopeValue(Abs_CFixedPoint(Subtract_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('succession_rights').GetValue,'(CFixedPoint)1' )))).End)]"
+										onclick = "[GetVariableSystem.Set('StA_confirm_title_law','succession_rights')]"
+										onclick = "[GetVariableSystem.Set('StA_confirm_title_law_level','1')]"
 		
 										blockoverride "checkbox"
 										{
-											checked = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsSelected]"
-											enabled = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsEnabled]" 
+											checked = no
 										}
 		
 										blockoverride "text"
 										{
-											text = "TEST"
+											text = "succession_rights_forced_partition_short"
+											default_format = "#light_background"
+										}
+									}
+									button_checkbox_label = {
+										visible = "[EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('succession_rights').GetValue,'(CFixedPoint)1')]"
+										onclick = "[GetScriptedGui( 'StA_change_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('title',Title.MakeScope).AddScope( 'obligation', MakeScopeFlag( 'succession_rights' )).AddScope( 'level',MakeScopeValue(Abs_CFixedPoint(Subtract_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('succession_rights').GetValue,'(CFixedPoint)1' )))).End)]"
+										onclick = "[GetVariableSystem.Set('StA_confirm_title_law','succession_rights')]"
+										onclick = "[GetVariableSystem.Set('StA_confirm_title_law_level','0')]"
+		
+										blockoverride "checkbox"
+										{
+											checked = yes
+										}
+		
+										blockoverride "text"
+										{
+											text = "succession_rights_forced_partition_short"
 											default_format = "#light_background"
 										}
 									}
@@ -686,7 +924,7 @@ window = {
 								hbox = {
 									layoutpolicy_horizontal = expanding
 									text_single = {
-										text = "title_revocation_rights"
+										text = "StA_title_revocation_rights"
 										using = Font_Size_Medium
 										default_format = "#light_background"
 									}
@@ -697,18 +935,35 @@ window = {
 									layoutpolicy_horizontal = expanding
 									button_checkbox_label = {
 										# Order dependent, first select the unselected level then set it as the new selected one
-										onclick = "[ObligationLevelCheckbox.AccessLevel( ObligationLevelCheckbox.GetUnselectedLevelIndex ).Select]"
-										onclick = "[ObligationLevelCheckbox.ToggleSelection]"
-		
+										visible = "[EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('title_revocation_rights').GetValue,'(CFixedPoint)0')]"
+										onclick = "[GetScriptedGui( 'StA_change_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('title',Title.MakeScope).AddScope( 'obligation', MakeScopeFlag( 'title_revocation_rights' )).AddScope( 'level',MakeScopeValue(Abs_CFixedPoint(Subtract_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('title_revocation_rights').GetValue,'(CFixedPoint)1' )))).End)]"
+										onclick = "[GetVariableSystem.Set('StA_confirm_title_law','title_revocation_rights')]"
+										onclick = "[GetVariableSystem.Set('StA_confirm_title_law_level','1')]"
 										blockoverride "checkbox"
 										{
-											checked = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsSelected]"
-											enabled = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsEnabled]" 
+											checked = no
 										}
 		
 										blockoverride "text"
 										{
-											text = "TEST"
+											text = "title_revocation_rights_protected_short"
+											default_format = "#light_background"
+										}
+									}
+									button_checkbox_label = {
+										# Order dependent, first select the unselected level then set it as the new selected one
+										visible = "[EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('title_revocation_rights').GetValue,'(CFixedPoint)1')]"
+										onclick = "[GetScriptedGui( 'StA_change_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('title',Title.MakeScope).AddScope( 'obligation', MakeScopeFlag( 'title_revocation_rights' )).AddScope( 'level',MakeScopeValue(Abs_CFixedPoint(Subtract_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('title_revocation_rights').GetValue,'(CFixedPoint)1' )))).End)]"
+										onclick = "[GetVariableSystem.Set('StA_confirm_title_law','title_revocation_rights')]"
+										onclick = "[GetVariableSystem.Set('StA_confirm_title_law_level','0')]"
+										blockoverride "checkbox"
+										{
+											checked = yes
+										}
+		
+										blockoverride "text"
+										{
+											text = "title_revocation_rights_protected_short"
 											default_format = "#light_background"
 										}
 									}
@@ -727,7 +982,7 @@ window = {
 								hbox = {
 									layoutpolicy_horizontal = expanding
 									text_single = {
-										text = "war_declaration_rights"
+										text = "StA_war_declaration_rights"
 										using = Font_Size_Medium
 										default_format = "#light_background"
 									}
@@ -739,18 +994,40 @@ window = {
 									button_checkbox_label = {
 										
 										# Order dependent, first select the unselected level then set it as the new selected one
-										onclick = "[ObligationLevelCheckbox.AccessLevel( ObligationLevelCheckbox.GetUnselectedLevelIndex ).Select]"
-										onclick = "[ObligationLevelCheckbox.ToggleSelection]"
+										visible = "[EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('war_declaration_rights').GetValue,'(CFixedPoint)0')]"
+										onclick = "[GetScriptedGui( 'StA_change_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('title',Title.MakeScope).AddScope( 'obligation', MakeScopeFlag( 'war_declaration_rights' )).AddScope( 'level',MakeScopeValue(Abs_CFixedPoint(Subtract_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('war_declaration_rights').GetValue,'(CFixedPoint)1' )))).End)]"
+										onclick = "[GetVariableSystem.Set('StA_confirm_title_law','war_declaration_rights')]"
+										onclick = "[GetVariableSystem.Set('StA_confirm_title_law_level','1')]"
 		
 										blockoverride "checkbox"
 										{
-											checked = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsSelected]"
+											checked = no
 											enabled = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsEnabled]" 
 										}
 		
 										blockoverride "text"
 										{
-											text = "TEST"
+											text = "war_declaration_rights_allowed_short"
+											default_format = "#light_background"
+										}
+									}
+									button_checkbox_label = {
+										
+										# Order dependent, first select the unselected level then set it as the new selected one
+										visible = "[EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('war_declaration_rights').GetValue,'(CFixedPoint)1')]"
+										onclick = "[GetScriptedGui( 'StA_change_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('title',Title.MakeScope).AddScope( 'obligation', MakeScopeFlag( 'war_declaration_rights' )).AddScope( 'level',MakeScopeValue(Abs_CFixedPoint(Subtract_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('war_declaration_rights').GetValue,'(CFixedPoint)1' )))).End)]"
+										onclick = "[GetVariableSystem.Set('StA_confirm_title_law','war_declaration_rights')]"
+										onclick = "[GetVariableSystem.Set('StA_confirm_title_law_level','0')]"
+		
+										blockoverride "checkbox"
+										{
+											checked = yes
+											enabled = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsEnabled]" 
+										}
+		
+										blockoverride "text"
+										{
+											text = "war_declaration_rights_allowed_short"
 											default_format = "#light_background"
 										}
 									}
@@ -782,7 +1059,7 @@ window = {
 	
 										blockoverride "text"
 										{
-											text = "TEST"
+											text = "council_rights_guaranteed_short"
 											default_format = "#light_background"
 										}
 									}
@@ -793,6 +1070,7 @@ window = {
 					}
 					expand = {}
 				}
+				# [/StA] [/UniUI]
 				expand = {}
 
 				hbox = {
@@ -922,6 +1200,9 @@ window = {
 						text = "TITLE_VIEW_CREATE_TITLE"
 						onclick = "[TitleViewWindow.CreateTitle]"
 						tooltip = "[TitleViewWindow.GetCreateTitleButtonTooltip]"
+						# [StA]
+						onclick = "[GetVariableSystem.Set('StA_create_title',TitleViewWindow.GetTitle.GetKey)]"
+						# [/StA]
 					}
 				}
 

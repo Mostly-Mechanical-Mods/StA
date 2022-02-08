@@ -1,0 +1,527 @@
+﻿reverse_tier = {
+	subtract = tier
+}
+
+neg_ai_boldness = {
+	subtract = ai_boldness
+}
+
+neg_dread = {
+	subtract = dread
+}
+
+neg_tyranny = {
+	subtract = tyranny
+}
+
+neg_ai_vengefulness = {
+	subtract = ai_vengefulness
+}
+
+neg_ai_zeal = {
+	subtract = ai_zeal
+}
+
+abs_ai_zeal = {
+	add = {
+		add = ai_zeal
+		min = 0
+	}
+	subtract = {
+		add = ai_zeal
+		max = 0
+	}
+}
+
+liege_dread = {
+	add = liege.dread
+}
+
+StA_submission = {
+	if = {
+		limit = {
+			NOT = {
+				primary_title = {
+					has_variable = StA_title_allegiance
+					target_is_de_jure_liege_or_above = var:StA_title_allegiance
+				}
+			}
+		}
+		subtract = {
+			value = 25
+			desc = "StA_submission_de_jure"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		add = {
+			value = StA_submission_powerful_vassal
+			desc = "StA_submission_powerful_vassal"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			exists = culture
+			exists = liege.culture
+		}
+		add = {
+			value= StA_submission_culture
+			desc = "StA_submission_culture"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		add = {
+			value = StA_submission_dread
+			desc = "StA_submission_dread"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		add = {
+			value = StA_submission_tyranny
+			desc = "StA_submission_tyranny"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			ai_vengefulness > 0
+			opinion = {
+				target = liege
+				value < 0
+			}
+		}
+		add = {
+			value = StA_submission_vengefulness
+			desc = "StA_submission_vengefulness"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = { faith = liege.faith }
+		add = {
+			value = StA_submission_zeal
+			desc = "StA_submission_zeal"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	max = 100
+	min = -100
+}
+
+StA_submission_tooltip = {
+	if = {
+		limit = {
+			var:StA_submission_tooltip = {
+				NOT = {
+					primary_title = {
+						has_variable = StA_title_allegiance
+						target_is_de_jure_liege_or_above = var:StA_title_allegiance
+					}
+				}
+			}
+		}
+		subtract = {
+			value = 25
+			desc = "StA_submission_de_jure"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = { var:StA_submission_tooltip.liege.dread > 0 }
+		add = {
+			value = var:StA_submission_tooltip.StA_submission_dread 
+			desc = "StA_submission_dread"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = { var:StA_submission_tooltip = { is_powerful_vassal = yes }}
+		add = {
+			value = var:StA_submission_tooltip.StA_submission_powerful_vassal 
+			desc = "StA_submission_powerful_vassal"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			exists = var:StA_submission_tooltip.culture
+			exists = var:StA_submission_tooltip.liege.culture
+		}
+		add = {
+			value = var:StA_submission_tooltip.StA_submission_culture
+			desc = "StA_submission_culture"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = { var:StA_submission_tooltip.liege.tyranny > 0 }
+		add = {
+			value = var:StA_submission_tooltip.StA_submission_tyranny 
+			desc = "StA_submission_tyranny"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			var:StA_submission_tooltip.var:opinion_liege < 0
+			var:StA_submission_tooltip.ai_vengefulness > 0
+		}
+		add = {
+			value = var:StA_submission_tooltip.StA_submission_vengefulness 
+			desc = "StA_submission_vengefulness"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = { var:StA_submission_tooltip.faith = var:StA_submission_tooltip.liege.faith }
+		add = {
+			value = var:StA_submission_tooltip.StA_submission_zeal 
+			desc = "StA_submission_zeal"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+}
+
+StA_submission_zeal = {
+	value = 0
+	liege = {
+		add = num_virtuous_traits
+		subtract = num_sinful_traits
+		multiply = 2
+		add = piety_level
+		multiply = 10
+	}
+	if = {
+		limit = { ai_zeal < 0 }
+		multiply = -1
+		max = neg_ai_zeal
+		min = ai_zeal
+	}
+	else = {
+		max = ai_zeal
+		min = neg_ai_zeal
+	}
+}
+
+StA_submission_vengefulness = {
+	value = 0
+	add = var:opinion_liege
+	min = neg_ai_vengefulness
+}
+
+StA_submission_dread = {
+	value = 0
+	add = liege.dread
+	if = {
+		limit = { ai_boldness < 0 }
+		add = liege.dread
+		min = {
+			add = neg_ai_boldness
+			multiply = 2
+		}
+	}
+	else = {
+		subtract = {
+			add = ai_boldness
+			multiply = 2
+		}
+		min = liege.neg_dread
+	}
+	max = liege.dread
+}
+
+StA_submission_tyranny = {
+	value = 0
+	if = {
+		limit = { ai_honor > 0 }
+		subtract = ai_honor
+		min = liege.neg_tyranny
+	}
+}
+
+StA_submission_powerful_vassal = {
+	value = 0
+	if = {
+		limit = { is_powerful_vassal = yes }
+		if = {
+			limit = { is_councillor = no }
+			subtract = 50
+		}
+		else = {
+			subtract = 25
+		}
+	}
+}
+
+StA_submission_culture = {
+	if = {
+		limit = { NOT = { culture = liege.culture }}
+		liege.culture = { save_temporary_scope_as = liege_culture }
+		culture = {
+			if = {
+				limit = { cultural_acceptance = { target = scope:liege_culture value < 25 }}
+				subtract = 75
+			}
+			else_if = {
+				limit = { cultural_acceptance = { target = scope:liege_culture value < 50 }}
+				subtract = 50
+			}
+			else_if = {
+				limit = { cultural_acceptance = { target = scope:liege_culture value < 75 }}
+				subtract = 25
+			}
+			if = {
+				limit = { has_same_culture_heritage = scope:liege_culture }
+				add = 20
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					knows_language_of_culture = liege.culture
+					liege = { knows_language_of_culture = PREV.culture }
+				}
+			}
+			add = 20
+		}
+	}
+}
+
+## TITLE WINDOW ##
+
+StA_max_mil_strength = {
+	add = max_military_strength
+}
+
+StA_contract_score = {
+	add = {
+		add = vassal_contract_obligation_level:feudal_government_taxes
+		multiply = 5
+	}
+	add = {
+		add = vassal_contract_obligation_level:feudal_government_levies
+		multiply = 5
+	}
+	subtract = {
+		add = vassal_contract_obligation_level:succession_rights
+		multiply = 20
+	}
+	add = {
+		add = vassal_contract_obligation_level:war_declaration_rights
+		multiply = 20
+	}
+	add = {
+		add = vassal_contract_obligation_level:title_revocation_rights
+		multiply = 20
+	}
+}
+
+StA_title_realm_law_score = {
+	add = {
+		add = var:feudal_government_taxes
+		multiply = 5
+	}
+	add = {
+		add = var:feudal_government_levies
+		multiply = 5
+	}
+	add = {
+		add = var:succession_rights
+		subtract = 1
+		multiply = -20
+	}
+	add = {
+		add = var:war_declaration_rights
+		multiply = 20
+	}
+	add = {
+		add = var:title_revocation_rights
+		multiply = 20
+	}
+	min = 0
+}
+
+StA_title_realm_authority_capacity = {
+	add = {
+		value = {
+			add = tier
+			subtract = 1
+			multiply = 10
+		}
+		desc = "STA_AUTHORITY_RANK"
+		format = "BASE_VALUE_FORMAT"
+	}
+	if = {
+		limit = { has_dlc_feature = royal_court }
+		add = {
+			value = {
+				add = holder.court_grandeur_current_level
+				multiply = 10
+			}
+			desc = "STA_AUTHORITY_COURT_GRANDEUR"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	else = {
+		add = {
+			value = {
+				holder.culture = {
+					if = {
+						limit = { has_cultural_era_or_later = culture_era_late_medieval }
+						add = 60
+					}
+					else_if = {
+						limit = { has_cultural_era_or_later = culture_era_high_medieval }
+						add = 40
+					}
+					else_if = {
+						limit = { has_cultural_era_or_later = culture_era_early_medieval }
+						add = 20
+					}
+				}
+			}
+			desc = "STA_AUTHORITY_CULTURAL_ERA"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = { has_variable = StA_title_realm_law }
+		multiply = {
+			value = {
+				add = 100
+				add = var:StA_title_realm_law.var:average_submission
+				divide = 100
+			}
+			desc = "STA_AUTHORITY_AVERAGE_SUBMISSION"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+}
+
+StA_title_realm_authority = {
+	if = {
+		limit = { has_variable = StA_title_realm_law }
+		add = {
+			value = {
+				add = var:StA_title_realm_law.var:StA_realm_tax
+				multiply = 5
+			}
+			desc = "StA_realm_tax"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = { has_variable = StA_title_realm_law }
+		add = {
+			value = {
+				add = var:StA_title_realm_law.var:StA_realm_levies
+				multiply = 5
+			}
+			desc = "StA_realm_levies"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = { has_variable = StA_title_realm_law }
+		add = {
+			value = {
+				subtract = var:StA_title_realm_law.var:succession_rights
+				multiply = -20
+			}
+			desc = "succession_rights_1"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = { has_variable = StA_title_realm_law }
+		add = {
+			value = {
+				add = var:StA_title_realm_law.var:war_declaration_rights
+				subtract = 1
+				multiply = -20
+			}
+			desc = "war_declaration_rights_1"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = { has_variable = StA_title_realm_law }
+		add = {
+			value = {
+				add = var:StA_title_realm_law.var:title_revocation_rights
+				subtract = 1
+				multiply = -20
+			}
+			desc = "title_revocation_rights_1"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	min = 0
+}
+
+title_revocation_rights_0_cost = {
+	value = 20
+}
+
+title_revocation_rights_1_cost = {
+	value = 0
+}
+
+war_declaration_rights_0_cost = {
+	value = 20
+}
+
+war_declaration_rights_1_cost = {
+	value = 0
+}
+
+succession_rights_0_cost = {
+	value = 0
+}
+
+succession_rights_1_cost = {
+	value = 20	
+}
+
+StA_realm_tax_0_cost = {
+	value = 0
+}
+
+StA_realm_tax_1_cost = {
+	value = 5
+}
+
+StA_realm_tax_2_cost = {
+	value = 10
+}
+
+StA_realm_tax_3_cost = {
+	value = 15
+}
+
+StA_realm_tax_4_cost = {
+	value = 20
+}
+
+StA_realm_levies_0_cost = {
+	value = 0
+}
+
+StA_realm_levies_1_cost = {
+	value = 5
+}
+
+StA_realm_levies_2_cost = {
+	value = 10
+}
+
+StA_realm_levies_3_cost = {
+	value = 15
+}
+
+StA_realm_levies_4_cost = {
+	value = 20
+}

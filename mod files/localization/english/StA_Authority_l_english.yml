@@ -158,3 +158,50 @@
   feudal_levies_title_law: "Realm Law"
   feudal_levies_title_law_short: "Realm Law"
   feudal_levies_title_law_desc: "Realm Law"
+
+  STA_SUBMISSION_BASELINE: "Base"
+  STA_SUBMISSION_POWERFUL_VASSAL: "Powerful Vassal"
+
+  TOOLTIP_TEST: "[Scope.Char.GetShortUIName] learning"
+
+  StA_submission: "Submission"
+  STA_VASSAL_SUBMISSION: "[submission|E]: [Character.MakeScope.ScriptValue('StA_submission')]"
+  StA_submission_dread: "Reaction to Dread"
+  TITLE_SWEARS_ALLEGIANCE_TO: "Swears [title_allegiance|E] to [Title.MakeScope.Var('StA_title_allegiance').Title.GetBaseName]"
+  STA_TITLE_SUBMISSION: "Average [submission|E]: [Title.MakeScope.Var('StA_title_realm_law').Var('average_submission').GetValue|0]"
+
+
+  STA_CONFIRM_TITLE_LAW: "Title Realm Law Change"
+  STA_LAW_CHANGE_DESC: "You wish to change the [Localize(GetVariableSystem.Get('StA_confirm_title_law'))] law\nin the [GetPlayer.MakeScope.Var('StA_change_law_title').Title.GetBaseName]\nand set it to [Localize(Concatenate(Concatenate(GetVariableSystem.Get('StA_confirm_title_law'),'_'),GetVariableSystem.Get('StA_confirm_title_law_level')))]\n\nThis will cost you [GetPlayer.MakeScope.Var('StA_change_law_cost').GetValue] Authority."
+
+  STA_LAW_CHANGE_COST_ALERT: "You do not have the necessary Authority to enact this law!"
+
+
+  STA_TITLE_REALM: "[GetPlayer.MakeScope.Var('StA_change_law_title').Title.GetBaseName]"
+  STA_LAW_CHANGE_LAW: "[Localize(GetVariableSystem.Get('StA_confirm_title_law'))]"
+  STA_LAW_CHANGE_LEVEL: "[Localize(Concatenate(Concatenate(GetVariableSystem.Get('StA_confirm_title_law'),'_'),GetVariableSystem.Get('StA_confirm_title_law_level')))]"
+
+  STA_AUTHORITY_CAPACITY: "[authority_capacity|E]: [Title.MakeScope.ScriptValue('StA_title_realm_authority_capacity')|0]"
+  STA_AUTHORITY_SPENT: "[authority_spent|E]: [Title.MakeScope.ScriptValue('StA_title_realm_authority')|0]"
+
+  game_concept_authority_capacity: "Realm Authority"
+  game_concept_authority_capacity_desc: "Realm Authority represents a ruler's capacity to enact laws in a given Realm.\n\nIt depends, amongst other things, on their rank, their Court Grandeur, and their average Vassal [submission|E]."
+  game_concept_authority_spent: "Authority Used"
+  game_concept_authority_spent_desc: "Authority Used represents the cost of enforcing currently enacted laws over a given Realm.\n\nA ruler that uses more Authority than he has cannot enact more Realm Laws, and vassals of the Realm are likely to be angered by over-exertion."
+
+  StA_war_declaration_rights: "@war_icon! $war_declaration_rights$"
+  StA_title_revocation_rights: "@title_revocation_icon! $title_revocation_rights$"
+  StA_succession_rights: "@succession_icon! $succession_rights$"
+  title_revocation_rights_0: "$title_revocation_rights_default$"
+  title_revocation_rights_1: "$title_revocation_rights_protected$"
+  war_declaration_rights_0: "$war_declaration_rights_default$"
+  war_declaration_rights_1: "$war_declaration_rights_allowed$"
+  succession_rights_0: "$succession_rights_default$"
+  succession_rights_1: "$succession_rights_forced_partition$"
+
+  title_revocation_rights_0_cost: "$title_revocation_rights_default$"
+  title_revocation_rights_1_cost: "$title_revocation_rights_protected$"
+  war_declaration_rights_0_cost: "$war_declaration_rights_default$"
+  war_declaration_rights_1_cost: "$war_declaration_rights_allowed$"
+  succession_rights_0_cost: "$succession_rights_default$"
+  succession_rights_1_cost: "$succession_rights_forced_partition$"
