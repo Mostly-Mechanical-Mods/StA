@@ -107,9 +107,19 @@ window = {
 								ignoreinvisible = yes
 								
 								vbox = {
+									datacontext = "[GetScriptedGui('sgui_StA_active')]"
+									visible = "[Not(ScriptedGui.IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ))]"
 									datamodel = "[MyRealmWindow.GetRealmLaws]"
 									item = {
-										UniUI_StA_window_my_realm_authority_header = {}
+										window_my_realm_authority_header_vanilla = {}
+									}
+								}
+								vbox = {
+									datacontext = "[GetScriptedGui('sgui_StA_active')]"
+									visible = "[ScriptedGui.IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									datamodel = "[MyRealmWindow.GetRealmLaws]"
+									item = {
+										window_my_realm_authority_header_StA = {}
 									}
 								}
 							}
@@ -169,7 +179,7 @@ window = {
 										expand = {}
 
 									}
-									UniUI_StA_window_my_realm_liege_header = {
+									window_my_realm_liege_header_StA = {
 										datacontext = "[GetScriptedGui('sgui_StA_active')]"
 										visible = "[ScriptedGui.IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 									}

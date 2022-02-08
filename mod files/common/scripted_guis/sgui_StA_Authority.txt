@@ -120,12 +120,20 @@ sgui_has_submission_value = {
 	scope = character
 	is_shown = {
 		OR = {
-			has_government = feudal_government
-			has_government = clan_government
-			has_government = tribal_government
-			has_government = republic_government
-			has_government = theocracy_government
+			AND = {
+				mod_StA_active = yes
+				OR = {
+					has_government = feudal_government
+					has_government = clan_government
+					has_government = tribal_government
+					has_government = republic_government
+					has_government = theocracy_government
+				}
+			}
+			AND = {
+				mod_StA_active = no
+				NOT = { highest_held_title_tier = tier_barony }
+			}
 		}
-		NOT = { highest_held_title_tier = tier_barony }
 	}
 }
