@@ -7,39 +7,19 @@
 submission = {
 }
 
-land_share = {
-}
-
 authority = {
 }
 
-tribal_submission = {
+authority_capacity = {	
 }
 
-clan_liege_opinion = {
+authority_spent = {
 }
 
-clan_submission = {
-}
-
-feudal_submission = {
-}
-
-theocracy_submission = {
-}
-
-republic_submission = {
-}
-
-
-submissiveness = {
-}
-
-submissiveness_honor = {
-}
-
-submissiveness_vengefulness = {
-}
-
-submissiveness_dread = {
-}
+StA_submission_de_jure = {}
+StA_submission_powerful_vassal = {}
+StA_submission_culture = {}
+StA_submission_dread = {}
+StA_submission_tyranny = {}
+StA_submission_vengefulness = {}
+StA_submission_zeal = {}

@@ -1,0 +1,120 @@
+﻿l_english:
+
+  game_concept_submission: "Submission"
+  game_concept_submission_desc: "$game_concept_submission$ reflects to what extent a feudal [vassal|El] submits to their [liege|El]'s power.\n\nIt is primarily determined by their personality. Powerful vassals will be less submissive and highly expect a council position, and vassals of a different culture are also much more likely to be unruly."
+
+  game_concept_authority_capacity: "Realm Authority"
+  game_concept_authority_capacity_desc: "Realm Authority represents a ruler's capacity to enact laws in a given Realm.\n\nIt depends, amongst other things, on their rank, their Court Grandeur, and their average Vassal [submission|E]."
+  game_concept_authority_spent: "Authority Used"
+  game_concept_authority_spent_desc: "Authority Used represents the cost of enforcing currently enacted laws over a given Realm.\n\nA ruler that uses more Authority than he has cannot enact more Realm Laws, and vassals of the Realm are likely to be angered by over-exertion."
+
+#GUI
+  MY_REALM_WINDOW_VASSAL_SUBMISSION: "$submission$: [GuiScope.SetRoot(Character.MakeScope ).ScriptValue('submission')|0]\n$land_share$: [GuiScope.SetRoot(Character.MakeScope ).ScriptValue('land_share')|0]%"
+  MY_REALM_WINDOW_VASSAL_OBLIGATION: "$VASSAL_CONTRACT_OBLIGATIONS_TITLE$: [VassalContract.GetShortObligationLevelNameWithHighlightFor( 'feudal_government_taxes' )]\n$VASSAL_CONTRACT_OBLIGATIONS_TITLE_LEVIES$: [VassalContract.GetShortObligationLevelNameWithHighlightFor( 'feudal_government_levies' )]"
+
+  SUBMISSION_TO_LIEGE: "Your Submission: [GetPlayer.MakeScope.ScriptValue('submission')|0]"
+
+# TITLE REALM LAW
+
+  TITLE_REALM_LAWS: "Title Realm Laws"
+  TITLE_REALM_LAWS_DESC: "Laws applicable in the [Title.GetBaseName]"
+
+  StA_realm_tax: "@gold_icon! [Concept('tax','Feudal Taxes')]"
+  StA_realm_levies: "@soldier_icon! [Concept('levies','Feudal Levies')]"
+
+  StA_realm_tax_0: "Exempt"
+  StA_realm_tax_1: "Low"
+  StA_realm_tax_2: "Normal"
+  StA_realm_tax_3: "High"
+  StA_realm_tax_4: "Massive"
+
+  StA_realm_levies_0: "Exempt"
+  StA_realm_levies_1: "Low"
+  StA_realm_levies_2: "Normal"
+  StA_realm_levies_3: "High"
+  StA_realm_levies_4: "Massive"
+
+  StA_tree_obligation_exempt: "Exempt"
+  StA_tree_obligation_low: "Low"
+  StA_tree_obligation_normal: "Normal"
+  StA_tree_obligation_high: "High"
+  StA_tree_obligation_massive: "Massive"
+
+  feudal_tax_title_law: "Realm Law"
+  feudal_tax_title_law_short: "Realm Law"
+  feudal_tax_title_law_desc: "Realm Law"
+
+  feudal_levies_title_law: "Realm Law"
+  feudal_levies_title_law_short: "Realm Law"
+  feudal_levies_title_law_desc: "Realm Law"
+
+  STA_SUBMISSION_BASELINE: "Base"
+  STA_SUBMISSION_POWERFUL_VASSAL: "Powerful Vassal"
+
+  TOOLTIP_TEST: "[Scope.Char.GetShortUIName] learning"
+
+  StA_submission: "Submission"
+  STA_VASSAL_SUBMISSION: "[submission|E]: [Character.MakeScope.ScriptValue('StA_submission')]"
+  StA_submission_dread: "Reaction to Dread"
+  STA_TITLE_SUBMISSION: "Average [submission|E]: [Title.MakeScope.Var('StA_title_realm_law').Var('average_submission').GetValue|0]"
+
+  TITLE_SWEARS_ALLEGIANCE_TO: "Swears [title_allegiance|E] to [Title.MakeScope.Var('StA_title_allegiance').Title.GetBaseName]"
+  STA_CONFIRM_TITLE_LAW: "Title Realm Law Change"
+  STA_LAW_CHANGE_DESC: "You wish to change the [Localize(GetVariableSystem.Get('StA_confirm_title_law'))] law\nin the [GetPlayer.MakeScope.Var('StA_change_law_title').Title.GetBaseName]\nand set it to [Localize(Concatenate(Concatenate(GetVariableSystem.Get('StA_confirm_title_law'),'_'),GetVariableSystem.Get('StA_confirm_title_law_level')))]\n\nThis will cost you [GetPlayer.MakeScope.Var('StA_change_law_cost').GetValue] Authority."
+  STA_LAW_CHANGE_COST_ALERT: "You do not have the necessary Authority to enact this law!"
+
+  STA_TITLE_REALM: "[GetPlayer.MakeScope.Var('StA_change_law_title').Title.GetBaseName]"
+  STA_LAW_CHANGE_LAW: "[Localize(GetVariableSystem.Get('StA_confirm_title_law'))]"
+  STA_LAW_CHANGE_LEVEL: "[Localize(Concatenate(Concatenate(GetVariableSystem.Get('StA_confirm_title_law'),'_'),GetVariableSystem.Get('StA_confirm_title_law_level')))]"
+
+  STA_AUTHORITY_CAPACITY: "[authority_capacity|E]: [Title.MakeScope.ScriptValue('StA_title_realm_authority_capacity')|0]"
+  STA_AUTHORITY_SPENT: "[authority_spent|E]: [Title.MakeScope.ScriptValue('StA_title_realm_authority')|0]"
+
+  StA_war_declaration_rights: "@war_icon! $war_declaration_rights$"
+  StA_title_revocation_rights: "@title_revocation_icon! $title_revocation_rights$"
+  StA_succession_rights: "@succession_icon! $succession_rights$"
+  title_revocation_rights_0: "$title_revocation_rights_default$"
+  title_revocation_rights_1: "$title_revocation_rights_protected$"
+  war_declaration_rights_0: "$war_declaration_rights_default$"
+  war_declaration_rights_1: "$war_declaration_rights_allowed$"
+  succession_rights_0: "$succession_rights_default$"
+  succession_rights_1: "$succession_rights_forced_partition$"
+
+  title_revocation_rights_0_cost: "$title_revocation_rights_default$"
+  title_revocation_rights_1_cost: "$title_revocation_rights_protected$"
+  war_declaration_rights_0_cost: "$war_declaration_rights_default$"
+  war_declaration_rights_1_cost: "$war_declaration_rights_allowed$"
+  succession_rights_0_cost: "$succession_rights_default$"
+  succession_rights_1_cost: "$succession_rights_forced_partition$"
+
+
+# SUBMISSION VALUES
+
+  StA_submission_de_jure: "[StA_submission_de_jure|E]"
+  StA_submission_powerful_vassal: "[StA_submission_powerful_vassal|E]"
+  StA_submission_culture: "[StA_submission_culture|E]"
+  StA_submission_dread: "[StA_submission_dread|E]"
+  StA_submission_tyranny: "[StA_submission_tyranny|E]"
+  StA_submission_vengefulness: "[StA_submission_vengefulness|E]"
+  StA_submission_zeal: "[StA_submission_zeal|E]"
+
+  game_concept_StA_submission_de_jure: "Not de jure liege"
+  game_concept_StA_submission_de_jure_desc: "Vassals whose primary title pledges allegiance to a non-de jure title have decreased [submission|E].\n\nGetting a de jure title to their primary title will remove that penalty."
+
+  game_concept_StA_submission_powerful_vassal: "Powerful vassal"
+  game_concept_StA_submission_powerful_vassal_desc: "Powerful vassals are naturally less submissive.\n\nGranting them a council position cuts that penalty in half."
+
+  game_concept_StA_submission_culture: "Cultural Acceptance"
+  game_concept_StA_submission_culture_desc: "Low cultural acceptance between a liege's culture and their vassals culture greatly impacts [submission|E].\n\nSharing a cultural heritage, and knowing one another's culture language mitigates that penalty."
+
+  game_concept_StA_submission_dread: "Dread"
+  game_concept_StA_submission_dread_desc: "Dread will increase [submission|E] of cowardly vassals - but bold vassals will react very negatively to their liege's Dread, making it a double-edged sword."
+
+  game_concept_StA_submission_tyranny: "Tyranny"
+  game_concept_StA_submission_tyranny_desc: "Vassals with a high sense of honor will react very negatively to tyrannous acts from their liege.\n\nImprison with caution."
+
+  game_concept_StA_submission_vengefulness: "Resentment"
+  game_concept_StA_submission_vengefulness_desc: "This vassal holds a grudge. They don't like their liege very much, for whatever reason, and their resentment shows.\n\nMight be worth trying to smoothe things over a bit."
+
+  game_concept_StA_submission_zeal: "Bowing to a higher power"
+  game_concept_StA_submission_zeal_desc: "Not everyone will be humbled by that pilgrimage of yours. Some will highly respect your display of zealousness - but unpious vassals might not respect your bowing down to a higher authority.\n\nUnless the liege themselves are unpious, in which case it goes the other way around."

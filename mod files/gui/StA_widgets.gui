@@ -1,0 +1,156 @@
+window = {
+	name = "StA_confirm_title_law"
+	widgetid = "StA_confirm_title_law"
+	parentanchor = center
+	size = { 500 300 }
+	layer = top
+	filter_mouse = all
+	alwaystransparent = no
+
+	visible = "[And(GetVariableSystem.Exists('StA_confirm_title_law'),GetPlayer.MakeScope.Var('StA_confirm_title_window_on').IsSet)]"
+	
+	using = Background_Fade
+
+	widget = {
+		parentanchor = center
+		using = Window_Background_Popup
+		alwaystransparent = no
+
+		vbox = {
+			set_parent_size_to_minimum = yes
+
+			using = Window_Margins
+			spacing = 10
+			
+			header_standard = {
+				layoutpolicy_horizontal = expanding
+				
+				blockoverride "header_text"
+				{
+					text = "STA_CONFIRM_TITLE_LAW"
+				}
+
+				blockoverride "button_close"
+				{
+					visible = no
+				}
+			}
+
+			text_multi = {
+				name = "description"
+				autoresize = yes
+				max_width = 430
+				min_width = 430
+				margin = {15 10}
+
+				text = "STA_LAW_CHANGE_DESC"
+				using = "Font_Size_Small"
+
+				background = {
+					using = Background_Area
+				}
+			}
+
+			text_multi = {
+				name = "alert"
+				autoresize = yes
+				max_width = 430
+				min_width = 430
+				margin = {15 10}
+
+				visible = "[GreaterThan_CFixedPoint(Add_CFixedPoint(GetPlayer.MakeScope.Var('StA_change_law_cost').GetValue,GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_title_realm_authority')),GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_title_realm_authority_capacity'))]"
+				text = "STA_LAW_CHANGE_COST_ALERT"
+				using = "Font_Size_Small"
+				default_format = "#warning"
+
+				background = {
+					using = Background_Area
+				}
+			}
+			
+			block "bd_buttons" {
+				hbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 10
+
+			button_standard= {
+				name = "decline_button"
+				layoutpolicy_horizontal = growing
+
+				text = "CANCEL_BUTTON"
+				onclick = "[GetVariableSystem.Clear('StA_confirm_title_law')]"
+				onclick = "[GetScriptedGui('StA_cancel_title_law_change').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+				shortcut = "close_window"
+			}
+
+			button_primary = {
+				layoutpolicy_horizontal = growing
+				name = "accept_button"
+
+				text = "CONFIRM"
+				shortcut = "confirm"
+				enabled = "[LessThanOrEqualTo_CFixedPoint(Add_CFixedPoint(GetPlayer.MakeScope.Var('StA_change_law_cost').GetValue,GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_title_realm_authority')),GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_title_realm_authority_capacity'))]"
+				onclick = [GameDialog.Accept]
+				# [StA]
+				onclick = "[GetVariableSystem.Clear('StA_confirm_title_law')]"
+				onclick = "[GetScriptedGui( 'StA_confirm_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+				clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_confirm"
+			}
+		}
+			}
+		}
+	}
+}		
+
+window = {
+	name = "StA_title_list"
+	widgetid = "StA_confirm_title_law"
+	position = { 600 0  }
+	layer = bottom
+	filter_mouse = all
+	alwaystransparent = no
+
+	visible = "[GetVariableSystem.Exists('title_view_tab')]"
+
+	using = Window_Background_Sidebar
+	# using = Window_Decoration
+	using = Window_Movable
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+		using = Sound_WindowShow_Standard
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+		using = Sound_WindowHide_Standard
+	}
+
+	vbox = {
+		layoutpolicy_horizontal = expanding
+		using = Window_Background_Sidebar
+		set_parent_size_to_minimum = yes
+		min_width = 60
+		datamodel = "[GetPlayer.MakeScope.GetList('title_window_player')]"
+		parentanchor = top|hcenter
+		item = {
+			coa_title_tiny_crown = {
+				datacontext = "[Scope.Title]"
+				icon = {
+					name = "has_laws"
+					visible = "[Title.MakeScope.Var('StA_title_realm_law').IsSet]"
+					parentanchor = bottom|right
+					size = { 25 25 }
+					position = { 5 0 }
+					texture = "gfx/interface/icons/title_status/icon_title_law.dds"
+				}
+			}
+		}
+		# }
+		expand = {}
+	}
+
+	
+}

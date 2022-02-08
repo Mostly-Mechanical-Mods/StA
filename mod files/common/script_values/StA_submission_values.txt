@@ -1,0 +1,256 @@
+﻿liege_dread = {
+	add = liege.dread
+}
+
+StA_submission = {
+	if = {
+		limit = {
+			NOT = {
+				primary_title = {
+					has_variable = StA_title_allegiance
+					target_is_de_jure_liege_or_above = var:StA_title_allegiance
+				}
+			}
+		}
+		subtract = {
+			value = 25
+			desc = "StA_submission_de_jure"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		add = {
+			value = StA_submission_powerful_vassal
+			desc = "StA_submission_powerful_vassal"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			exists = culture
+			exists = liege.culture
+		}
+		add = {
+			value= StA_submission_culture
+			desc = "StA_submission_culture"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		add = {
+			value = StA_submission_dread
+			desc = "StA_submission_dread"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		add = {
+			value = StA_submission_tyranny
+			desc = "StA_submission_tyranny"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			ai_vengefulness > 0
+			opinion = {
+				target = liege
+				value < 0
+			}
+		}
+		add = {
+			value = StA_submission_vengefulness
+			desc = "StA_submission_vengefulness"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = { faith = liege.faith }
+		add = {
+			value = StA_submission_zeal
+			desc = "StA_submission_zeal"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	max = 100
+	min = -100
+}
+
+StA_submission_tooltip = {
+	if = {
+		limit = {
+			var:StA_submission_tooltip = {
+				NOT = {
+					primary_title = {
+						has_variable = StA_title_allegiance
+						target_is_de_jure_liege_or_above = var:StA_title_allegiance
+					}
+				}
+			}
+		}
+		subtract = {
+			value = 25
+			desc = "StA_submission_de_jure"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = { var:StA_submission_tooltip.liege.dread > 0 }
+		add = {
+			value = var:StA_submission_tooltip.StA_submission_dread 
+			desc = "StA_submission_dread"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = { var:StA_submission_tooltip = { is_powerful_vassal = yes }}
+		add = {
+			value = var:StA_submission_tooltip.StA_submission_powerful_vassal 
+			desc = "StA_submission_powerful_vassal"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			exists = var:StA_submission_tooltip.culture
+			exists = var:StA_submission_tooltip.liege.culture
+		}
+		add = {
+			value = var:StA_submission_tooltip.StA_submission_culture
+			desc = "StA_submission_culture"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = { var:StA_submission_tooltip.liege.tyranny > 0 }
+		add = {
+			value = var:StA_submission_tooltip.StA_submission_tyranny 
+			desc = "StA_submission_tyranny"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			var:StA_submission_tooltip.var:opinion_liege < 0
+			var:StA_submission_tooltip.ai_vengefulness > 0
+		}
+		add = {
+			value = var:StA_submission_tooltip.StA_submission_vengefulness 
+			desc = "StA_submission_vengefulness"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = { var:StA_submission_tooltip.faith = var:StA_submission_tooltip.liege.faith }
+		add = {
+			value = var:StA_submission_tooltip.StA_submission_zeal 
+			desc = "StA_submission_zeal"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+}
+
+StA_submission_zeal = {
+	value = 0
+	liege = {
+		add = num_virtuous_traits
+		subtract = num_sinful_traits
+		multiply = 2
+		add = piety_level
+		multiply = 10
+	}
+	if = {
+		limit = { ai_zeal < 0 }
+		multiply = -1
+		max = neg_ai_zeal
+		min = ai_zeal
+	}
+	else = {
+		max = ai_zeal
+		min = neg_ai_zeal
+	}
+}
+
+StA_submission_vengefulness = {
+	value = 0
+	add = var:opinion_liege
+	min = neg_ai_vengefulness
+}
+
+StA_submission_dread = {
+	value = 0
+	add = liege.dread
+	if = {
+		limit = { ai_boldness < 0 }
+		add = liege.dread
+		min = {
+			add = neg_ai_boldness
+			multiply = 2
+		}
+	}
+	else = {
+		subtract = {
+			add = ai_boldness
+			multiply = 2
+		}
+		min = liege.neg_dread
+	}
+	max = liege.dread
+}
+
+StA_submission_tyranny = {
+	value = 0
+	if = {
+		limit = { ai_honor > 0 }
+		subtract = ai_honor
+		min = liege.neg_tyranny
+	}
+}
+
+StA_submission_powerful_vassal = {
+	value = 0
+	if = {
+		limit = { is_powerful_vassal = yes }
+		if = {
+			limit = { is_councillor = no }
+			subtract = 50
+		}
+		else = {
+			subtract = 25
+		}
+	}
+}
+
+StA_submission_culture = {
+	if = {
+		limit = { NOT = { culture = liege.culture }}
+		liege.culture = { save_temporary_scope_as = liege_culture }
+		culture = {
+			if = {
+				limit = { cultural_acceptance = { target = scope:liege_culture value < 25 }}
+				subtract = 75
+			}
+			else_if = {
+				limit = { cultural_acceptance = { target = scope:liege_culture value < 50 }}
+				subtract = 50
+			}
+			else_if = {
+				limit = { cultural_acceptance = { target = scope:liege_culture value < 75 }}
+				subtract = 25
+			}
+			if = {
+				limit = { has_same_culture_heritage = scope:liege_culture }
+				add = 20
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					knows_language_of_culture = liege.culture
+					liege = { knows_language_of_culture = PREV.culture }
+				}
+			}
+			add = 20
+		}
+	}
+}

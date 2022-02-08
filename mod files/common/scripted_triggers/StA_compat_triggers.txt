@@ -1,3 +1,0 @@
-﻿mod_StA_active = {
-	always = yes
-}

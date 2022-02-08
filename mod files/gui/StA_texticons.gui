@@ -1,0 +1,29 @@
+texticon = {
+	icon = war_icon
+	iconsize = {
+		texture = "gfx/interface/icons/character_interactions/declare_war_interaction.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = succession_icon
+	iconsize = {
+		texture = "gfx/interface/icons/portraits/heir_small.dds"
+		size = { 20 20 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = title_revocation_icon
+	iconsize = {
+		texture = "gfx/interface/icons/revoke_titles_interaction.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}

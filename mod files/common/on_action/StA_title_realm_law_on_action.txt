@@ -1,0 +1,354 @@
+﻿on_game_start_after_lobby = {
+	on_actions = {
+		StA_title_realm_law_init
+	}
+}
+
+StA_title_realm_law_init = {
+	effect = {
+		random_player = {
+			create_story = { type = StA_obligation_levels save_scope_as = zero }
+			create_story = { type = StA_obligation_levels save_scope_as = one }
+			create_story = { type = StA_obligation_levels save_scope_as = two }
+			create_story = { type = StA_obligation_levels save_scope_as = three }
+			create_story = { type = StA_obligation_levels save_scope_as = four }
+			scope:zero = {
+				set_variable = { name = flag value = flag:0 }
+				set_variable = { name = value value = 0 }
+			}
+			scope:one = {
+				set_variable = { name = flag value = flag:1 }
+				set_variable = { name = value value = 1 }
+			}
+			scope:two = {
+				set_variable = { name = flag value = flag:2 }
+				set_variable = { name = value value = 2 }
+			}
+			scope:three = {
+				set_variable = { name = flag value = flag:3 }
+				set_variable = { name = value value = 3 }
+			}
+			scope:four = {
+				set_variable = { name = flag value = flag:4 }
+				set_variable = { name = value value = 4 }
+			}
+			add_to_global_variable_list = {
+				name = StA_obligation_levels
+				target = scope:zero
+			}
+			add_to_global_variable_list = {
+				name = StA_obligation_levels
+				target = scope:one
+			}
+			add_to_global_variable_list = {
+				name = StA_obligation_levels
+				target = scope:two
+			}
+			add_to_global_variable_list = {
+				name = StA_obligation_levels
+				target = scope:three
+			}
+			add_to_global_variable_list = {
+				name = StA_obligation_levels
+				target = scope:four
+			}
+		}
+
+		set_global_variable = {
+			name = StA_realm_tax
+			value = flag:StA_realm_tax
+		}
+		set_global_variable = {
+			name = StA_realm_levies
+			value = flag:StA_realm_levies
+		}
+		add_to_global_variable_list = {
+			name = StA_title_tree_obligation
+			target = global_var:StA_realm_tax
+		}
+		add_to_global_variable_list = {
+			name = StA_title_tree_obligation
+			target = global_var:StA_realm_levies
+		}
+
+		set_global_variable = {
+			name = 0
+			value = 0
+		}
+		set_global_variable = {
+			name = 1
+			value = 1
+		}
+		set_global_variable = {
+			name = 2
+			value = 2
+		}
+		set_global_variable = {
+			name = 3
+			value = 3
+		}
+		set_global_variable = {
+			name = 4
+			value = 4
+		}
+		add_to_global_variable_list = {
+			name = tree_obligation
+			target = global_var:0
+		}
+		add_to_global_variable_list = {
+			name = tree_obligation
+			target = global_var:1
+		}
+		add_to_global_variable_list = {
+			name = tree_obligation
+			target = global_var:2
+		}
+		add_to_global_variable_list = {
+			name = tree_obligation
+			target = global_var:3
+		}
+		add_to_global_variable_list = {
+			name = tree_obligation
+			target = global_var:4
+		}
+		add_to_global_variable_list = {
+			name = boolean_obligation
+			target = global_var:0
+		}
+		add_to_global_variable_list = {
+			name = boolean_obligation
+			target = global_var:1
+		}
+
+		every_ruler = {
+			limit = { is_landless_ruler = no }
+			save_scope_as = liege
+			ordered_held_title = {
+				limit = { tier >= tier_county }
+				order_by = tier
+				max = 99
+				check_range_bounds = no
+				if = {
+					limit = {
+						any_this_title_or_de_jure_above = {
+							NOT = { THIS = PREV }
+							has_variable = StA_title_realm_law
+							count = 0
+						}
+					}
+					scope:liege = {
+						set_variable = {
+							name = StA_title
+							value = PREV
+						}
+						create_story = StA_title_realm_law
+					}
+				}
+			}
+		}
+
+		every_ruler = {
+			limit = {
+				has_government = feudal_government
+				is_independent_ruler = no
+				# highest_held_title_tier >= tier_county
+				primary_title = { has_variable = StA_title_allegiance }
+				primary_title.var:StA_title_allegiance = { has_variable = StA_title_realm_law }
+			}
+			vassal_contract_set_obligation_level = { type = feudal_government_taxes level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:StA_realm_tax }
+			vassal_contract_set_obligation_level = { type = feudal_government_levies level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:StA_realm_levies }
+			vassal_contract_set_obligation_level = { type = title_revocation_rights level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:title_revocation_rights }
+			vassal_contract_set_obligation_level = { type = war_declaration_rights level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights }
+			vassal_contract_set_obligation_level = { type = succession_rights level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:succession_rights }
+		}
+	}
+}
+
+on_title_gain = {
+	on_actions = {
+		StA_on_title_gain
+	}
+}
+
+# A title is transferred to a new character
+# root = the new holder
+# scope:title = the title that changes hands
+# scope:previous_holder = previous holder. Might be dead
+StA_on_title_gain = {
+	effect = {
+		save_scope_as = new_holder
+		scope:title = {
+			if = {
+				limit = { has_variable = StA_title_realm_law }
+				if = {
+					limit = { exists = scope:previous_holder }
+					scope:previous_holder = {
+						# scope:previous_holder doesn't have a primary title realm law, create one, all the rest is handled in the story_cycle on_setup
+						if = {
+							limit = { NOT = { primary_title = { has_variable = StA_title_realm_law }}}
+							set_variable = {
+								name = StA_title
+								value = primary_title
+							}
+							create_story = StA_title_realm_law
+						}
+						# scope:previous_holder has a primary title realm law, check vassal allegiance
+						else = {
+							every_vassal = {
+								limit = { NOT = { primary_title.var:StA_title_allegiance.holder = scope:previous_holder }}
+								primary_title = {
+									StA_remove_current_title_allegiance = yes
+									StA_set_title_allegiance_to_liege = { LIEGE = scope:previous_holder }
+								}
+							}
+						}
+					}
+				}
+				# transfer story to scope:new_holder
+				var:StA_title_realm_law = {
+					make_story_owner = scope:new_holder
+					set_variable = {
+						name = StA_ruler
+						value = scope:new_holder
+					}
+					# update allegiance of pledged titles
+					every_in_list = {
+						variable = StA_pledge_allegiance
+						# remove allegiance of titles owned by scope:new_holder
+						if = {
+							limit = { holder = scope:new_holder }
+							PREV = {
+								remove_list_variable = {
+									name = StA_pledge_allegiance
+									target = PREV
+								}
+							}
+						}
+						# update allegiance of vassals of scope:new_holder
+						else_if = {
+							limit = { holder.liege = scope:new_holder }
+							if = {
+								StA_remove_current_title_allegiance = yes
+								StA_set_title_allegiance_to_liege = { LIEGE = scope:new_holder }
+							}
+						}
+						# remove allegiance of independent rulers
+						else_if = {
+							limit = { is_independent_ruler = yes }
+							StA_remove_current_title_allegiance = yes
+						}
+						# update allegiance of vassals external to the sub_realm
+						else = {
+							StA_remove_current_title_allegiance = yes
+							StA_set_title_allegiance_to_liege = { LIEGE = holder.liege }
+						}
+					}
+					if = {
+						limit = {
+							variable_list_size = {
+								name = StA_pledge_allegiance
+								value = 0
+							}
+						}
+						end_story = yes
+					}
+				}
+			}
+			StA_remove_current_title_allegiance = yes
+			if = {
+				limit = { THIS = scope:new_holder.primary_title }
+				StA_remove_allegiance_from_non_primary_titles = yes
+				if = {
+					limit = { scope:new_holder = { is_independent_ruler = no }}
+					StA_set_title_allegiance_to_liege = { LIEGE = scope:new_holder.liege }
+					scope:new_holder = {
+						set_variable = {
+							name = StA_title
+							value = scope:title
+						}
+						create_story = StA_title_realm_law
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					any_this_title_or_de_jure_above = {
+						NOT = { THIS = PREV }
+						holder = scope:new_holder
+						count = 0
+					}
+				}
+				scope:new_holder = {
+					set_variable = {
+						name = StA_title
+						value = scope:title
+					}
+					create_story = StA_title_realm_law
+				}
+			}
+		}
+		every_vassal = {
+			limit = { primary_title = { target_is_de_jure_liege_or_above = scope:title }}
+			primary_title = {
+				StA_remove_current_title_allegiance = yes
+				StA_set_title_allegiance_to_liege = { LIEGE = ROOT }
+			}
+		}
+	}
+}
+
+on_vassal_gained = {
+	on_actions = {
+		StA_on_vassal_gained
+	}
+}
+
+# A character gains a vassal
+# root = character gaining vassal
+# scope:vassal = vassal being gained
+# scope:old_liege = the previous liege of the vassal. Might be the null character (vassal used to be a non-ruler or independent), so make sure to use "exists" checks where relevant
+StA_on_vassal_gained = {
+	effect = {
+		save_scope_as = new_liege
+		scope:vassal.primary_title = {
+			if = {
+				limit = {
+					has_variable = StA_title_allegiance
+					NOT = { var:StA_title_allegiance.holder = scope:old_liege }
+				}
+				debug_log = "(StA_debug) StA_on_vassal_gained // vassal was pledging allegiance to a title not held by his old liege"
+				debug_log_scopes = yes
+			}
+			StA_remove_current_title_allegiance = yes
+			StA_set_title_allegiance_to_liege = { LIEGE = ROOT }
+		}
+	}
+}
+
+on_war_won_attacker = {
+	on_actions = {
+		StA_on_war_won_attacker
+	}
+}
+
+# called for when a casus belli resolves in one of the following ways.
+# same scopes are available in these events as in the CBs themselves, this just fires for all CBs instead of a specific CB.
+# note that any events/effects fired here WILL NOT show up in the war summary tooltip; they fire at the same time as the war resolution, but are not actually part of the war resolution itself.
+
+StA_on_war_won_attacker = {
+	trigger = {
+		OR = {
+			scope:war = { using_cb = independence_faction_war }
+			scope:war = { using_cb = independence_war }
+		}
+	}
+	effect = {
+		scope:war = {
+			every_war_attacker = {
+				primary_title = {
+					StA_remove_current_title_allegiance = yes
+				}
+			}
+		}
+	}
+}
