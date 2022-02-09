@@ -1,15 +1,15 @@
 ﻿# common\scripted_triggers\00_law_triggers.txt
-realm_law_use_crown_authority = {
-	NOR = {
-		has_government = tribal_government
-		# [StA]
-		trigger_if = {
-			limit = { NOT = { exists = StA_is_loaded }}
-			has_government = feudal_government
-		}
-		# [/StA]
-	}
-}
+# realm_law_use_crown_authority = {
+# 	NOR = {
+# 		has_government = tribal_government
+# 		# [StA]
+# 		trigger_if = {
+# 			limit = { exists = global_var:StA_is_loaded }
+# 			has_government = feudal_government
+# 		}
+# 		# [/StA]
+# 	}
+# }
 
 war_declarer_needs_hook_on_liege = {
 	scope:actor = {
