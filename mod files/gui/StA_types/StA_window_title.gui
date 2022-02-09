@@ -34,6 +34,7 @@ template UniUI_StA_title_window_create_title {
 
 types UniUI_StA_title_window {
 	type UniUI_StA_title_window_tabs = hbox {
+		visible = "[TitleViewWindow.GetTitle.GetHolder.GetGovernment.IsType('feudal_government')]"
 		name = "tabs"
 		layoutpolicy_horizontal = expanding
 
@@ -47,6 +48,7 @@ types UniUI_StA_title_window {
 		}
 
 		button_tab = {
+			visible = "[TitleViewWindow.GetTitle.GetHolder.GetGovernment.IsType('feudal_government')]"
 			layoutpolicy_horizontal = expanding
 			name = "show_allegiance"
 			text = "TITLE_VIEW_VASSALS"
@@ -57,6 +59,7 @@ types UniUI_StA_title_window {
 		}
 
 		button_tab = {
+			visible = "[TitleViewWindow.GetTitle.GetHolder.GetGovernment.IsType('feudal_government')]"
 			layoutpolicy_horizontal = expanding
 			name = "realm_laws"
 			text = "TITLE_REALM_LAWS"
@@ -69,7 +72,7 @@ types UniUI_StA_title_window {
 
 	type UniUI_StA_title_window_vassals_tab = vbox {
 		name = "vassals_tab_contents"
-		visible = "[GetVariableSystem.HasValue( 'title_view_tab', 'vassals_tab' )]"
+		visible = "[And(GetVariableSystem.HasValue( 'title_view_tab', 'vassals_tab' ),TitleViewWindow.GetTitle.GetHolder.GetGovernment.IsType('feudal_government'))]"
 		layoutpolicy_horizontal = expanding
 		layoutpolicy_vertical = expanding
 		margin_top = 10
