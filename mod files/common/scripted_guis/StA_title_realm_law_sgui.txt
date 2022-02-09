@@ -201,7 +201,10 @@ StA_title_window_player = {
 		title
 	}
 
-	is_valid = { scope:title = { has_variable = StA_title_realm_law }}
+	is_valid = {
+		exists = scope:title
+		scope:title = { has_variable = StA_title_realm_law }
+	}
 
 	effect = {
 		scope:title.holder = {
