@@ -13,7 +13,12 @@ crown_authority = {
 			#vassal_levy_contribution_mult = -0.1
 		}
 
-		can_keep = { realm_law_use_crown_authority = yes }
+		can_keep = {
+			NOR = {
+				has_government = tribal_government
+				has_government = feudal_government
+			}
+		}
 	}
 	
 	crown_authority_1 = {
@@ -26,7 +31,12 @@ crown_authority = {
 		flag = vassal_retraction_allowed
 		flag = can_change_partition_succession_laws
 
-		can_keep = { realm_law_use_crown_authority = yes }
+		can_keep = {
+			NOR = {
+				has_government = tribal_government
+				has_government = feudal_government
+			}
+		}
 
 		can_pass = {
 			trigger_if = {
@@ -88,7 +98,12 @@ crown_authority = {
 		flag = can_change_succession_laws
 		flag = titles_cannot_leave_realm_on_succession # Hardcoded flag
 		
-		can_keep = { realm_law_use_crown_authority = yes }
+		can_keep = {
+			NOR = {
+				has_government = tribal_government
+				has_government = feudal_government
+			}
+		}
 
 		can_pass = {
 			trigger_if = {
@@ -148,7 +163,12 @@ crown_authority = {
 		flag = vassal_all_wars_banned
 		flag = can_designate_heirs
 		
-		can_keep = { realm_law_use_crown_authority = yes }
+		can_keep = {
+			NOR = {
+				has_government = tribal_government
+				has_government = feudal_government
+			}
+		}
 
 		can_pass = {
 			has_realm_law = crown_authority_2
