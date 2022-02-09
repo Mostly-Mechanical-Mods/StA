@@ -73,3 +73,65 @@ StA_update_title_de_jure_allegiance = {
 
 	}
 }
+
+StA_calculate_average_submission_ruler = {
+  save_scope_as = ruler
+  save_opinion_value_as = {
+	name = opinion_liege
+	target = liege
+}
+set_variable = {
+	name = opinion_liege
+	value = scope:opinion_liege
+}
+every_vassal = {
+	save_opinion_value_as = {
+		name = opinion_liege
+		target = liege
+	}
+	set_variable = {
+		name = opinion_liege
+		value = scope:opinion_liege
+	}
+}
+  every_held_title = {
+    limit = { has_variable = StA_title_realm_law }
+    var:StA_title_realm_law = {
+      set_variable = {
+        name = total_strength
+        value = {
+          every_in_list = {
+            variable = StA_pledge_allegiance
+            limit = {
+              tier >= tier_county
+              NOT = { holder = scope:ruler }
+              THIS = holder.primary_title
+            }
+            add = holder.max_military_strength
+          }
+          min = 1
+        }
+      }
+      set_variable = {
+        name = average_submission
+        value = {
+          every_in_list = {
+            variable = StA_pledge_allegiance
+            limit = {
+              tier >= tier_county
+              NOT = { holder = scope:ruler }
+              THIS = holder.primary_title
+            }
+            add = {
+              add = holder.StA_submission
+              multiply = holder.max_military_strength
+            }
+          }
+          divide = var:total_strength
+          max = 100
+          min = -100
+        }
+      }
+    }
+  }
+}
