@@ -1672,6 +1672,7 @@ types Lists
 						expand = {}
 
 						hbox = {
+							visible = "[GetPlayer.GetGovernment.IsType('feudal_government')]"
 							spacing = 5
 							icon = {
 								visible = "[GreaterThanOrEqualTo_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0')]"
