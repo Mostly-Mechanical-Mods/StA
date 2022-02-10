@@ -41,8 +41,9 @@ StA_set_title_allegiance_to_liege = {
 	}
 	if = {
 		limit = {
-			holder = { is_independent_ruler = no }
 			NOT = { has_variable = StA_title_allegiance }
+			holder = { is_independent_ruler = no }
+			$LIEGE$.primary_title = { has_variable = StA_title_realm_law }
 		}
 		$LIEGE$.primary_title.var:StA_title_realm_law = {
 			add_to_variable_list = {
@@ -53,6 +54,16 @@ StA_set_title_allegiance_to_liege = {
 		set_variable = {
 			name = StA_title_allegiance
 			value = $LIEGE$.primary_title
+		}
+	}
+	holder = {
+		save_opinion_value_as = {
+			name = opinion_liege
+			target = liege
+		}
+		set_variable = {
+			name = opinion_liege
+			value = scope:opinion_liege
 		}
 	}
 }

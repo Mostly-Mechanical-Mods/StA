@@ -114,6 +114,15 @@ StA_cancel_title_law_change = {
 
 StA_confirm_title_law = {
 	scope = character
+	is_valid = {
+		trigger_if = {
+			limit = { var:StA_change_law_cost > 0 }
+			var:StA_change_law_cost.compare_value <= {
+				add = var:StA_change_law_title.StA_title_realm_authority_capacity
+				subtract = var:StA_change_law_title.StA_title_realm_authority
+			}
+		}
+	}
 	effect = {
 		var:StA_change_law_title.var:StA_title_realm_law = {
 			switch = {
@@ -161,36 +170,6 @@ StA_submission_tooltip = {
 		set_variable = {
 			name = StA_submission_tooltip
 			value = scope:character
-		}
-	}
-}
-
-StA_vassal_opinion = {
-	scope = character
-	saved_scopes = {
-		title
-	}
-	is_valid = { exists = scope:title.holder }
-	effect = {
-		scope:title.holder = {
-			save_opinion_value_as = {
-				name = opinion_liege
-				target = liege
-			}
-			set_variable = {
-				name = opinion_liege
-				value = scope:opinion_liege
-			}
-			every_vassal = {
-				save_opinion_value_as = {
-					name = opinion_liege
-					target = liege
-				}
-				set_variable = {
-					name = opinion_liege
-					value = scope:opinion_liege
-				}
-			}
 		}
 	}
 }

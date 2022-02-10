@@ -57,8 +57,7 @@ window = {
 				max_width = 430
 				min_width = 430
 				margin = {15 10}
-
-				visible = "[GreaterThan_CFixedPoint(Add_CFixedPoint(GetPlayer.MakeScope.Var('StA_change_law_cost').GetValue,GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_title_realm_authority')),GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_title_realm_authority_capacity'))]"
+				visible = "[Not(GetScriptedGui( 'StA_confirm_title_law' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End))]"
 				text = "STA_LAW_CHANGE_COST_ALERT"
 				using = "Font_Size_Small"
 				default_format = "#warning"
@@ -89,7 +88,7 @@ window = {
 
 				text = "CONFIRM"
 				shortcut = "confirm"
-				enabled = "[LessThanOrEqualTo_CFixedPoint(Add_CFixedPoint(GetPlayer.MakeScope.Var('StA_change_law_cost').GetValue,GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_title_realm_authority')),GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_title_realm_authority_capacity'))]"
+				enabled = "[GetScriptedGui( 'StA_confirm_title_law' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
 				onclick = [GameDialog.Accept]
 				# [StA]
 				onclick = "[GetVariableSystem.Clear('StA_confirm_title_law')]"
