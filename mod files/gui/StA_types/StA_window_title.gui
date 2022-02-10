@@ -11,7 +11,7 @@ template UniUI_StA_title_window_states {
 		name = "StA_title_window"
 		trigger_when = "[Not(GetVariableSystem.HasValue('StA_title_window_tracker',TitleViewWindow.GetTitle.GetKey))]"
 		on_start = "[GetVariableSystem.Set('StA_title_window_tracker',TitleViewWindow.GetTitle.GetKey)]"
-		on_start = "[GetScriptedGui('StA_vassal_opinion').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('title',TitleViewWindow.GetTitle.MakeScope).End)]"
+		# on_start = "[GetScriptedGui('StA_vassal_opinion').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('title',TitleViewWindow.GetTitle.MakeScope).End)]"
 		on_start = "[GetScriptedGui('StA_title_window_player').Execute( GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('title',TitleViewWindow.GetTitle.MakeScope).End)]"
 		on_start = "[GetScriptedGui('StA_title_window_allegiance').Execute( GuiScope.SetRoot(TitleViewWindow.GetTitle.MakeScope).End)]"
 	}
