@@ -346,7 +346,7 @@ set_obligation_if_changed_effect = {
 		}
 	}
 	if = {
-		limit = { NOT = { has_title_realm_contract = no }}
+		limit = { has_title_realm_contract = no }
 		set_variable = StA_custom_contract
 	}
 	else = {
