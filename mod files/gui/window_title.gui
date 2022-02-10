@@ -362,7 +362,7 @@ window = {
 				### TABS ###
 				# [UniUI] [Vanilla] Not StA
 				container = {
-					visible = "[Not(GetGlobalVariable('StA_is_loaded').IsSet)]"
+					visible = "[Not(And(GetGlobalVariable('StA_is_loaded').IsSet,TitleViewWindow.GetTitle.GetHolder.GetGovernment.IsType('feudal_government')))]"
 				# [/Vanilla] [/UniUI]
 				hbox = {
 					name = "tabs"
@@ -381,6 +381,7 @@ window = {
 					}
 
 					button_tab = {
+						visible = "[DataModelHasItems(TitleViewWindow.GetVassalGroupItems)]"
 						layoutpolicy_horizontal = expanding
 						name = "show_allegiance"
 						text = "TITLE_VIEW_VASSALS"
@@ -515,7 +516,7 @@ window = {
 				vbox = {
 					name = "vassals_tab_contents"
 					# [UniUI] [Vanilla] [StA] better tab management + Not StA
-					visible = "[And(GetVariableSystem.HasValue( 'title_view_tab','vassals_tab' ),Not(GetGlobalVariable('StA_is_loaded').IsSet))]"
+					visible = "[And(GetVariableSystem.HasValue( 'title_view_tab','vassals_tab' ),And(DataModelHasItems(TitleViewWindow.GetVassalGroupItems),Not(And(GetGlobalVariable('StA_is_loaded').IsSet,TitleViewWindow.GetTitle.GetHolder.GetGovernment.IsType('feudal_government')))))]"
 					# [/StA][/Vanilla] [/UniUI]
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding

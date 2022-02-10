@@ -122,7 +122,7 @@ StA_title_realm_law_init = {
 
 		every_ruler = {
 			limit = { is_landless_ruler = no }
-			save_scope_as = liege
+			save_scope_as = ruler
 			ordered_held_title = {
 				limit = { tier >= tier_county }
 				order_by = tier
@@ -131,12 +131,13 @@ StA_title_realm_law_init = {
 				if = {
 					limit = {
 						any_this_title_or_de_jure_above = {
+							holder = scope:ruler
 							NOT = { THIS = PREV }
 							has_variable = StA_title_realm_law
 							count = 0
 						}
 					}
-					scope:liege = {
+					scope:ruler = {
 						set_variable = {
 							name = StA_title
 							value = PREV
@@ -181,7 +182,13 @@ StA_on_title_gain = {
 			if = {
 				limit = { has_variable = StA_title_realm_law }
 				if = {
-					limit = { exists = scope:previous_holder }
+					limit = {
+						exists = scope:previous_holder
+						scope:previous_holder = {
+							is_alive = yes
+							highest_held_title_tier >= tier_county
+						}
+					}
 					scope:previous_holder = {
 						# scope:previous_holder doesn't have a primary title realm law, create one, all the rest is handled in the story_cycle on_setup
 						if = {
@@ -195,7 +202,12 @@ StA_on_title_gain = {
 						# scope:previous_holder has a primary title realm law, check vassal allegiance
 						else = {
 							every_vassal = {
-								limit = { NOT = { primary_title.var:StA_title_allegiance.holder = scope:previous_holder }}
+								limit = {
+									OR = {
+										primary_title = { NOT = { has_variable = StA_title_allegiance }}
+										NOT = { primary_title.var:StA_title_allegiance.holder = scope:previous_holder }
+									}
+								}
 								primary_title = {
 									StA_remove_current_title_allegiance = yes
 									StA_set_title_allegiance_to_liege = { LIEGE = scope:previous_holder }
@@ -234,7 +246,7 @@ StA_on_title_gain = {
 						}
 						# remove allegiance of independent rulers
 						else_if = {
-							limit = { is_independent_ruler = yes }
+							limit = { holder = { is_independent_ruler = yes }}
 							StA_remove_current_title_allegiance = yes
 						}
 						# update allegiance of vassals external to the sub_realm
@@ -245,6 +257,7 @@ StA_on_title_gain = {
 					}
 					if = {
 						limit = {
+							has_variable_list = StA_pledge_allegiance
 							variable_list_size = {
 								name = StA_pledge_allegiance
 								value = 0
@@ -261,6 +274,12 @@ StA_on_title_gain = {
 				if = {
 					limit = { scope:new_holder = { is_independent_ruler = no }}
 					StA_set_title_allegiance_to_liege = { LIEGE = scope:new_holder.liege }
+				}
+				if = {
+					limit = {
+						tier >= tier_barony
+						NOT = { has_variable = StA_title_realm_law }
+					}
 					scope:new_holder = {
 						set_variable = {
 							name = StA_title
