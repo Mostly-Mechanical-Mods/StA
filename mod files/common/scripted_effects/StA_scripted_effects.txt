@@ -40,7 +40,10 @@ StA_set_title_allegiance_to_liege = {
 		}
 	}
 	if = {
-		limit = { NOT = { has_variable = StA_title_allegiance }}
+		limit = {
+			NOT = { has_variable = StA_title_allegiance }
+			$LIEGE$.primary_title = { has_variable = StA_title_realm_law }
+		}
 		$LIEGE$.primary_title.var:StA_title_realm_law = {
 			add_to_variable_list = {
 				name = StA_pledge_allegiance
