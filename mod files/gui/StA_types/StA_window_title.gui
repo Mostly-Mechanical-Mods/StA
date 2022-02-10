@@ -337,7 +337,7 @@ types UniUI_StA_title_window {
 									parentanchor = center
 									position = {0 -3 }
 								}
-								enabled = "[Or(EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_tax').GetValue,Add_CFixedPoint(Scope.Var('value').GetValue,'(CFixedPoint)1')),EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_tax').GetValue,Subtract_CFixedPoint(Scope.Var('value').GetValue,'(CFixedPoint)1')))]"
+								enabled = "[And(ObjectsEqual(Title.GetHolder,GetPlayer.Self),Or(EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_tax').GetValue,Add_CFixedPoint(Scope.Var('value').GetValue,'(CFixedPoint)1')),EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_tax').GetValue,Subtract_CFixedPoint(Scope.Var('value').GetValue,'(CFixedPoint)1'))))]"
 								down = "[EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_tax').GetValue,Scope.Var('value').GetValue)]"
 								onclick = "[GetScriptedGui( 'StA_change_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('title',Title.MakeScope).AddScope( 'obligation', MakeScopeFlag( 'StA_realm_tax' )).AddScope( 'level',MakeScopeValue(Scope.Var('value').GetValue )).End)]"
 								onclick = "[GetVariableSystem.Set('StA_confirm_title_law','StA_realm_tax')]"
@@ -372,7 +372,7 @@ types UniUI_StA_title_window {
 									parentanchor = center
 									position = {0 -3 }
 								}
-								enabled = "[Or(EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_levies').GetValue,Add_CFixedPoint(Scope.Var('value').GetValue,'(CFixedPoint)1')),EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_levies').GetValue,Subtract_CFixedPoint(Scope.Var('value').GetValue,'(CFixedPoint)1')))]"
+								enabled = "[And(ObjectsEqual(Title.GetHolder,GetPlayer.Self),Or(EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_levies').GetValue,Add_CFixedPoint(Scope.Var('value').GetValue,'(CFixedPoint)1')),EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_levies').GetValue,Subtract_CFixedPoint(Scope.Var('value').GetValue,'(CFixedPoint)1'))))]"
 								down = "[EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('StA_realm_levies').GetValue,Scope.Var('value').GetValue)]"
 								onclick = "[GetScriptedGui( 'StA_change_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('title',Title.MakeScope).AddScope( 'obligation', MakeScopeFlag( 'StA_realm_levies' )).AddScope( 'level',MakeScopeValue(Scope.Var('value').GetValue )).End)]"
 								onclick = "[GetVariableSystem.Set('StA_confirm_title_law','StA_realm_levies')]"
@@ -406,6 +406,7 @@ types UniUI_StA_title_window {
 						using = Background_Letter
 						layoutpolicy_horizontal = expanding
 						button_checkbox_label = {
+							enabled = "[ObjectsEqual(Title.GetHolder,GetPlayer.Self)]"
 							visible = "[EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('succession_rights').GetValue,'(CFixedPoint)0')]"
 							onclick = "[GetScriptedGui( 'StA_change_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('title',Title.MakeScope).AddScope( 'obligation', MakeScopeFlag( 'succession_rights' )).AddScope( 'level',MakeScopeValue(Abs_CFixedPoint(Subtract_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('succession_rights').GetValue,'(CFixedPoint)1' )))).End)]"
 							onclick = "[GetVariableSystem.Set('StA_confirm_title_law','succession_rights')]"
@@ -423,6 +424,7 @@ types UniUI_StA_title_window {
 							}
 						}
 						button_checkbox_label = {
+							enabled = "[ObjectsEqual(Title.GetHolder,GetPlayer.Self)]"
 							visible = "[EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('succession_rights').GetValue,'(CFixedPoint)1')]"
 							onclick = "[GetScriptedGui( 'StA_change_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('title',Title.MakeScope).AddScope( 'obligation', MakeScopeFlag( 'succession_rights' )).AddScope( 'level',MakeScopeValue(Abs_CFixedPoint(Subtract_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('succession_rights').GetValue,'(CFixedPoint)1' )))).End)]"
 							onclick = "[GetVariableSystem.Set('StA_confirm_title_law','succession_rights')]"
@@ -458,6 +460,7 @@ types UniUI_StA_title_window {
 						layoutpolicy_horizontal = expanding
 						button_checkbox_label = {
 							# Order dependent, first select the unselected level then set it as the new selected one
+							enabled = "[ObjectsEqual(Title.GetHolder,GetPlayer.Self)]"
 							visible = "[EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('title_revocation_rights').GetValue,'(CFixedPoint)0')]"
 							onclick = "[GetScriptedGui( 'StA_change_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('title',Title.MakeScope).AddScope( 'obligation', MakeScopeFlag( 'title_revocation_rights' )).AddScope( 'level',MakeScopeValue(Abs_CFixedPoint(Subtract_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('title_revocation_rights').GetValue,'(CFixedPoint)1' )))).End)]"
 							onclick = "[GetVariableSystem.Set('StA_confirm_title_law','title_revocation_rights')]"
@@ -475,6 +478,7 @@ types UniUI_StA_title_window {
 						}
 						button_checkbox_label = {
 							# Order dependent, first select the unselected level then set it as the new selected one
+							enabled = "[ObjectsEqual(Title.GetHolder,GetPlayer.Self)]"
 							visible = "[EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('title_revocation_rights').GetValue,'(CFixedPoint)1')]"
 							onclick = "[GetScriptedGui( 'StA_change_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('title',Title.MakeScope).AddScope( 'obligation', MakeScopeFlag( 'title_revocation_rights' )).AddScope( 'level',MakeScopeValue(Abs_CFixedPoint(Subtract_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('title_revocation_rights').GetValue,'(CFixedPoint)1' )))).End)]"
 							onclick = "[GetVariableSystem.Set('StA_confirm_title_law','title_revocation_rights')]"
@@ -515,7 +519,7 @@ types UniUI_StA_title_window {
 						using = Background_Letter
 						layoutpolicy_horizontal = expanding
 						button_checkbox_label = {
-							
+							enabled = "[ObjectsEqual(Title.GetHolder,GetPlayer.Self)]"
 							# Order dependent, first select the unselected level then set it as the new selected one
 							visible = "[EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('war_declaration_rights').GetValue,'(CFixedPoint)0')]"
 							onclick = "[GetScriptedGui( 'StA_change_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('title',Title.MakeScope).AddScope( 'obligation', MakeScopeFlag( 'war_declaration_rights' )).AddScope( 'level',MakeScopeValue(Abs_CFixedPoint(Subtract_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('war_declaration_rights').GetValue,'(CFixedPoint)1' )))).End)]"
@@ -535,7 +539,7 @@ types UniUI_StA_title_window {
 							}
 						}
 						button_checkbox_label = {
-							
+							enabled = "[ObjectsEqual(Title.GetHolder,GetPlayer.Self)]"
 							# Order dependent, first select the unselected level then set it as the new selected one
 							visible = "[EqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('war_declaration_rights').GetValue,'(CFixedPoint)1')]"
 							onclick = "[GetScriptedGui( 'StA_change_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope('title',Title.MakeScope).AddScope( 'obligation', MakeScopeFlag( 'war_declaration_rights' )).AddScope( 'level',MakeScopeValue(Abs_CFixedPoint(Subtract_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('war_declaration_rights').GetValue,'(CFixedPoint)1' )))).End)]"
@@ -557,36 +561,36 @@ types UniUI_StA_title_window {
 						expand = {}
 					}
 					expand = {}
-					hbox = {
-						layoutpolicy_horizontal = expanding
-						text_single = {
-							text = "council_rights"
-							using = Font_Size_Medium
-							default_format = "#light_background"
-						}
-						expand = {}
-					}
-					hbox = {
-						using = Background_Letter
-						layoutpolicy_horizontal = expanding
-						button_checkbox_label = {
-							# Order dependent, first select the unselected level then set it as the new selected one
-							onclick = "[ObligationLevelCheckbox.AccessLevel( ObligationLevelCheckbox.GetUnselectedLevelIndex ).Select]"
-							onclick = "[ObligationLevelCheckbox.ToggleSelection]"
+					# hbox = {
+					# 	layoutpolicy_horizontal = expanding
+					# 	text_single = {
+					# 		text = "council_rights"
+					# 		using = Font_Size_Medium
+					# 		default_format = "#light_background"
+					# 	}
+					# 	expand = {}
+					# }
+					# hbox = {
+					# 	using = Background_Letter
+					# 	layoutpolicy_horizontal = expanding
+					# 	button_checkbox_label = {
+					# 		# Order dependent, first select the unselected level then set it as the new selected one
+					# 		onclick = "[ObligationLevelCheckbox.AccessLevel( ObligationLevelCheckbox.GetUnselectedLevelIndex ).Select]"
+					# 		onclick = "[ObligationLevelCheckbox.ToggleSelection]"
 
-							blockoverride "checkbox"
-							{
-								checked = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsSelected]"
-								enabled = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsEnabled]" 
-							}
+					# 		blockoverride "checkbox"
+					# 		{
+					# 			checked = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsSelected]"
+					# 			enabled = "[ModifyVassalContractInteractionWindowObligationLevelOption.IsEnabled]" 
+					# 		}
 
-							blockoverride "text"
-							{
-								text = "council_rights_guaranteed_short"
-								default_format = "#light_background"
-							}
-						}
-						expand = {}
+					# 		blockoverride "text"
+					# 		{
+					# 			text = "council_rights_guaranteed_short"
+					# 			default_format = "#light_background"
+					# 		}
+					# 	}
+					# 	expand = {}
 					}
 				}
 			}
