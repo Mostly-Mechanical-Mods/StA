@@ -1,4 +1,4 @@
-﻿has_title_realm_contrat = {
+﻿has_title_realm_contract = {
 	vassal_contract_obligation_level:feudal_government_taxes = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:StA_realm_tax
 	vassal_contract_obligation_level:feudal_government_levies = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:StA_realm_levies
 	vassal_contract_obligation_level:succession_rights = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:succession_rights
