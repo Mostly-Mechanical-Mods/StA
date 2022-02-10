@@ -181,26 +181,26 @@ StA_vassal_opinion = {
 	}
 	is_valid = { exists = scope:title.holder }
 	effect = {
-		scope:title.holder = {
-			save_opinion_value_as = {
-				name = opinion_liege
-				target = liege
-			}
-			set_variable = {
-				name = opinion_liege
-				value = scope:opinion_liege
-			}
-			every_vassal = {
-				save_opinion_value_as = {
-					name = opinion_liege
-					target = liege
-				}
-				set_variable = {
-					name = opinion_liege
-					value = scope:opinion_liege
-				}
-			}
-		}
+		# scope:title.holder = {
+		# 	save_opinion_value_as = {
+		# 		name = opinion_liege
+		# 		target = liege
+		# 	}
+		# 	set_variable = {
+		# 		name = opinion_liege
+		# 		value = scope:opinion_liege
+		# 	}
+		# 	every_vassal = {
+		# 		save_opinion_value_as = {
+		# 			name = opinion_liege
+		# 			target = liege
+		# 		}
+		# 		set_variable = {
+		# 			name = opinion_liege
+		# 			value = scope:opinion_liege
+		# 		}
+		# 	}
+		# }
 	}
 }
 

@@ -52,6 +52,16 @@ StA_set_title_allegiance_to_liege = {
 			value = $LIEGE$.primary_title
 		}
 	}
+	holder = {
+		save_opinion_value_as = {
+			name = opinion_liege
+			target = liege
+		}
+		set_variable = {
+			name = opinion_liege
+			value = scope:opinion_liege
+		}
+	}
 }
 
 # Supported Scopes: title
