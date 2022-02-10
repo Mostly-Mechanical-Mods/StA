@@ -42,6 +42,7 @@ StA_set_title_allegiance_to_liege = {
 	if = {
 		limit = {
 			NOT = { has_variable = StA_title_allegiance }
+			holder = { is_independent_ruler = no }
 			$LIEGE$.primary_title = { has_variable = StA_title_realm_law }
 		}
 		$LIEGE$.primary_title.var:StA_title_realm_law = {

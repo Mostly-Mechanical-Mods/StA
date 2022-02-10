@@ -109,7 +109,7 @@ window = {
 	filter_mouse = all
 	alwaystransparent = no
 
-	visible = "[GetVariableSystem.Exists('title_view_tab')]"
+	visible = "[And(GetVariableSystem.Exists('title_view_tab'),GetPlayer.GetGovernment.IsType('feudal_government'))]"
 
 	using = Window_Background_Sidebar
 	# using = Window_Decoration
