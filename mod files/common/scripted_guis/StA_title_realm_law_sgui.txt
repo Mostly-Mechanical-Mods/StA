@@ -338,3 +338,33 @@ StA_title_window_create_title = {
 		}
 	}
 }
+
+StA_vassal_opinion = {
+	scope = character
+	saved_scopes = {
+		title
+	}
+	is_valid = { exists = scope:title.holder }
+	effect = {
+		# scope:title.holder = {
+		# 	save_opinion_value_as = {
+		# 		name = opinion_liege
+		# 		target = liege
+		# 	}
+		# 	set_variable = {
+		# 		name = opinion_liege
+		# 		value = scope:opinion_liege
+		# 	}
+		# 	every_vassal = {
+		# 		save_opinion_value_as = {
+		# 			name = opinion_liege
+		# 			target = liege
+		# 		}
+		# 		set_variable = {
+		# 			name = opinion_liege
+		# 			value = scope:opinion_liege
+		# 		}
+		# 	}
+		# }
+	}
+}

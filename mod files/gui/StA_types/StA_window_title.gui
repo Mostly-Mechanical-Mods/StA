@@ -2,8 +2,8 @@ template UniUI_StA_title_window_states {
 	state = {
 		name = _show
 		on_start = "[GetVariableSystem.Set('StA_title_window_tracker',TitleViewWindow.GetTitle.GetKey)]"
-		# on_start = "[GetVariableSystem.Set('character_script_value_breakdown','StA_submission')]"
-		# on_start = "[GetScriptedGui(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('character',GetPlayer.MakeScope).End))]"
+		on_start = "[GetVariableSystem.Set('character_script_value_breakdown','StA_submission')]"
+		on_start = "[GetScriptedGui(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('character',GetPlayer.MakeScope).End))]"
 		on_start = "[GetScriptedGui('StA_title_window_player').Execute( GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('title',TitleViewWindow.GetTitle.MakeScope).End)]"
 		on_start = "[GetScriptedGui('StA_title_window_allegiance').Execute( GuiScope.SetRoot(TitleViewWindow.GetTitle.MakeScope).End)]"
 	}
@@ -141,20 +141,6 @@ types UniUI_StA_title_window {
 							onrightclick = "[DefaultOnCharacterRightClick(Character.GetID)]"
 							button_ignore = none
 
-							# hbox = {
-							
-							# 	text_single = {
-							# 	text = "[Scope.Title.GetBaseName]"
-							# }
-
-							# expand = {}
-
-							# text_single = {
-							# 	text = "[Scope.Title.GetHolder.GetNameNoTooltip]"
-							# }
-
-							# }
-
 							hbox = {
 								layoutpolicy_horizontal = expanding
 								margin = { 5 0 }
@@ -170,6 +156,7 @@ types UniUI_StA_title_window {
 								expand = {}
 
 								hbox = {
+									
 									visible = "[Not(Character.GetPrimaryTitle.IsBarony)]"
 									icon = {
 										size = { 25 25 }
@@ -183,15 +170,7 @@ types UniUI_StA_title_window {
 									
 									
 									button = {
-										state = {
-											name = _mouse_enter
-											on_start = "[GetVariableSystem.Set('character_script_value_breakdown','StA_submission')]"
-											on_start = "[GetScriptedGui(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('character',Character.MakeScope).End))]"
-										}
-										datacontext = "[GuiScope.SetRoot(GetPlayer.MakeScope).GetScriptValueBreakdown(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip'))]"
-										tooltipwidget = {
-											widget_value_breakdown_tooltip = {}
-										}
+										tooltip = "[Character.MakeScope.GetScriptValueDesc('StA_submission')]"
 										min_width = 30
 										visible = "[GreaterThanOrEqualTo_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0')]"
 										name = "submission_icon_up"
@@ -200,15 +179,7 @@ types UniUI_StA_title_window {
 										alpha = "[Multiply_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0.01')]"
 									}
 									button = {
-										state = {
-											name = _mouse_enter
-											on_start = "[GetVariableSystem.Set('character_script_value_breakdown','StA_submission')]"
-											on_start = "[GetScriptedGui(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('character',Character.MakeScope).End))]"
-										}
-										datacontext = "[GuiScope.SetRoot(GetPlayer.MakeScope).GetScriptValueBreakdown(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip'))]"
-										tooltipwidget = {
-											widget_value_breakdown_tooltip = {}
-										}
+										tooltip = "[Character.MakeScope.GetScriptValueDesc('StA_submission')]"
 										min_width = 30
 										visible = "[LessThan_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0')]"
 										name = "submission_icon_down"
@@ -216,20 +187,6 @@ types UniUI_StA_title_window {
 										texture = "gfx/interface/icons/message_feed/tier_down.dds"
 										alpha = "[Abs_CFixedPoint(Multiply_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0.01'))]"
 									}
-									# spacer = { size = { 20 0 }}
-									# text_single = {
-									# 	state = {
-									# 		name = _mouse_enter
-									# 		on_start = "[GetVariableSystem.Set('character_script_value_breakdown','StA_submission')]"
-									# 		on_start = "[GetScriptedGui(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('character',Character.MakeScope).End))]"
-									# 	}
-									# 	datacontext = "[GuiScope.SetRoot(GetPlayer.MakeScope).GetScriptValueBreakdown(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip'))]"
-									# 	tooltipwidget = {
-									# 		widget_value_breakdown_tooltip = {}
-									# 	}
-									# 	min_width = 20
-									# 	text = "[Character.MakeScope.ScriptValue('StA_submission')]"
-									# }
 								}
 							}
 						}
@@ -590,7 +547,7 @@ types UniUI_StA_title_window {
 					# 		}
 					# 	}
 					# 	expand = {}
-					}
+					# }
 				}
 			}
 		}
