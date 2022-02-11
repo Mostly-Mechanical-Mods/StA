@@ -233,3 +233,21 @@ StA_realm_levies_3_cost = {
 StA_realm_levies_4_cost = {
 	value = 20
 }
+
+StA_title_law_cooldown_year = {
+	var:StA_title_realm_law = {
+		add = var:StA_title_law_cooldown
+		divide = 12
+		floor = yes
+	}
+}
+
+StA_title_law_cooldown_month = {
+	var:StA_title_realm_law = {
+		add = var:StA_title_law_cooldown
+		subtract = {
+			add = PREV.StA_title_law_cooldown_year
+			multiply = 12
+		}
+	}
+}

@@ -118,3 +118,5 @@
 
   game_concept_StA_submission_zeal: "Bowing to a higher power"
   game_concept_StA_submission_zeal_desc: "Not everyone will be humbled by that pilgrimage of yours. Some will highly respect your display of zealousness - but unpious vassals might not respect your bowing down to a higher authority.\n\nUnless the liege themselves are unpious, in which case it goes the other way around."
+
+  StA_title_law_cooldown: "@time_icon! [Title.MakeScope.ScriptValue('StA_title_law_cooldown_year')|0]y [Title.MakeScope.ScriptValue('StA_title_law_cooldown_month')|0]mo"

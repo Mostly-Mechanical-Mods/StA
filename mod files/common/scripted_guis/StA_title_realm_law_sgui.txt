@@ -117,9 +117,12 @@ StA_confirm_title_law = {
 	is_valid = {
 		trigger_if = {
 			limit = { var:StA_change_law_cost > 0 }
-			var:StA_change_law_cost.compare_value <= {
-				add = var:StA_change_law_title.StA_title_realm_authority_capacity
-				subtract = var:StA_change_law_title.StA_title_realm_authority
+			NOR = {
+				var:StA_change_law_cost.compare_value <= {
+					add = var:StA_change_law_title.StA_title_realm_authority_capacity
+					subtract = var:StA_change_law_title.StA_title_realm_authority
+				}
+				has_variable = StA_title_law_cooldown
 			}
 		}
 	}

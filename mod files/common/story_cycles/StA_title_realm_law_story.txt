@@ -169,7 +169,13 @@
 			name = StA_title_law_cooldown
 			value = {
 				add = 100
-				subtract = var:StA_title.StA_title_realm_authority_capacity
+				var:StA_title = {
+					subtract = StA_title_realm_authority_capacity
+					subtract = {
+						add = StA_title_realm_authority_capacity
+						subtract = StA_title_realm_authority
+					}
+				}
 			}
 		}
 	}
@@ -186,13 +192,21 @@
 
 		triggered_effect = {
 			trigger = {
-				always = yes
+				var:StA_title_law_cooldown > 1
 			}
 			effect = {
 				change_variable = {
 					name = StA_title_law_cooldown
 					subtract = 1
 				}
+			}
+		}
+		triggered_effect = {
+			trigger = {
+				var:StA_title_law_cooldown <= 1
+			}
+			effect = {
+				remove_variable = StA_title_law_cooldown
 			}
 		}
 	}

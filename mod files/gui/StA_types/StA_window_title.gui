@@ -250,9 +250,18 @@ types UniUI_StA_title_window {
 							texture = "gfx/interface/window_factions/faction_progress_threshold.dds"
 						}
 					}
+					
+					text_single = {
+						tooltip = "TEST"
+						# texture = "gfx/interface/icons/icon_time.dds"
+						# text = "TEST"
+						text = "StA_title_law_cooldown"
+						position = { 240 0 }
+						# default_format = "#low"
+					}
 				}
 			}
-
+			
 			text_label_center = {
 				tooltip = "[Title.MakeScope.GetScriptValueDesc('StA_title_realm_authority')]"
 				text = "STA_AUTHORITY_SPENT"
