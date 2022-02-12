@@ -1,5 +1,9 @@
 ﻿## TITLE WINDOW ##
 
+StA_title_tier = {
+	add = tier
+}
+
 StA_max_mil_strength = {
 	add = max_military_strength
 }
@@ -55,7 +59,7 @@ StA_title_realm_law_score = {
 StA_title_realm_authority_capacity = {
 	add = {
 		value = {
-			add = tier
+			add = StA_title_tier
 			subtract = 1
 			multiply = 10
 		}
@@ -168,6 +172,19 @@ StA_title_realm_authority = {
 		}
 	}
 	min = 0
+}
+
+StA_title_realm_authority_unused = {
+	add = StA_title_realm_authority_capacity
+	subtract = StA_title_realm_authority
+}
+
+StA_change_law_cost_check = {
+	add = var:StA_change_law_cost
+	var:StA_change_law_title = {
+		subtract = StA_title_realm_authority_capacity
+		add = StA_title_realm_authority
+	}
 }
 
 title_revocation_rights_0_cost = {

@@ -2,44 +2,53 @@
 	scope:actor = {
 		trigger_if = {
 			limit = {
-				is_independent_ruler = no
-				liege = scope:recipient.liege
-				NOT = { liege = scope:recipient }
-				liege = { has_realm_law_flag = vassal_internal_wars_banned }
-				NOT = {
-					vassal_contract_has_flag = vassal_contract_war_override
+				OR = {
+					is_independent_ruler = yes
+					liege = scope:recipient
 				}
 			}
-			always = yes
+			always = no
 		}
+		# Internal wars
 		trigger_else_if = {
-			limit = {
-				is_independent_ruler = no
-				NOT = { liege = scope:recipient }
-				liege = { has_realm_law_flag = vassal_all_wars_banned }
-				NOT = {
-					vassal_contract_has_flag = vassal_contract_war_override
-				}
-			}
-			always = yes
-		}
-		trigger_else_if = {
-			limit = {
-				is_independent_ruler = no
-				liege = { has_government = feudal_government }
+			limit = { liege = scope:recipient.liege }
+			# Liege Feudal
+			trigger_if = {
+				limit = { liege = { has_government = feudal_government }}
+				# Feudal vassals checks vassal contract
 				trigger_if = {
 					limit = { has_government = feudal_government }
-					vassal_contract_has_flag = vassal_contract_war_override
+					NOT = { vassal_contract_has_flag = vassal_contract_war_override }
 				}
+				# Other vassals check title realm law
 				trigger_else = {
-					primary_title = { has_variable = StA_title_allegiance }
-					primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights = 1
+					primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights = 0
 				}
 			}
-			always = no
+			# Liege non-feudal
+			trigger_else = {
+				liege = { has_realm_law_flag = vassal_internal_wars_banned }
+				NOT = { vassal_contract_has_flag = vassal_contract_war_override }
+			}
 		}
+		# Extenal wars
 		trigger_else = {
-			always = no
+			trigger_if = {
+				limit = { liege = { has_government = feudal_government }}
+				# Feudal vassals check vassal contract
+				trigger_if = {
+					limit = { has_government = feudal_government }
+					NOT = { vassal_contract_has_flag = vassal_contract_war_override }
+				}
+				# Other vassals check title realm law
+				trigger_else = {
+					primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights = 0
+				}
+			}
+			trigger_else = {
+				liege = { has_realm_law_flag = vassal_all_wars_banned }
+				NOT = { vassal_contract_has_flag = vassal_contract_war_override }
+			}
 		}
 	}
 }
