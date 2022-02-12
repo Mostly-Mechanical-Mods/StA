@@ -206,3 +206,15 @@ crown_authority = {
 		}
 	}
 }
+
+StA_feudal_crown_authority = {
+	default = StA_feudal_crown_authority_0
+	cumulative = yes
+	flag = realm_law
+	StA_feudal_crown_authority_0 = {
+		can_keep = {
+			has_government = feudal_government
+			any_vassal = { is_ai = no }
+		}
+	}
+}

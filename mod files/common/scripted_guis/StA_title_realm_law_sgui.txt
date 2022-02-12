@@ -62,34 +62,44 @@ StA_change_title_law = {
 			value = {
 				if = {
 					limit = { var:StA_change_law_obligation = flag:StA_realm_tax }
-					add = var:StA_change_law_level
-					subtract = var:StA_change_law_title.var:StA_title_realm_law.var:StA_realm_tax
+					add = scope:level
+					subtract = scope:title.var:StA_title_realm_law.var:StA_realm_tax
 					multiply = 5
 				}
 				else_if = {
 					limit = { var:StA_change_law_obligation = flag:StA_realm_levies }
-					add = var:StA_change_law_level
-					subtract = var:StA_change_law_title.var:StA_title_realm_law.var:StA_realm_levies
+					add = scope:level
+					subtract = scope:title.var:StA_title_realm_law.var:StA_realm_levies
 					multiply = 5
 				}
 				else_if = {
 					limit = { var:StA_change_law_obligation = flag:succession_rights }
-					add = var:StA_change_law_level
-					subtract = var:StA_change_law_title.var:StA_title_realm_law.var:succession_rights
+					add = scope:level
+					subtract = scope:title.var:StA_title_realm_law.var:succession_rights
 					multiply = 20
 				}
 				else_if = {
 					limit = { var:StA_change_law_obligation = flag:war_declaration_rights }
-					add = var:StA_change_law_level
-					subtract = var:StA_change_law_title.var:StA_title_realm_law.var:war_declaration_rights
+					add = scope:level
+					subtract = scope:title.var:StA_title_realm_law.var:war_declaration_rights
 					multiply = -20
 				}
 				else_if = {
 					limit = { var:StA_change_law_obligation = flag:title_revocation_rights }
-					add = var:StA_change_law_level
-					subtract = var:StA_change_law_title.var:StA_title_realm_law.var:title_revocation_rights
+					add = scope:level
+					subtract = scope:title.var:StA_title_realm_law.var:title_revocation_rights
 					multiply = -20
 				}
+			}
+		}
+		set_variable = {
+			name = StA_change_law_cost_check
+			value = {
+				scope:title = {
+					add = StA_title_realm_authority_capacity
+					subtract = StA_title_realm_authority
+				}
+				subtract = var:StA_change_law_cost
 			}
 		}
 		set_variable = StA_confirm_title_window_on
@@ -117,13 +127,7 @@ StA_confirm_title_law = {
 	is_valid = {
 		trigger_if = {
 			limit = { var:StA_change_law_cost > 0 }
-			NOR = {
-				var:StA_change_law_cost.compare_value <= {
-					add = var:StA_change_law_title.StA_title_realm_authority_capacity
-					subtract = var:StA_change_law_title.StA_title_realm_authority
-				}
-				has_variable = StA_title_law_cooldown
-			}
+			var:StA_change_law_cost_check > 0
 		}
 	}
 	effect = {
@@ -190,8 +194,8 @@ StA_title_window_player = {
 
 	effect = {
 		scope:title.holder = {
+			clear_variable_list = title_window_player
 			if = {
-				clear_variable_list = title_window_player
 				limit = { scope:title.holder = ROOT }
 				ordered_held_title = {
 					order_by = tier

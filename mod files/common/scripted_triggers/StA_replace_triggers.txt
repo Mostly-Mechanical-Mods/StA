@@ -1,0 +1,89 @@
+﻿war_declarer_needs_hook_on_liege = {
+	scope:actor = {
+		trigger_if = {
+			limit = {
+				OR = {
+					is_independent_ruler = yes
+					liege = scope:recipient
+				}
+			}
+			always = no
+		}
+		# Internal wars
+		trigger_else_if = {
+			limit = { liege = scope:recipient.liege }
+			# Liege Feudal
+			trigger_if = {
+				limit = { liege = { has_government = feudal_government }}
+				# Feudal vassals checks vassal contract
+				trigger_if = {
+					limit = { has_government = feudal_government }
+					NOT = { vassal_contract_has_flag = vassal_contract_war_override }
+				}
+				# Other vassals check title realm law
+				trigger_else = {
+					primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights = 0
+				}
+			}
+			# Liege non-feudal
+			trigger_else = {
+				liege = { has_realm_law_flag = vassal_internal_wars_banned }
+				NOT = { vassal_contract_has_flag = vassal_contract_war_override }
+			}
+		}
+		# Extenal wars
+		trigger_else = {
+			trigger_if = {
+				limit = { liege = { has_government = feudal_government }}
+				# Feudal vassals check vassal contract
+				trigger_if = {
+					limit = { has_government = feudal_government }
+					NOT = { vassal_contract_has_flag = vassal_contract_war_override }
+				}
+				# Other vassals check title realm law
+				trigger_else = {
+					primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights = 0
+				}
+			}
+			trigger_else = {
+				liege = { has_realm_law_flag = vassal_all_wars_banned }
+				NOT = { vassal_contract_has_flag = vassal_contract_war_override }
+			}
+		}
+	}
+}
+
+petition_liege_title_vassal_trigger = {
+	exists = holder
+	holder = { save_temporary_scope_as = second_temp }
+	scope:second_temp.liege = prev.liege
+	NOR = {
+		scope:second_temp = prev.liege
+		has_variable = petition_title_cooldown
+		scope:second_temp = { is_at_war = yes }
+		prev.liege = {
+			any_targeting_faction = {
+				any_faction_member = { this = scope:second_temp }
+			}
+		}
+	}
+	trigger_if = {
+		limit =  { exists = county }
+		NOT = { county = holder.capital_county }
+	}
+	scope:second_temp = {
+		trigger_if = {
+			limit = { has_government = feudal_government }
+			NOT = { vassal_contract_obligation_level_can_be_decreased = title_revocation_rights }
+		}
+	}
+	OR = {
+		tier > tier_county
+		scope:second_temp = {
+			any_held_title = {
+				count > 1
+				tier = tier_county
+			}
+		}
+	}
+}
