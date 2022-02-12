@@ -590,7 +590,7 @@ types UniUI_StA_title_window {
 					# 		}
 					# 	}
 					# 	expand = {}
-					}
+					# }
 				}
 			}
 		}
