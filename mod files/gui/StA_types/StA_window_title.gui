@@ -153,6 +153,7 @@ types UniUI_StA_title_window {
 								expand = {}
 
 								hbox = {
+									
 									visible = "[Not(Character.GetPrimaryTitle.IsBarony)]"
 									icon = {
 										size = { 25 25 }
@@ -166,15 +167,7 @@ types UniUI_StA_title_window {
 									
 									
 									button = {
-										state = {
-											name = _mouse_enter
-											on_start = "[GetVariableSystem.Set('character_script_value_breakdown','StA_submission')]"
-											on_start = "[GetScriptedGui(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('character',Character.MakeScope).End))]"
-										}
-										datacontext = "[GuiScope.SetRoot(GetPlayer.MakeScope).GetScriptValueBreakdown(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip'))]"
-										tooltipwidget = {
-											widget_value_breakdown_tooltip = {}
-										}
+										tooltip = "[Character.MakeScope.GetScriptValueDesc('StA_submission')]"
 										min_width = 30
 										visible = "[GreaterThanOrEqualTo_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0')]"
 										name = "submission_icon_up"
@@ -183,15 +176,7 @@ types UniUI_StA_title_window {
 										alpha = "[Multiply_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0.01')]"
 									}
 									button = {
-										state = {
-											name = _mouse_enter
-											on_start = "[GetVariableSystem.Set('character_script_value_breakdown','StA_submission')]"
-											on_start = "[GetScriptedGui(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('character',Character.MakeScope).End))]"
-										}
-										datacontext = "[GuiScope.SetRoot(GetPlayer.MakeScope).GetScriptValueBreakdown(Concatenate(GetVariableSystem.Get('character_script_value_breakdown'),'_tooltip'))]"
-										tooltipwidget = {
-											widget_value_breakdown_tooltip = {}
-										}
+										tooltip = "[Character.MakeScope.GetScriptValueDesc('StA_submission')]"
 										min_width = 30
 										visible = "[LessThan_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0')]"
 										name = "submission_icon_down"
