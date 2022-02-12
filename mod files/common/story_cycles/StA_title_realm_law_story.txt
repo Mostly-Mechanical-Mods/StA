@@ -159,10 +159,7 @@
 				value = 0
 			}
 		}
-		set_variable = {
-			name = StA_title_realm_authority
-			value = var:StA_title.StA_title_realm_authority
-		}
+		
 		set_variable = {
 			name = total_strength
 			value = {
@@ -196,6 +193,22 @@
 				divide = var:total_strength
 				max = 100
 				min = -100
+			}
+		}
+		set_variable = {
+			name = StA_title_realm_authority
+			value = var:StA_title.StA_title_realm_authority
+		}
+		set_variable = {
+			name = StA_title_realm_authority_capacity
+			value = var:StA_title.StA_title_realm_authority_capacity
+		}
+		set_variable = {
+			name = StA_title_law_cooldown
+			value = {
+				add = 100
+				subtract = var:StA_title.StA_title_realm_authority_capacity
+				add = var:StA_title.StA_title_realm_authority
 			}
 		}
 	}
