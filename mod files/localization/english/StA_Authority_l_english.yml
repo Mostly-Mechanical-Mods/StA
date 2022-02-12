@@ -87,6 +87,10 @@
   succession_rights_0_cost: "$succession_rights_default$"
   succession_rights_1_cost: "$succession_rights_forced_partition$"
 
+  StA_feudal_crown_authority_0: "Authority in the [GetPlayer.GetPrimaryTitle.MakeScope.Var('StA_title_allegiance').Var('StA_title_realm_law').Var('StA_title').Title.GetBaseName]"
+
+  StA_feudal_crown_authority_0_effects: "Authority Capacity: [GetPlayer.GetPrimaryTitle.MakeScope.Var('StA_title_allegiance').ScriptValue('StA_title_realm_authority_capacity')|0]\nAuthority Used: [GetPlayer.GetPrimaryTitle.MakeScope.Var('StA_title_allegiance').ScriptValue('StA_title_realm_authority')|0]"
+
 
 # SUBMISSION VALUES
 
