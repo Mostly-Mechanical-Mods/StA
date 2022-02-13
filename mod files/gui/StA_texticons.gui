@@ -1,5 +1,5 @@
 texticon = {
-	icon = war_icon
+	icon = war_declaration_rights_icon
 	iconsize = {
 		texture = "gfx/interface/icons/character_interactions/declare_war_interaction.dds"
 		size = { 25 25 }
@@ -9,7 +9,7 @@ texticon = {
 }
 
 texticon = {
-	icon = succession_icon
+	icon = succession_rights_icon
 	iconsize = {
 		texture = "gfx/interface/icons/portraits/heir_small.dds"
 		size = { 20 20 }
@@ -19,9 +19,19 @@ texticon = {
 }
 
 texticon = {
-	icon = title_revocation_icon
+	icon = title_revocation_rights_icon
 	iconsize = {
 		texture = "gfx/interface/icons/revoke_titles_interaction.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = authority_icon
+	iconsize = {
+		texture = "gfx/interface/icons/laws/StA_authority_icon.dds"
 		size = { 25 25 }
 		offset = { 0 6 }
 		fontsize = 16

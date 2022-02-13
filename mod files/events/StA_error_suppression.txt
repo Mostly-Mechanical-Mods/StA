@@ -23,5 +23,23 @@ StA_error_suppression.0001 = {
 		fix_variable_error = { X = succession_rights }
 		fix_variable_error = { X = war_declaration_rights }
 		fix_variable_error = { X = title_revocation_rights }
+		fix_variable_error = { X = succession_rights }
+		fix_variable_error = { X = StA_levels_4 }
+		fix_variable_error = { X = StA_levels_2 }
+		fix_variable_error = { X = StA_levels_1 }
+		fix_variable_error = { X = 0 }
+		fix_variable_error = { X = 1 }
+		fix_variable_error = { X = 2 }
+		fix_variable_error = { X = 3 }
+		fix_variable_error = { X = 4 }
+		fix_variable_error = { X = StA_contract_score }
+		fix_variable_error = { X = law }
+		fix_variable_error = { X = law_ }
+		fix_variable_error = { X = levels }
+		fix_variable_error = { X = StA_title_laws }
+		fix_variable_error = { X = StA_obligation_levels }
+		fix_variable_error = { X = StA_title_tree_obligation }
+		fix_variable_error = { X = tree_obligation }
+		fix_variable_error = { X = boolean_obligation }
 	}
 }

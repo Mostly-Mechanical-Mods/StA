@@ -1,0 +1,40 @@
+﻿StA_savegame_compat_2004 = {
+	scope = character
+	is_valid = {
+		NOT = { exists = global_var:StA_savegame_compat_2004 }
+		NOT = { global_var:StA_is_loaded = 2.004 }
+	}
+	effect = {
+		set_global_variable = {
+			name = StA_savegame_compat_2004
+			value = yes
+		}
+		every_ruler = {
+			every_held_title = {
+				limit = { has_variable = StA_title_realm_law }
+				var:StA_title_realm_law = {
+					if = {
+						limit = { has_variable = StA_realm_tax NOT = { has_variable = feudal_government_taxes_ }}
+						set_variable = { name = feudal_government_taxes_ value = var:StA_realm_tax }
+					}
+					if = {
+						limit = { has_variable = StA_realm_levies NOT = { has_variable = feudal_government_levies_ }}
+						set_variable = { name = feudal_government_levies_ value = var:StA_realm_levies }
+					}
+					if = {
+						limit = { has_variable = title_revocation_rights NOT = { has_variable = title_revocation_rights_ }}
+						set_variable = { name = title_revocation_rights_ value = var:title_revocation_rights }
+					}
+					if = {
+						limit = { has_variable = succession_rights NOT = { has_variable = succession_rights_ }}
+						set_variable = { name = succession_rights_ value = var:succession_rights }
+					}
+					if = {
+						limit = { has_variable = war_declaration_rights NOT = { has_variable = war_declaration_rights_ }}
+						set_variable = { name = war_declaration_rights_ value = var:war_declaration_rights }
+					}
+				}
+			}
+		}
+	}
+}

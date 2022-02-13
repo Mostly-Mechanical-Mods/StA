@@ -212,9 +212,13 @@ StA_feudal_crown_authority = {
 	cumulative = yes
 	flag = realm_law
 	StA_feudal_crown_authority_0 = {
+		flag = can_change_partition_succession_laws
+		flag = can_change_succession_laws
+		flag = title_revocation_allowed
+		flag = vassal_retraction_allowed
+
 		can_keep = {
 			has_government = feudal_government
-			any_vassal = { is_ai = no }
 		}
 	}
 }
