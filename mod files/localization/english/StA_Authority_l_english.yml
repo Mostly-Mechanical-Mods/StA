@@ -176,3 +176,16 @@
 
   game_concept_StA_submission_zeal: "Bowing to a higher power"
   game_concept_StA_submission_zeal_desc: "Not everyone will be humbled by that pilgrimage of yours. Some will highly respect your display of zealousness - but unpious vassals might not respect your bowing down to a higher authority.\n\nUnless the liege themselves are unpious, in which case it goes the other way around."
+
+
+
+# TRIGGER LOCALIZATION
+
+GLOBAL_TITLE_HAS_HIGH_AUTHORITY_CAPACITY: "@authority_icon! Authority Capacity in [TITLE.GetName] is higher than [GetPlayer.MakeScope.ScriptValue('high_authority_capacity')]"
+NOT_GLOBAL_TITLE_HAS_HIGH_AUTHORITY_CAPACITY: "@authority_icon! Authority Capacity in [TITLE.GetName] is lower than [GetPlayer.MakeScope.ScriptValue('high_authority_capacity')"
+
+GLOBAL_TITLE_HAS_MEDIUM_AUTHORITY_CAPACITY: "@authority_icon! Authority Capacity in [TITLE.GetName] is higher than [GetPlayer.MakeScope.ScriptValue('medium_authority_capacity')]"
+NOT_GLOBAL_TITLE_HAS_MEDIUM_AUTHORITY_CAPACITY: "@authority_icon! Authority Capacity in [TITLE.GetName] is lower than [GetPlayer.MakeScope.ScriptValue('medium_authority_capacity')]"
+
+FIRST_HELD_DUCHY_HAS_LOW_AUTHORITY_CAPACITY: "All held Duchies have @authority_icon! [authority_capacity|E] of 25 or higher"
+NOT_FIRST_HELD_DUCHY_HAS_LOW_AUTHORITY_CAPACITY: "At least one held Duchy" has lower than 25 @authority_icon! [authority_capacity|E]

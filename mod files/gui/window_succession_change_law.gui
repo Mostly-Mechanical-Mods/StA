@@ -267,7 +267,6 @@ window = {
 					}
 
 					button_primary = {
-						visible = "[Not(GetPlayer.GetGovernment.IsType('feudal_government'))]"
 						name = "enact_button"
 						enabled = "[SuccessionLawChangeWindow.GetSelectedLaw.CanEnact]"
 						onclick = "[SuccessionLawChangeWindow.GetSelectedLaw.Enact]"
