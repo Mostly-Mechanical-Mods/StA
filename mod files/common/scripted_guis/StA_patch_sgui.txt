@@ -1,0 +1,22 @@
+﻿StA_savegame_compat_2004 = {
+	scope = character
+	is_valid = {
+		NOT = { exists = global_var:StA_savegame_compat_2004 }
+		NOT = { global_var:StA_is_loaded >= 2.004 }
+	}
+	effect = {
+		StA_patch_2004 = yes
+		StA_patch_2010 = yes
+	}
+}
+
+StA_savegame_compat_2004 = {
+	scope = character
+	is_valid = {
+		exists = global_var:StA_savegame_compat_2004
+		NOT = { global_var:StA_is_loaded >= 2.0010 }
+	}
+	effect = {
+		StA_patch_2010 = yes
+	}
+}

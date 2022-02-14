@@ -93,21 +93,21 @@ StA_calculate_average_submission_ruler = {
   save_opinion_value_as = {
 	name = opinion_liege
 	target = liege
-}
-set_variable = {
-	name = opinion_liege
-	value = scope:opinion_liege
-}
-every_vassal = {
-	save_opinion_value_as = {
-		name = opinion_liege
-		target = liege
 	}
 	set_variable = {
 		name = opinion_liege
 		value = scope:opinion_liege
 	}
-}
+	every_vassal = {
+		save_opinion_value_as = {
+			name = opinion_liege
+			target = liege
+		}
+		set_variable = {
+			name = opinion_liege
+			value = scope:opinion_liege
+		}
+	}
   every_held_title = {
     limit = { has_variable = StA_title_realm_law }
     var:StA_title_realm_law = {

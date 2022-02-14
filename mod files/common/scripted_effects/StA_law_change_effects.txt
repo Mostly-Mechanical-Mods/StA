@@ -1,0 +1,54 @@
+﻿StA_update_cooldown_law_change = {
+	if = {
+		limit = { has_variable = StA_title_realm_law }
+		var:StA_title_realm_law = {
+			if = {
+				limit = { has_variable = StA_cooldown_law_change }
+				change_variable = {
+					name = StA_cooldown_law_change
+					add = var:StA_title.StA_cooldown_law_change
+				}
+			}
+			else = {
+				set_variable = {
+					name = StA_cooldown_law_change
+					value = var:StA_title.StA_cooldown_law_change
+				}
+			}
+		}
+	}
+}
+
+StA_reset_cooldown_title_holder_change = {
+	if = {
+		limit = { has_variable = StA_title_realm_law }
+		var:StA_title_realm_law = {
+			set_variable = {
+				name = StA_cooldown_title_holder_change
+				value = PREV.StA_cooldown_title_holder_change
+			}
+		}
+	}
+}
+
+StA_merge_title_authority = {
+	if = {
+		limit = {
+			has_variable = StA_title_realm_law
+			$TITLE$ = { has_variable = StA_title_realm_law }
+		}
+		every_in_list = {
+			variable = StA_pledge_allegiance
+			set_variable = {
+				name = StA_title_allegiance
+				value = $TITLE$
+			}
+			$TITLE$.var:StA_title_realm_law = {
+				add_to_variable_list = {
+					name = StA_pledge_allegiance
+					target = PREV
+				}
+			}
+		}
+	}
+}

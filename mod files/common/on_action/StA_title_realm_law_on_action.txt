@@ -221,6 +221,7 @@ StA_on_title_gain = {
 					}
 				}
 				# transfer story to scope:new_holder
+				StA_reset_cooldown_title_holder_change = yes
 				var:StA_title_realm_law = {
 					make_story_owner = scope:new_holder
 					set_variable = {
@@ -295,6 +296,7 @@ StA_on_title_gain = {
 			}
 			else_if = {
 				limit = {
+					NOT = { has_variable = StA_title_realm_law }
 					any_this_title_or_de_jure_above = {
 						NOT = { THIS = PREV }
 						holder = scope:new_holder
@@ -307,6 +309,30 @@ StA_on_title_gain = {
 						value = scope:title
 					}
 					create_story = StA_title_realm_law
+				}
+			}
+			else_if = {
+				limit = {
+					has_variable = StA_title_realm_law
+					NOR = {
+						has_title_law_flag = succession_gender_laws
+						has_title_law_flag = advanced_succession_law
+						has_title_law_flag = elective_succession_law
+					}
+				}
+				ordered_this_title_or_de_jure_above = {
+					limit = {
+						NOT = { THIS = PREV }
+						holder = scope:new_holder
+						has_variable = StA_title_realm_law
+						StA_title_has_identical_law_as_target = { TITLE = scope:title }
+					}
+					order_by = reverse_tier
+					save_scope_as = merge_title_authority
+				}
+				if = {
+					limit = { exists = scope:merge_title_authority }
+					StA_merge_title_authority = { TITLE = scope:merge_title_authority }
 				}
 			}
 		}

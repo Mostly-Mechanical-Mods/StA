@@ -122,7 +122,7 @@ StA_cancel_title_law_change = {
 	}
 }
 
-StA_confirm_title_law = {
+StA_law_change_cost_alert = {
 	scope = character
 	is_valid = {
 		trigger_if = {
@@ -130,15 +130,39 @@ StA_confirm_title_law = {
 			var:StA_change_law_cost_check > 0
 		}
 	}
+}
+
+StA_law_change_cooldown_alert = {
+	scope = character
+	is_valid = {
+		trigger_if = {
+			limit = { var:StA_change_law_cost > 0 }
+			var:StA_change_law_title.StA_cooldown = 0
+		}
+	}
+}
+
+StA_confirm_title_law = {
+	scope = character
+	is_valid = {
+		trigger_if = {
+			limit = { var:StA_change_law_cost > 0 }
+			var:StA_change_law_cost_check > 0
+			var:StA_change_law_title.StA_cooldown = 0
+		}
+	}
 	effect = {
-		var:StA_change_law_title.var:StA_title_realm_law = {
-			switch = {
-				trigger = ROOT.var:StA_change_law_obligation
-				flag:feudal_government_taxes_ = { set_variable = { name = feudal_government_taxes_ value = ROOT.var:StA_change_law_level }}
-				flag:feudal_government_levies_ = { set_variable = { name = feudal_government_levies_ value = ROOT.var:StA_change_law_level }}
-				flag:succession_rights_ = { set_variable = { name = succession_rights_ value = ROOT.var:StA_change_law_level }}
-				flag:war_declaration_rights_ = { set_variable = { name = war_declaration_rights_ value = ROOT.var:StA_change_law_level }}
-				flag:title_revocation_rights_ = { set_variable = { name = title_revocation_rights_ value = ROOT.var:StA_change_law_level }}
+		var:StA_change_law_title = {
+			StA_update_cooldown_law_change = yes
+			var:StA_title_realm_law = {
+				switch = {
+					trigger = ROOT.var:StA_change_law_obligation
+					flag:feudal_government_taxes_ = { set_variable = { name = feudal_government_taxes_ value = ROOT.var:StA_change_law_level }}
+					flag:feudal_government_levies_ = { set_variable = { name = feudal_government_levies_ value = ROOT.var:StA_change_law_level }}
+					flag:succession_rights_ = { set_variable = { name = succession_rights_ value = ROOT.var:StA_change_law_level }}
+					flag:war_declaration_rights_ = { set_variable = { name = war_declaration_rights_ value = ROOT.var:StA_change_law_level }}
+					flag:title_revocation_rights_ = { set_variable = { name = title_revocation_rights_ value = ROOT.var:StA_change_law_level }}
+				}
 			}
 		}
 		every_vassal = {

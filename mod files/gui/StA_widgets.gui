@@ -18,7 +18,7 @@ window = {
 
 		vbox = {
 			set_parent_size_to_minimum = yes
-
+			layoutpolicy_horizontal = expanding
 			using = Window_Margins
 			spacing = 10
 			
@@ -52,13 +52,29 @@ window = {
 			}
 
 			text_multi = {
-				name = "alert"
+				name = "StA_law_change_cost_alert"
 				autoresize = yes
 				max_width = 430
 				min_width = 430
 				margin = {15 10}
-				visible = "[Not(GetScriptedGui( 'StA_confirm_title_law' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End))]"
+				visible = "[Not(GetScriptedGui( 'StA_law_change_cost_alert' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End))]"
 				text = "STA_LAW_CHANGE_COST_ALERT"
+				using = "Font_Size_Small"
+				default_format = "#warning"
+
+				background = {
+					using = Background_Area
+				}
+			}
+
+			text_multi = {
+				name = "StA_law_change_cooldown_alert"
+				autoresize = yes
+				max_width = 430
+				min_width = 430
+				margin = {15 10}
+				visible = "[Not(GetScriptedGui( 'StA_law_change_cooldown_alert' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End))]"
+				text = "STA_LAW_CHANGE_COOLDOWN_ALERT"
 				using = "Font_Size_Small"
 				default_format = "#warning"
 
@@ -152,14 +168,4 @@ window = {
 	}
 
 	
-}
-
-widget = {
-	size = { 0 0 }
-	name = "StA_savegame_compat_2004"
-	widgetid = "StA_savegame_compat_2004"
-	state = {
-		trigger_on_create = yes
-		on_start = "[GetScriptedGui('StA_savegame_compat_2004').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-	}
 }

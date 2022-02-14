@@ -9,7 +9,7 @@ StA_compat = {
 	effect = {
 		set_global_variable = {
 			name = StA_is_loaded
-			value = 2.004
+			value = 2.0010
 		}
 		add_to_global_variable_list = {
 			name = mods_loaded

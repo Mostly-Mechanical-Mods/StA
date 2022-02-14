@@ -191,13 +191,8 @@
 			name = StA_title_realm_authority_capacity
 			value = var:StA_title.StA_title_realm_authority_capacity
 		}
-		set_variable = {
-			name = StA_title_law_cooldown
-			value = {
-				add = 100
-				subtract = var:StA_title.StA_title_realm_authority_capacity
-				add = var:StA_title.StA_title_realm_authority
-			}
+		var:StA_title = {
+			StA_reset_cooldown_title_holder_change = yes
 		}
 	}
 	on_end = {
@@ -208,26 +203,53 @@
 		months = 1
 
 		trigger = {
-			has_variable = StA_title_law_cooldown
+			has_variable = StA_cooldown_law_change
 		}
 
 		triggered_effect = {
 			trigger = {
-				var:StA_title_law_cooldown > 1
+				var:StA_cooldown_law_change > 1
 			}
 			effect = {
 				change_variable = {
-					name = StA_title_law_cooldown
+					name = StA_cooldown_law_change
 					subtract = 1
 				}
 			}
 		}
 		triggered_effect = {
 			trigger = {
-				var:StA_title_law_cooldown <= 1
+				var:StA_cooldown_law_change <= 1
 			}
 			effect = {
-				remove_variable = StA_title_law_cooldown
+				remove_variable = StA_cooldown_law_change
+			}
+		}
+	}
+	effect_group = {
+		months = 1
+
+		trigger = {
+			has_variable = StA_cooldown_title_holder_change
+		}
+
+		triggered_effect = {
+			trigger = {
+				var:StA_cooldown_title_holder_change > 1
+			}
+			effect = {
+				change_variable = {
+					name = StA_cooldown_title_holder_change
+					subtract = 1
+				}
+			}
+		}
+		triggered_effect = {
+			trigger = {
+				var:StA_cooldown_title_holder_change <= 1
+			}
+			effect = {
+				remove_variable = StA_cooldown_title_holder_change
 			}
 		}
 	}
