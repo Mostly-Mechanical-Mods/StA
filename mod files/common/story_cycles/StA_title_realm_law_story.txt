@@ -163,6 +163,41 @@
 			name = StA_title_realm_authority
 			value = var:StA_title.StA_title_realm_authority
 		}
+		set_variable = {
+			name = total_strength
+			value = {
+				every_in_list = {
+					variable = StA_pledge_allegiance
+					limit = {
+						tier >= tier_county
+						NOT = { holder = scope:title.holder }
+						THIS = holder.primary_title
+					}
+					add = holder.max_military_strength
+				}
+				min = 1
+			}
+		}
+		set_variable = {
+			name = average_submission
+			value = {
+				every_in_list = {
+					variable = StA_pledge_allegiance
+					limit = {
+						tier >= tier_county
+						NOT = { holder = scope:title.holder }
+						THIS = holder.primary_title
+					}
+					add = {
+						add = holder.StA_submission
+						multiply = holder.max_military_strength
+					}
+				}
+				divide = var:total_strength
+				max = 100
+				min = -100
+			}
+		}
 	}
 	on_end = {
 	}
