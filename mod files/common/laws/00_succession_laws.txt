@@ -160,10 +160,18 @@
 	
 	single_heir_succession_law = {
 		can_title_have = {
-			holder = { has_government = feudal_government }
+			trigger_if = {
+				limit = { exists = global_var:StA_is_loaded }
+				holder = { has_government = feudal_government }
+			}
+			trigger_else = { always = no }
 		}
 		should_show_for_title = { # Never show this in the UI, just apply it through script
-			holder = { has_government = feudal_government }
+			trigger_if = {
+				limit = { exists = global_var:StA_is_loaded }
+				holder = { has_government = feudal_government }
+			}
+			trigger_else = { always = no }
 		}
 		can_keep = {
 			can_keep_single_heir_succession_law_trigger = yes
@@ -219,10 +227,18 @@
 	
 	single_heir_succession_law_youngest = {
 		can_title_have = {
-			holder = { has_government = feudal_government }
+			trigger_if = {
+				limit = { exists = global_var:StA_is_loaded }
+				holder = { has_government = feudal_government }
+			}
+			trigger_else = { always = no }
 		}
 		should_show_for_title = { # Never show this in the UI, just apply it through script
-			holder = { has_government = feudal_government }
+			trigger_if = {
+				limit = { exists = global_var:StA_is_loaded }
+				holder = { has_government = feudal_government }
+			}
+			trigger_else = { always = no }
 		}
 		can_keep = {
 			can_keep_single_heir_youngest_succession_law_trigger = yes
@@ -263,10 +279,18 @@
 	
 	single_heir_dynasty_house = {
 		can_title_have = {
-			holder = { has_government = feudal_government }
+			trigger_if = {
+				limit = { exists = global_var:StA_is_loaded }
+				holder = { has_government = feudal_government }
+			}
+			trigger_else = { always = no }
 		}
 		should_show_for_title = { # Never show this in the UI, just apply it through script
-			holder = { has_government = feudal_government }
+			trigger_if = {
+				limit = { exists = global_var:StA_is_loaded }
+				holder = { has_government = feudal_government }
+			}
+			trigger_else = { always = no }
 		}
 		can_keep = {
 			can_keep_single_heir_dynasty_house_trigger = yes
@@ -398,7 +422,11 @@ succession_gender_laws = {
 			can_title_have_law_general_trigger = yes
 		}
 		should_show_for_title = { # Never show this in the UI, just apply it through script
-			holder = { has_government = feudal_government }
+			trigger_if = {
+				limit = { exists = global_var:StA_is_loaded }
+				holder = { has_government = feudal_government }
+			}
+			trigger_else = { always = no }
 		}
 		can_keep = {
 			custom_tooltip = {
@@ -440,7 +468,11 @@ succession_gender_laws = {
 			can_title_have_law_general_trigger = yes
 		}
 		should_show_for_title = { # Never show this in the UI, just apply it through script
-			holder = { has_government = feudal_government }
+			trigger_if = {
+				limit = { exists = global_var:StA_is_loaded }
+				holder = { has_government = feudal_government }
+			}
+			trigger_else = { always = no }
 		}
 		can_keep = {
 			custom_description = {
@@ -496,7 +528,11 @@ succession_gender_laws = {
 			can_title_have_law_general_trigger = yes
 		}
 		should_show_for_title = { # Never show this in the UI, just apply it through script
-			holder = { has_government = feudal_government }
+			trigger_if = {
+				limit = { exists = global_var:StA_is_loaded }
+				holder = { has_government = feudal_government }
+			}
+			trigger_else = { always = no }
 		}
 		can_keep = {
 			custom_tooltip = {
@@ -565,7 +601,11 @@ succession_gender_laws = {
 			can_title_have_law_general_trigger = yes
 		}
 		should_show_for_title = { # Never show this in the UI, just apply it through script
-			holder = { has_government = feudal_government }
+			trigger_if = {
+				limit = { exists = global_var:StA_is_loaded }
+				holder = { has_government = feudal_government }
+			}
+			trigger_else = { always = no }
 		}
 		can_keep = {
 			custom_tooltip = {
@@ -609,7 +649,11 @@ succession_gender_laws = {
 			can_title_have_law_general_trigger = yes
 		}
 		should_show_for_title = { # Never show this in the UI, just apply it through script
-			holder = { has_government = feudal_government }
+			trigger_if = {
+				limit = { exists = global_var:StA_is_loaded }
+				holder = { has_government = feudal_government }
+			}
+			trigger_else = { always = no }
 		}
 		can_keep = {
 			custom_tooltip = {

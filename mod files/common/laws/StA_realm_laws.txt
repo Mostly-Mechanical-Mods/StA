@@ -13,10 +13,13 @@ crown_authority = {
 		}
 
 		can_keep = {
-			NOR = {
-				has_government = tribal_government
-				has_government = feudal_government
+			realm_law_use_crown_authority = yes
+			# [StA]
+			trigger_if = {
+				limit = { exists = global_var:StA_is_loaded }
+				NOT = { has_government = feudal_government }
 			}
+			# [/StA]
 		}
 	}
 	
@@ -31,10 +34,13 @@ crown_authority = {
 		flag = can_change_partition_succession_laws
 
 		can_keep = {
-			NOR = {
-				has_government = tribal_government
-				has_government = feudal_government
+			realm_law_use_crown_authority = yes
+			# [StA]
+			trigger_if = {
+				limit = { exists = global_var:StA_is_loaded }
+				NOT = { has_government = feudal_government }
 			}
+			# [/StA]
 		}
 
 		can_pass = {
@@ -98,10 +104,13 @@ crown_authority = {
 		flag = titles_cannot_leave_realm_on_succession # Hardcoded flag
 		
 		can_keep = {
-			NOR = {
-				has_government = tribal_government
-				has_government = feudal_government
+			realm_law_use_crown_authority = yes
+			# [StA]
+			trigger_if = {
+				limit = { exists = global_var:StA_is_loaded }
+				NOT = { has_government = feudal_government }
 			}
+			# [/StA]
 		}
 
 		can_pass = {
@@ -163,10 +172,13 @@ crown_authority = {
 		flag = can_designate_heirs
 		
 		can_keep = {
-			NOR = {
-				has_government = tribal_government
-				has_government = feudal_government
+			realm_law_use_crown_authority = yes
+			# [StA]
+			trigger_if = {
+				limit = { exists = global_var:StA_is_loaded }
+				NOT = { has_government = feudal_government }
 			}
+			# [/StA]
 		}
 
 		can_pass = {
@@ -218,7 +230,12 @@ StA_feudal_crown_authority = {
 		flag = vassal_retraction_allowed
 
 		can_keep = {
-			has_government = feudal_government
+			# [StA]
+			trigger_if = {
+				limit = { exists = global_var:StA_is_loaded }
+				has_government = feudal_government
+			}
+			# [/StA]
 		}
 	}
 }
