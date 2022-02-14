@@ -182,10 +182,15 @@
 # TRIGGER LOCALIZATION
 
 GLOBAL_TITLE_HAS_HIGH_AUTHORITY_CAPACITY: "@authority_icon! Authority Capacity in [TITLE.GetName] is higher than [GetPlayer.MakeScope.ScriptValue('high_authority_capacity')]"
+
 NOT_GLOBAL_TITLE_HAS_HIGH_AUTHORITY_CAPACITY: "@authority_icon! Authority Capacity in [TITLE.GetName] is lower than [GetPlayer.MakeScope.ScriptValue('high_authority_capacity')"
 
 GLOBAL_TITLE_HAS_MEDIUM_AUTHORITY_CAPACITY: "@authority_icon! Authority Capacity in [TITLE.GetName] is higher than [GetPlayer.MakeScope.ScriptValue('medium_authority_capacity')]"
+
 NOT_GLOBAL_TITLE_HAS_MEDIUM_AUTHORITY_CAPACITY: "@authority_icon! Authority Capacity in [TITLE.GetName] is lower than [GetPlayer.MakeScope.ScriptValue('medium_authority_capacity')]"
 
 FIRST_HELD_DUCHY_HAS_LOW_AUTHORITY_CAPACITY: "All held Duchies have @authority_icon! [authority_capacity|E] of 25 or higher"
-NOT_FIRST_HELD_DUCHY_HAS_LOW_AUTHORITY_CAPACITY: "At least one held Duchy" has lower than 25 @authority_icon! [authority_capacity|E]
+
+NOT_FIRST_HELD_DUCHY_HAS_LOW_AUTHORITY_CAPACITY: "At least one held Duchy" has lower than 25 @authority_icon! [authority_capacity|E]"
+
+StA_title_law_cooldown: "@time_icon! [Title.MakeScope.ScriptValue('StA_title_law_cooldown_year')|0]y [Title.MakeScope.ScriptValue('StA_title_law_cooldown_month')|0]mo"

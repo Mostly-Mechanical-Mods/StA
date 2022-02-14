@@ -456,3 +456,21 @@ high_authority_capacity = {
 medium_authority_capacity = {
 	value = 25
 }
+
+StA_title_law_cooldown_year = {
+	var:StA_title_realm_law = {
+		add = var:StA_title_law_cooldown
+		divide = 12
+		floor = yes
+	}
+}
+
+StA_title_law_cooldown_month = {
+	var:StA_title_realm_law = {
+		add = var:StA_title_law_cooldown
+		subtract = {
+			add = PREV.StA_title_law_cooldown_year
+			multiply = 12
+		}
+	}
+}

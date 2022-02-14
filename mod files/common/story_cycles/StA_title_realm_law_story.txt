@@ -147,10 +147,7 @@
 				value = 1
 			}
 		}
-		set_variable = {
-			name = StA_title_realm_authority
-			value = var:StA_title.StA_title_realm_authority
-		}
+		
 		set_variable = {
 			name = total_strength
 			value = {
@@ -186,10 +183,53 @@
 				min = -100
 			}
 		}
+		set_variable = {
+			name = StA_title_realm_authority
+			value = var:StA_title.StA_title_realm_authority
+		}
+		set_variable = {
+			name = StA_title_realm_authority_capacity
+			value = var:StA_title.StA_title_realm_authority_capacity
+		}
+		set_variable = {
+			name = StA_title_law_cooldown
+			value = {
+				add = 100
+				subtract = var:StA_title.StA_title_realm_authority_capacity
+				add = var:StA_title.StA_title_realm_authority
+			}
+		}
 	}
 	on_end = {
 	}
 	on_owner_death = {
+	}
+	effect_group = {
+		months = 1
+
+		trigger = {
+			has_variable = StA_title_law_cooldown
+		}
+
+		triggered_effect = {
+			trigger = {
+				var:StA_title_law_cooldown > 1
+			}
+			effect = {
+				change_variable = {
+					name = StA_title_law_cooldown
+					subtract = 1
+				}
+			}
+		}
+		triggered_effect = {
+			trigger = {
+				var:StA_title_law_cooldown <= 1
+			}
+			effect = {
+				remove_variable = StA_title_law_cooldown
+			}
+		}
 	}
 }
 
