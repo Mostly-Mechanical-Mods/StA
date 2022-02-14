@@ -82,81 +82,69 @@
 		if = {
 			limit = { story_owner = { has_variable = StA_transfer_realm_laws }}
 			set_variable = {
-				name = StA_realm_tax
-				value = var:StA_transfer_realm_laws.var:StA_realm_tax
+				name = feudal_government_taxes_
+				value = var:StA_transfer_realm_laws.var:feudal_government_taxes_
 			}
 			set_variable = {
-				name = StA_realm_levies
-				value = var:StA_transfer_realm_laws.var:StA_realm_levies
+				name = feudal_government_levies_
+				value = var:StA_transfer_realm_laws.var:feudal_government_levies_
 			}
 			set_variable = {
-				name = succession_rights
-				value = var:StA_transfer_realm_laws.var:succession_rights
+				name = succession_rights_
+				value = var:StA_transfer_realm_laws.var:succession_rights_
 			}
 			set_variable = {
-				name = title_revocation_rights
-				value = var:StA_transfer_realm_laws.var:title_revocation_rights
+				name = title_revocation_rights_
+				value = var:StA_transfer_realm_laws.var:title_revocation_rights_
 			}
 			set_variable = {
-				name = war_declaration_rights
-				value = var:StA_transfer_realm_laws.var:war_declaration_rights
-			}
-			set_variable = {
-				name = council_rights
-				value = var:StA_transfer_realm_laws.var:council_rights
+				name = war_declaration_rights_
+				value = var:StA_transfer_realm_laws.var:war_declaration_rights_
 			}
 		}
 		else_if = {
 			limit = { var:StA_title = { has_variable = StA_title_allegiance }}
 			set_variable = {
-				name = StA_realm_tax
-				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:StA_realm_tax
+				name = feudal_government_taxes_
+				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_taxes_
 			}
 			set_variable = {
-				name = StA_realm_levies
-				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:StA_realm_levies
+				name = feudal_government_levies_
+				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_levies_
 			}
 			set_variable = {
-				name = succession_rights
-				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:succession_rights
+				name = succession_rights_
+				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:succession_rights_
 			}
 			set_variable = {
-				name = title_revocation_rights
-				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:title_revocation_rights
+				name = title_revocation_rights_
+				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:title_revocation_rights_
 			}
 			set_variable = {
-				name = war_declaration_rights
-				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights
-			}
-			set_variable = {
-				name = council_rights
-				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:council_rights
+				name = war_declaration_rights_
+				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights_
 			}
 		}
 		else = {
 			set_variable = {
-				name = StA_realm_tax
+				name = feudal_government_taxes_
 				value = 2
 			}
 			set_variable = {
-				name = StA_realm_levies
+				name = feudal_government_levies_
 				value = 2
 			}
 			set_variable = {
-				name = succession_rights
+				name = succession_rights_
 				value = 0
 			}
 			set_variable = {
-				name = title_revocation_rights
+				name = title_revocation_rights_
 				value = 1
 			}
 			set_variable = {
-				name = war_declaration_rights
+				name = war_declaration_rights_
 				value = 1
-			}
-			set_variable = {
-				name = council_rights
-				value = 0
 			}
 		}
 		
@@ -245,7 +233,26 @@
 	}
 }
 
+StA_title_law = {
+	on_setup = {
+		debug_log = "StA_title_law"
+	}
+	on_end = {
+	}
+	on_owner_death = {
+	}
+}
+
 StA_obligation_levels = {
+	on_setup = {
+	}
+	on_end = {
+	}
+	on_owner_death = {
+	}
+}
+
+StA_succession_laws = {
 	on_setup = {
 	}
 	on_end = {

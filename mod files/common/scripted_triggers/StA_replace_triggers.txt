@@ -22,7 +22,7 @@
 				}
 				# Other vassals check title realm law
 				trigger_else = {
-					primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights = 0
+					primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights_ = 0
 				}
 			}
 			# Liege non-feudal
@@ -42,7 +42,7 @@
 				}
 				# Other vassals check title realm law
 				trigger_else = {
-					primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights = 0
+					primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights_ = 0
 				}
 			}
 			trigger_else = {
