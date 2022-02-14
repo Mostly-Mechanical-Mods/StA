@@ -33,24 +33,24 @@ StA_contract_score = {
 
 StA_title_realm_law_score = {
 	add = {
-		add = var:feudal_government_taxes
+		add = var:feudal_government_taxes_
 		multiply = 5
 	}
 	add = {
-		add = var:feudal_government_levies
+		add = var:feudal_government_levies_
 		multiply = 5
 	}
 	add = {
-		add = var:succession_rights
+		add = var:succession_rights_
 		subtract = 1
 		multiply = -20
 	}
 	add = {
-		add = var:war_declaration_rights
+		add = var:war_declaration_rights_
 		multiply = 20
 	}
 	add = {
-		add = var:title_revocation_rights
+		add = var:title_revocation_rights_
 		multiply = 20
 	}
 	min = 0
@@ -118,10 +118,10 @@ StA_title_realm_authority = {
 		limit = { has_variable = StA_title_realm_law }
 		add = {
 			value = {
-				add = var:StA_title_realm_law.var:StA_realm_tax
+				add = var:StA_title_realm_law.var:feudal_government_taxes_
 				multiply = 5
 			}
-			desc = "StA_realm_tax"
+			desc = "feudal_government_taxes_icon_first"
 			format = "BASE_VALUE_FORMAT"
 		}
 	}
@@ -129,10 +129,10 @@ StA_title_realm_authority = {
 		limit = { has_variable = StA_title_realm_law }
 		add = {
 			value = {
-				add = var:StA_title_realm_law.var:StA_realm_levies
+				add = var:StA_title_realm_law.var:feudal_government_levies_
 				multiply = 5
 			}
-			desc = "StA_realm_levies"
+			desc = "feudal_government_levies_icon_first"
 			format = "BASE_VALUE_FORMAT"
 		}
 	}
@@ -140,10 +140,10 @@ StA_title_realm_authority = {
 		limit = { has_variable = StA_title_realm_law }
 		add = {
 			value = {
-				subtract = var:StA_title_realm_law.var:succession_rights
+				subtract = var:StA_title_realm_law.var:succession_rights_
 				multiply = -20
 			}
-			desc = "succession_rights_1"
+			desc = "succession_rights_icon_first"
 			format = "BASE_VALUE_FORMAT"
 		}
 	}
@@ -151,11 +151,11 @@ StA_title_realm_authority = {
 		limit = { has_variable = StA_title_realm_law }
 		add = {
 			value = {
-				add = var:StA_title_realm_law.var:war_declaration_rights
+				add = var:StA_title_realm_law.var:war_declaration_rights_
 				subtract = 1
 				multiply = -20
 			}
-			desc = "war_declaration_rights_1"
+			desc = "war_declaration_rights_icon_first"
 			format = "BASE_VALUE_FORMAT"
 		}
 	}
@@ -163,11 +163,154 @@ StA_title_realm_authority = {
 		limit = { has_variable = StA_title_realm_law }
 		add = {
 			value = {
-				add = var:StA_title_realm_law.var:title_revocation_rights
+				add = var:StA_title_realm_law.var:title_revocation_rights_
 				subtract = 1
 				multiply = -20
 			}
-			desc = "title_revocation_rights_1"
+			desc = "title_revocation_rights_icon_first"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			has_variable = StA_title_realm_law
+			has_title_law = single_heir_succession_law
+		}
+		add = {
+			value = single_heir_succession_law_cost
+			desc = "single_heir_succession_law"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			has_variable = StA_title_realm_law
+			has_title_law = single_heir_succession_law_youngest
+		}
+		add = {
+			value = single_heir_succession_law_youngest_cost
+			desc = "single_heir_succession_law_youngest"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			has_variable = StA_title_realm_law
+			has_title_law = single_heir_dynasty_house
+		}
+		add = {
+			value =s ingle_heir_dynasty_house_cost
+			desc = "single_heir_dynasty_house"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			has_variable = StA_title_realm_law
+			has_title_law = male_only_law
+		}
+		add = {
+			value = male_only_law_cost
+			desc = "male_only_law"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			has_variable = StA_title_realm_law
+			has_title_law = male_preference_law
+		}
+		add = {
+			value = male_preference_law_cost
+			desc = "male_preference_law"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			has_variable = StA_title_realm_law
+			has_title_law = equal_law
+		}
+		add = {
+			value = equal_law_cost
+			desc = "equal_law"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			has_variable = StA_title_realm_law
+			has_title_law = female_preference_law
+		}
+		add = {
+			value = female_preference_law_cost
+			desc = "female_preference_law"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			has_variable = StA_title_realm_law
+			has_title_law = female_only_law
+		}
+		add = {
+			value = female_only_law_cost
+			desc = "female_only_law"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			has_variable = StA_title_realm_law
+			has_title_law = feudal_elective_succession_law
+		}
+		add = {
+			value = feudal_elective_succession_law_cost
+			desc = "feudal_elective_succession_law"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			has_variable = StA_title_realm_law
+			has_title_law = princely_elective_succession_law
+		}
+		add = {
+			value = princely_elective_succession_law
+			desc = "princely_elective_succession_law_cost"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			has_variable = StA_title_realm_law
+			has_title_law = gaelic_elective_succession_law
+		}
+		add = {
+			value = gaelic_elective_succession_law
+			desc = "gaelic_elective_succession_law_cost"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			has_variable = StA_title_realm_law
+			has_title_law = saxon_elective_succession_law
+		}
+		add = {
+			value = saxon_elective_succession_law
+			desc = "saxon_elective_succession_law_cost"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
+		limit = {
+			has_variable = StA_title_realm_law
+			has_title_law = scandinavian_elective_succession_law
+		}
+		add = {
+			value = scandinavian_elective_succession_law
+			desc = "scandinavian_elective_succession_law_cost"
 			format = "BASE_VALUE_FORMAT"
 		}
 	}
@@ -211,42 +354,105 @@ succession_rights_1_cost = {
 	value = 20	
 }
 
-StA_realm_tax_0_cost = {
+feudal_government_taxes_0_cost = {
 	value = 0
 }
 
-StA_realm_tax_1_cost = {
+feudal_government_taxes_1_cost = {
 	value = 5
 }
 
-StA_realm_tax_2_cost = {
+feudal_government_taxes_2_cost = {
 	value = 10
 }
 
-StA_realm_tax_3_cost = {
+feudal_government_taxes_3_cost = {
 	value = 15
 }
 
-StA_realm_tax_4_cost = {
+feudal_government_taxes_4_cost = {
 	value = 20
 }
 
-StA_realm_levies_0_cost = {
+feudal_government_levies_0_cost = {
 	value = 0
 }
 
-StA_realm_levies_1_cost = {
+feudal_government_levies_1_cost = {
 	value = 5
 }
 
-StA_realm_levies_2_cost = {
+feudal_government_levies_2_cost = {
 	value = 10
 }
 
-StA_realm_levies_3_cost = {
+feudal_government_levies_3_cost = {
 	value = 15
 }
 
-StA_realm_levies_4_cost = {
+feudal_government_levies_4_cost = {
 	value = 20
+}
+
+
+single_heir_succession_law_cost = {
+	value = 50
+}
+
+single_heir_succession_law_youngest_cost = {
+	value = 50
+}
+
+single_heir_dynasty_house_cost = {
+	value = 50
+}
+
+male_only_law_cost = {
+	value = 20
+}
+
+male_preference_law_cost = {
+	value = 20
+}
+
+equal_law_cost = {
+	value = 20
+}
+
+female_preference_law_cost = {
+	value = 20
+}
+
+female_only_law_cost = {
+	value = 20
+}
+
+feudal_elective_succession_law_cost = {
+	value = 30
+}
+
+princely_elective_succession_law_cost = {
+	value = 30
+}
+
+gaelic_elective_succession_law_cost = {
+	value = 30
+}
+
+saxon_elective_succession_law_cost = {
+	value = 30
+}
+
+scandinavian_elective_succession_law_cost = {
+	value = 30
+}
+
+
+
+high_authority_capacity = {
+	value = 50
+}
+
+medium_authority_capacity = {
+	value = 25
 }

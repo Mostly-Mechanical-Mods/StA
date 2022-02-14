@@ -12,64 +12,68 @@ StA_title_realm_law_init = {
 			create_story = { type = StA_obligation_levels save_scope_as = two }
 			create_story = { type = StA_obligation_levels save_scope_as = three }
 			create_story = { type = StA_obligation_levels save_scope_as = four }
-			scope:zero = {
-				set_variable = { name = flag value = flag:0 }
-				set_variable = { name = value value = 0 }
-			}
-			scope:one = {
-				set_variable = { name = flag value = flag:1 }
-				set_variable = { name = value value = 1 }
-			}
-			scope:two = {
-				set_variable = { name = flag value = flag:2 }
-				set_variable = { name = value value = 2 }
-			}
-			scope:three = {
-				set_variable = { name = flag value = flag:3 }
-				set_variable = { name = value value = 3 }
-			}
-			scope:four = {
-				set_variable = { name = flag value = flag:4 }
-				set_variable = { name = value value = 4 }
-			}
-			add_to_global_variable_list = {
-				name = StA_obligation_levels
-				target = scope:zero
-			}
-			add_to_global_variable_list = {
-				name = StA_obligation_levels
-				target = scope:one
-			}
-			add_to_global_variable_list = {
-				name = StA_obligation_levels
-				target = scope:two
-			}
-			add_to_global_variable_list = {
-				name = StA_obligation_levels
-				target = scope:three
-			}
-			add_to_global_variable_list = {
-				name = StA_obligation_levels
-				target = scope:four
-			}
+			scope:zero = {	set_variable = { name = flag value = flag:0 } set_variable = { name = value value = 0 }}
+			scope:one = {	set_variable = { name = flag value = flag:1 } set_variable = { name = value value = 1 }}
+			scope:two = {	set_variable = { name = flag value = flag:2 } set_variable = { name = value value = 2 }}
+			scope:three = {	set_variable = { name = flag value = flag:3 } set_variable = { name = value value = 3 }}
+			scope:four = {	set_variable = { name = flag value = flag:4 } set_variable = { name = value value = 4 }}
+			add_to_global_variable_list = { name = StA_levels_4 target = scope:zero }
+			add_to_global_variable_list = { name = StA_levels_4 target = scope:one }
+			add_to_global_variable_list = { name = StA_levels_4 target = scope:two }
+			add_to_global_variable_list = { name = StA_levels_4 target = scope:three }
+			add_to_global_variable_list = { name = StA_levels_4 target = scope:four }
+			add_to_global_variable_list = { name = StA_levels_2 target = scope:zero }
+			add_to_global_variable_list = { name = StA_levels_2 target = scope:one }
+			add_to_global_variable_list = { name = StA_levels_2 target = scope:two }
+			add_to_global_variable_list = { name = StA_levels_1 target = scope:zero }
+			add_to_global_variable_list = { name = StA_levels_1 target = scope:one }
+			StA_setup_title_law_story = { LAW = feudal_government_taxes		LEVELS = 4 }
+			StA_setup_title_law_story = { LAW = feudal_government_levies	LEVELS = 4 }
+			StA_setup_title_law_story = { LAW = war_declaration_rights		LEVELS = 1 }
+			StA_setup_title_law_story = { LAW = title_revocation_rights		LEVELS = 1 }
+			StA_setup_title_law_story = { LAW = succession_rights			LEVELS = 1 }
+			StA_setup_title_succession_law_story = { LAW = male_only_law }
+			StA_setup_title_succession_law_story = { LAW = male_preference_law }
+			StA_setup_title_succession_law_story = { LAW = equal_law }
+			StA_setup_title_succession_law_story = { LAW = female_preference_law }
+			StA_setup_title_succession_law_story = { LAW = female_only_law }
+			StA_setup_title_succession_law_story = { LAW = feudal_elective_succession_law }
+			StA_setup_title_succession_law_story = { LAW = princely_elective_succession_law }
+			StA_setup_title_succession_law_story = { LAW = gaelic_elective_succession_law }
+			StA_setup_title_succession_law_story = { LAW = saxon_elective_succession_law }
+			StA_setup_title_succession_law_story = { LAW = scandinavian_elective_succession_law }
+
+			# create_story = {
+			# 	type = StA_title_law
+			# 	save_scope_as = feudal_government_taxes
+			# }
+			# scope:feudal_government_taxes = {
+			# 	set_variable = {
+			# 		name = law
+			# 		value = flag:feudal_government_taxes
+			# 	}
+			# 	set_variable = {
+			# 		name = levels
+			# 		value = 5
+			# 	}
+			# }
+			# add_to_global_variable_list = {
+			# 	name = StA_title_laws
+			# 	target = scope:feudal_government_taxes
+			# }
 		}
 
-		set_global_variable = {
-			name = StA_realm_tax
-			value = flag:StA_realm_tax
-		}
-		set_global_variable = {
-			name = StA_realm_levies
-			value = flag:StA_realm_levies
-		}
-		add_to_global_variable_list = {
-			name = StA_title_tree_obligation
-			target = global_var:StA_realm_tax
-		}
-		add_to_global_variable_list = {
-			name = StA_title_tree_obligation
-			target = global_var:StA_realm_levies
-		}
+		# set_global_variable = { name = feudal_government_taxes value = flag:feudal_government_taxes }
+		# set_global_variable = { name = feudal_government_levies value = flag:feudal_government_levies }
+		# set_global_variable = { name = war_declaration_rights value = flag:war_declaration_rights }
+		# set_global_variable = { name = title_revocation_rights value = flag:title_revocation_rights }
+		# set_global_variable = { name = succession_rights value = flag:succession_rights }
+
+		# add_to_global_variable_list = { name = StA_title_laws target = global_var:feudal_government_taxes_ }
+		# add_to_global_variable_list = { name = StA_title_laws target = global_var:feudal_government_levies_ }
+		# add_to_global_variable_list = { name = StA_title_laws target = global_var:war_declaration_rights_ }
+		# add_to_global_variable_list = { name = StA_title_laws target = global_var:title_revocation_rights_ }
+		# add_to_global_variable_list = { name = StA_title_laws target = global_var:succession_rights_ }
 
 		set_global_variable = {
 			name = 0
@@ -91,34 +95,34 @@ StA_title_realm_law_init = {
 			name = 4
 			value = 4
 		}
-		add_to_global_variable_list = {
-			name = tree_obligation
-			target = global_var:0
-		}
-		add_to_global_variable_list = {
-			name = tree_obligation
-			target = global_var:1
-		}
-		add_to_global_variable_list = {
-			name = tree_obligation
-			target = global_var:2
-		}
-		add_to_global_variable_list = {
-			name = tree_obligation
-			target = global_var:3
-		}
-		add_to_global_variable_list = {
-			name = tree_obligation
-			target = global_var:4
-		}
-		add_to_global_variable_list = {
-			name = boolean_obligation
-			target = global_var:0
-		}
-		add_to_global_variable_list = {
-			name = boolean_obligation
-			target = global_var:1
-		}
+		# add_to_global_variable_list = {
+		# 	name = tree_obligation
+		# 	target = global_var:0
+		# }
+		# add_to_global_variable_list = {
+		# 	name = tree_obligation
+		# 	target = global_var:1
+		# }
+		# add_to_global_variable_list = {
+		# 	name = tree_obligation
+		# 	target = global_var:2
+		# }
+		# add_to_global_variable_list = {
+		# 	name = tree_obligation
+		# 	target = global_var:3
+		# }
+		# add_to_global_variable_list = {
+		# 	name = tree_obligation
+		# 	target = global_var:4
+		# }
+		# add_to_global_variable_list = {
+		# 	name = boolean_obligation
+		# 	target = global_var:0
+		# }
+		# add_to_global_variable_list = {
+		# 	name = boolean_obligation
+		# 	target = global_var:1
+		# }
 
 		every_ruler = {
 			limit = { is_landless_ruler = no }
@@ -156,11 +160,11 @@ StA_title_realm_law_init = {
 				primary_title = { has_variable = StA_title_allegiance }
 				primary_title.var:StA_title_allegiance = { has_variable = StA_title_realm_law }
 			}
-			vassal_contract_set_obligation_level = { type = feudal_government_taxes level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:StA_realm_tax }
-			vassal_contract_set_obligation_level = { type = feudal_government_levies level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:StA_realm_levies }
-			vassal_contract_set_obligation_level = { type = title_revocation_rights level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:title_revocation_rights }
-			vassal_contract_set_obligation_level = { type = war_declaration_rights level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights }
-			vassal_contract_set_obligation_level = { type = succession_rights level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:succession_rights }
+			vassal_contract_set_obligation_level = { type = feudal_government_taxes level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_taxes_ }
+			vassal_contract_set_obligation_level = { type = feudal_government_levies level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_levies_ }
+			vassal_contract_set_obligation_level = { type = title_revocation_rights level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:title_revocation_rights_ }
+			vassal_contract_set_obligation_level = { type = war_declaration_rights level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights_ }
+			vassal_contract_set_obligation_level = { type = succession_rights level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:succession_rights_ }
 		}
 	}
 }

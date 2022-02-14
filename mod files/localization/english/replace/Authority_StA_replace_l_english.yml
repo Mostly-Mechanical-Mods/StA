@@ -1,1 +1,92 @@
 ﻿l_english:
+
+# Primogeniture
+  single_heir_succession_law_effects: "[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('single_heir_succession_law_effects_feudal'),Localize('single_heir_succession_law_effects_other'))]"
+
+  single_heir_succession_law_effects_feudal:1 "$single_heir_succession_law_effects_other$\n#V This will cost you [GetPlayer.MakeScope.ScriptValue('single_heir_succession_law_cost')] @authority_icon! Authority #!"
+
+  single_heir_succession_law_effects_other:1 "\n#V Under $single_heir_succession_law$ [succession], your oldest child inherits all your [titles].#!\n\n#weak Upon succession, all of the late Ruler's [titles|e] will be given to the [player_heir|E], which is their oldest [eligible_child|E]. Younger children will receive nothing.\n#!"
+
+# Ultimogeniture
+  single_heir_succession_law_youngest_effects: "[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('single_heir_succession_law_youngest_effects_feudal'),Localize('single_heir_succession_law_youngest_effects_other'))]"
+
+  single_heir_succession_law_youngest_effects_feudal: "$single_heir_succession_law_youngest_effects_other$\n#V This will cost you [GetPlayer.MakeScope.ScriptValue('single_heir_succession_law_cost')] @authority_icon! Authority #!"
+
+  single_heir_succession_law_youngest_effects_other:1 "\n#V Under $single_heir_succession_law_youngest$ [succession], your youngest child inherits all your [titles].#!\n\n#weak Upon succession, all of the late Ruler's [titles|e] will be given to the [player_heir|E], which is their youngest [eligible_child|E]. Older children will receive nothing.\n#!"
+
+# Tanistry
+  single_heir_dynasty_house_effects: "[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('single_heir_dynasty_house_effects_feudal'),Localize('single_heir_dynasty_house_effects_other'))]"
+
+  single_heir_dynasty_house_effects_feudal:1 "$single_heir_dynasty_house_effects_other$\n#V This will cost you [GetPlayer.MakeScope.ScriptValue('single_heir_dynasty_house_cost')] @authority_icon! Authority #!"
+
+  single_heir_dynasty_house_effects_other:1 "\n#V Under $single_heir_dynasty_house$ [succession], the oldest member of your [house] will inherit all your titles.#!\n\n#weak Upon succession, all of the late Ruler's [titles|e] will be given to the oldest eligible member of their [house|E]. Your children will not be given anything, unless one of them happens to be the oldest House member.\n#!"
+
+# Male only
+  male_only_law_effects: "$male_only_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('male_only_law_cost'),'')]"
+
+ male_only_law_effects_other:0 "$EFFECT_LIST_BULLET$Women are disqualified from inheritance\n$EFFECT_LIST_BULLET$Women cannot inherit [claims|E]\n$EFFECT_LIST_BULLET$Male [rulers|E] can have [concubines|E] or multiple [spouses|E] if their [faith|E] has the [GetFaithDoctrine('doctrine_concubines').GetBaseName] or [GetFaithDoctrine('doctrine_polygamy').GetBaseName] [doctrine|E]"
+
+  male_only_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('male_only_law_cost')] @authority_icon! Authority #!"
+
+# Male Preference
+  male_preference_law_effects: "$male_preference_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('male_preference_law_cost'),'')]"
+
+  male_preference_law_effects_other:1 "$EFFECT_LIST_BULLET$Men take precedence over women in succession\n$EFFECT_LIST_BULLET$Male [rulers|E] can have [concubines|E] or multiple [spouses|E] if their [faith|E] has the [GetFaithDoctrine('doctrine_concubines').GetBaseName] or [GetFaithDoctrine('doctrine_polygamy').GetBaseName] [doctrine|E]"
+
+  male_preference_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('male_preference_law_cost')] @authority_icon! Authority #!"
+
+# Equal
+  equal_law_effects: "$equal_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('equal_law_cost'),'')]"
+
+  equal_law_effects_other:0 "$EFFECT_LIST_BULLET$Men and women are equal in succession\n$EFFECT_LIST_BULLET$All [rulers|E] can have [concubines|E] or multiple [spouses|E] if their [faith|E] has the [GetFaithDoctrine('doctrine_concubines').GetBaseName] or [GetFaithDoctrine('doctrine_polygamy').GetBaseName] [doctrine|E]"
+
+  equal_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('equal_law_cost')] @authority_icon! Authority #!"
+
+# Female Preference
+  female_preference_law_effects: "$female_preference_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('female_preference_law_cost'),'')]"
+
+  female_preference_law_effects_other:0 "$EFFECT_LIST_BULLET$Women take precedence over men in succession\n$EFFECT_LIST_BULLET$Female [rulers|E] can have [concubines|E] or multiple [spouses|E] if their [faith|E] has the [GetFaithDoctrine('doctrine_concubines').GetBaseName] or [GetFaithDoctrine('doctrine_polygamy').GetBaseName] [doctrine|E]"
+
+  female_preference_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('female_preference_law_cost')] @authority_icon! Authority #!"
+
+# Female Only
+  female_only_law_effects: "$female_only_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('female_only_law_cost'),'')]"
+
+  female_only_law_effects_other:0 "$EFFECT_LIST_BULLET$Men are disqualified from inheritance\n$EFFECT_LIST_BULLET$Men cannot inherit [claims|E]\n$EFFECT_LIST_BULLET$Female [rulers|E] can have [concubines|E] or multiple [spouses|E] if their [faith|E] has the [GetFaithDoctrine('doctrine_concubines').GetBaseName] or [GetFaithDoctrine('doctrine_polygamy').GetBaseName] [doctrine|E]"
+
+  female_only_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('female_only_law_cost')] @authority_icon! Authority #!"
+
+# Feudal Elective
+  feudal_elective_succession_law_effects: "$feudal_elective_succession_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('feudal_elective_succession_law_cost'),'')]"
+
+  feudal_elective_succession_law_effects_other:0 "The [ruler|E] and all direct [de_jure|E] [vassals|E] of one or two [ranks|E] below the [title|E] can nominate a [title_heir|E] from among themselves and the [close_family|E] of the ruler."
+
+  feudal_elective_succession_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('feudal_elective_succession_law_cost')] @authority_icon! Authority #!"
+
+# Princely Elective
+  princely_elective_succession_law_effects: "$princely_elective_succession_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('princely_elective_succession_law_cost'),'')]"
+
+  princely_elective_succession_law_effects_other:0 "The Emperor and the seven Prince–Electors can nominate a [title_heir|E] from among themselves, any [legitimate|E] children and siblings of the [ruler|E], as well as any other major [de_jure|E] [vassal|E] of the Empire. If an historical elector [title|E] is held by infidels or does not exist, another [de_jure|E] vassal will take its place. This [succession_law|E] places a significant importance on [faith|E] and [piety|E].\n\nThe Electoral titles for this realm are the Counties of Cologne, Mainz and Trier, and the Duchies of Bohemia, East Franconia, Ostfalen and Ostmark."
+
+  princely_elective_succession_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('princely_elective_succession_law_cost')] @authority_icon! Authority #!"
+
+# Gaelic Elective
+  gaelic_elective_succession_law_effects: "$gaelic_elective_succession_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('gaelic_elective_succession_law_cost'),'')]"
+
+  gaelic_elective_succession_law_effects_other:0 "The [ruler|E] and all [vassals|E] above the [rank|E] of [baron|E] and one or two ranks below the [title|E] can nominate a [title_heir|E] — the Tanist — from among the members of the ruler's [dynasty|E]. Vassals will tend to favor older, distant relatives over [close_family|E]."
+
+  gaelic_elective_succession_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('gaelic_elective_succession_law_cost')] @authority_icon! Authority #!"
+
+# Saxon Elective
+  saxon_elective_succession_law_effects: "$saxon_elective_succession_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('saxon_elective_succession_law_cost'),'')]"
+
+  saxon_elective_succession_law_effects_other:0 "The [ruler|E] and all direct, adult [de_jure|E] vassals of one or two [ranks|E] below the [title|E] can nominate a [title_heir|E] from the most [powerful_vassal|E] amongst them, the ruler's [legitimate|E] children, and any other valid [claimant|E]."
+
+  saxon_elective_succession_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('saxon_elective_succession_law_cost')] @authority_icon! Authority #!"
+
+# Scandinavian Elective
+  scandinavian_elective_succession_law_effects: "$scandinavian_elective_succession_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('scandinavian_elective_succession_law_cost'),'')]"
+
+  scandinavian_elective_succession_law_effects_other:0 "The [ruler|E] and all [de_jure|E] [vassals|E] (except Barons) can nominate a [title_heir|E] amongst the ruler's [extended_family|E] and any available [claimants|E]. [voting_power|E] in this [succession_law|E] is influenced by the [elector|E]'s total [domain|E] [county_development|E] and [capital|E] [county_opinion|E]."
+
+  scandinavian_elective_succession_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('scandinavian_elective_succession_law_cost')] @authority_icon! Authority #!"
