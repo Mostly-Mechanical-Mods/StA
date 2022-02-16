@@ -10,16 +10,50 @@
 		}
 		story_owner = { save_scope_as = StA_ruler }
 		story_owner = { remove_variable = StA_title }
-
 		var:StA_title = {
+			debug_log = "START STORY"
+			debug_log_scopes = no
+			save_scope_as = StA_title
 			set_variable = {
 				name = StA_title_realm_law
 				value = scope:story
 			}
-			# For primary titles, update ruler allegiance
+			# For inherited titles, inherit laws
+			if = {
+				limit = { has_variable = inherited_title }
+				debug_log = "STA INHERIT TITLE REALM LAW"
+				StA_inherit_title_laws = yes
+			}
 			if = {
 				limit = { THIS = scope:story.var:StA_ruler.primary_title }
+				# For primary titles, transfer laws from previous primary_title
+				if = {
+					limit = {
+						scope:StA_ruler = {
+							has_variable = primary_title
+							NOT = { var:primary_title = scope:StA_title }
+							NOT = { scope:StA_title = { has_variable = inherited_title }}
+						}
+					}
+					debug_log = "STA TRANSFERT REALM LAWS FROM TO"
+					scope:StA_ruler.var:primary_title = { debug_log_scopes = no }
+					debug_log_scopes = no
+					StA_transfer_title_laws = { TRANSFER_FROM = scope:StA_ruler.var:primary_title.var:StA_title_realm_law TRANSFER_TO = scope:story }
+					if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} debug_log = "NO TAX 1" }
+					else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 1" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
+				}
+				scope:StA_ruler = {
+					set_variable = {
+						name = primary_title
+						value = primary_title
+					}
+				}
+				if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 2" }
+				else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 2" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
+				# Update allegiances
 				StA_remove_allegiance_from_non_primary_titles = yes
+				if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 3" }
+				else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 3" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
 				# Ruler had allegiance
 				if = {
 					limit = { has_variable = StA_title_allegiance }
@@ -28,12 +62,18 @@
 						limit = { scope:story.var:StA_ruler = { is_independent_ruler = yes }}
 						# break previous allegiance
 						StA_remove_current_title_allegiance = yes
+						if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 4" }
+						else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 4" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
 					}
 					# ruler is a vassal and his allegiance has changed
 					else_if = {
 						limit = { NOT = { var:StA_title_allegiance.holder = scope:story.var:StA_ruler.liege }}
 						StA_remove_current_title_allegiance = yes
+						if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no }  debug_log = "NO TAX 5" }
+						else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 5" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
 						StA_set_title_allegiance_to_liege = { LIEGE = scope:story.var:StA_ruler }
+						if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 6" }
+						else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 6" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
 					}
 				}
 				# check vassals allegiance
@@ -47,12 +87,20 @@
 									NOT = { var:StA_title_allegiance.holder = scope:story.var:StA_ruler }
 								}
 								StA_remove_current_title_allegiance = yes
+								if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 7" }
+								else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 7" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
 								StA_set_title_allegiance_to_liege = { LIEGE = scope:story.var:StA_ruler }
+								if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 8" }
+								else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 8" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
 							}
 							else_if = {
 								limit = { NOT = { has_variable = StA_title_allegiance }}
 								StA_remove_allegiance_from_non_primary_titles = yes
+								if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 9" }
+								else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 9" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
 								StA_set_title_allegiance_to_liege = { LIEGE = scope:story.var:StA_ruler }
+								if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no }  debug_log = "NO TAX 10" }
+								else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 10" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
 							}
 						}
 					}
@@ -72,81 +120,24 @@
 						}
 						primary_title = {
 							StA_remove_current_title_allegiance = yes
+							if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 11" }
+							else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 11" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
 							StA_set_title_allegiance_to_liege = { LIEGE = scope:story.var:StA_ruler }
+							if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 12" }
+							else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 12" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
 						}
 					}
 				}
 			}
+			remove_variable = inherited_title
 		}
-
-		if = {
-			limit = { story_owner = { has_variable = StA_transfer_realm_laws }}
-			set_variable = {
-				name = feudal_government_taxes_
-				value = var:StA_transfer_realm_laws.var:feudal_government_taxes_
-			}
-			set_variable = {
-				name = feudal_government_levies_
-				value = var:StA_transfer_realm_laws.var:feudal_government_levies_
-			}
-			set_variable = {
-				name = succession_rights_
-				value = var:StA_transfer_realm_laws.var:succession_rights_
-			}
-			set_variable = {
-				name = title_revocation_rights_
-				value = var:StA_transfer_realm_laws.var:title_revocation_rights_
-			}
-			set_variable = {
-				name = war_declaration_rights_
-				value = var:StA_transfer_realm_laws.var:war_declaration_rights_
-			}
-		}
-		else_if = {
-			limit = { var:StA_title = { has_variable = StA_title_allegiance }}
-			set_variable = {
-				name = feudal_government_taxes_
-				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_taxes_
-			}
-			set_variable = {
-				name = feudal_government_levies_
-				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_levies_
-			}
-			set_variable = {
-				name = succession_rights_
-				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:succession_rights_
-			}
-			set_variable = {
-				name = title_revocation_rights_
-				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:title_revocation_rights_
-			}
-			set_variable = {
-				name = war_declaration_rights_
-				value = var:StA_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights_
-			}
-		}
-		else = {
-			set_variable = {
-				name = feudal_government_taxes_
-				value = 2
-			}
-			set_variable = {
-				name = feudal_government_levies_
-				value = 2
-			}
-			set_variable = {
-				name = succession_rights_
-				value = 0
-			}
-			set_variable = {
-				name = title_revocation_rights_
-				value = 1
-			}
-			set_variable = {
-				name = war_declaration_rights_
-				value = 1
-			}
-		}
+		if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 13" }
+		else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 13" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
+		debug_log = "OLD TAX"
+		if = { limit = { has_variable = feudal_government_taxes_ } var:feudal_government_taxes_ = { debug_log_scopes = no }}
+		StA_set_default_realm_laws = yes
+		debug_log = "NEW TAX"
+		var:feudal_government_taxes_ = { debug_log_scopes = no }
 		
 		set_variable = {
 			name = total_strength
@@ -155,7 +146,7 @@
 					variable = StA_pledge_allegiance
 					limit = {
 						tier >= tier_county
-						NOT = { holder = scope:title.holder }
+						NOT = { holder = scope:StA_title.holder }
 						THIS = holder.primary_title
 					}
 					add = holder.max_military_strength
@@ -170,7 +161,7 @@
 					variable = StA_pledge_allegiance
 					limit = {
 						tier >= tier_county
-						NOT = { holder = scope:title.holder }
+						NOT = { holder = scope:StA_title.holder }
 						THIS = holder.primary_title
 					}
 					add = {
@@ -191,13 +182,8 @@
 			name = StA_title_realm_authority_capacity
 			value = var:StA_title.StA_title_realm_authority_capacity
 		}
-		set_variable = {
-			name = StA_title_law_cooldown
-			value = {
-				add = 100
-				subtract = var:StA_title.StA_title_realm_authority_capacity
-				add = var:StA_title.StA_title_realm_authority
-			}
+		var:StA_title = {
+			StA_reset_cooldown_title_holder_change = yes
 		}
 	}
 	on_end = {
@@ -208,26 +194,53 @@
 		months = 1
 
 		trigger = {
-			has_variable = StA_title_law_cooldown
+			has_variable = StA_cooldown_law_change
 		}
 
 		triggered_effect = {
 			trigger = {
-				var:StA_title_law_cooldown > 1
+				var:StA_cooldown_law_change > 1
 			}
 			effect = {
 				change_variable = {
-					name = StA_title_law_cooldown
+					name = StA_cooldown_law_change
 					subtract = 1
 				}
 			}
 		}
 		triggered_effect = {
 			trigger = {
-				var:StA_title_law_cooldown <= 1
+				var:StA_cooldown_law_change <= 1
 			}
 			effect = {
-				remove_variable = StA_title_law_cooldown
+				remove_variable = StA_cooldown_law_change
+			}
+		}
+	}
+	effect_group = {
+		months = 1
+
+		trigger = {
+			has_variable = StA_cooldown_title_holder_change
+		}
+
+		triggered_effect = {
+			trigger = {
+				var:StA_cooldown_title_holder_change > 1
+			}
+			effect = {
+				change_variable = {
+					name = StA_cooldown_title_holder_change
+					subtract = 1
+				}
+			}
+		}
+		triggered_effect = {
+			trigger = {
+				var:StA_cooldown_title_holder_change <= 1
+			}
+			effect = {
+				remove_variable = StA_cooldown_title_holder_change
 			}
 		}
 	}

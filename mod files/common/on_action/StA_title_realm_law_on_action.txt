@@ -127,28 +127,53 @@ StA_title_realm_law_init = {
 		every_ruler = {
 			limit = { is_landless_ruler = no }
 			save_scope_as = ruler
-			ordered_held_title = {
-				limit = { tier >= tier_county }
-				order_by = tier
-				max = 99
-				check_range_bounds = no
-				if = {
-					limit = {
-						any_this_title_or_de_jure_above = {
-							holder = scope:ruler
-							NOT = { THIS = PREV }
-							has_variable = StA_title_realm_law
-							count = 0
-						}
-					}
-					scope:ruler = {
-						set_variable = {
-							name = StA_title
-							value = PREV
-						}
-						create_story = StA_title_realm_law
+			# ordered_held_title = {
+			# 	limit = { tier >= tier_county }
+			# 	order_by = tier
+			# 	max = 99
+			# 	check_range_bounds = no
+			# 	if = {
+			# 		limit = {
+			# 			trigger_if = {
+			# 				limit = { PREV.highest_held_title_tier > tier_county }
+			# 				NOT = { tier = tier_county }
+			# 				any_this_title_or_de_jure_above = {
+			# 					holder = scope:ruler
+			# 					NOT = { THIS = PREV }
+			# 					has_variable = StA_title_realm_law
+			# 					count = 0
+			# 				}
+			# 			}
+			# 		}
+			# 		scope:ruler = {
+			# 			set_variable = {
+			# 				name = StA_title
+			# 				value = PREV
+			# 			}
+			# 			debug_log = "CREATE STORY 1"
+			# 			var:StA_title = { debug_log_scopes = no }
+			# 			create_story = StA_title_realm_law
+			# 		}
+			# 	}
+			# }
+			every_held_title = {
+				limit = {
+					tier = PREV.highest_held_title_tier
+					trigger_if = {
+						limit = { tier = tier_county }
+						THIS = PREV.primary_title
 					}
 				}
+				PREV = {
+					set_variable = {
+						name = StA_title
+						value = PREV
+					}
+					debug_log = "CREATE STORY 1"
+					var:StA_title = { debug_log_scopes = no }
+					create_story = StA_title_realm_law
+				}
+
 			}
 		}
 
@@ -201,6 +226,8 @@ StA_on_title_gain = {
 								name = StA_title
 								value = primary_title
 							}
+							debug_log = "CREATE STORY 2"
+							var:StA_title = { debug_log_scopes = no }
 							create_story = StA_title_realm_law
 						}
 						# scope:previous_holder has a primary title realm law, check vassal allegiance
@@ -221,27 +248,90 @@ StA_on_title_gain = {
 					}
 				}
 				# transfer story to scope:new_holder
+				StA_reset_cooldown_title_holder_change = yes
 				var:StA_title_realm_law = {
 					make_story_owner = scope:new_holder
 					set_variable = {
 						name = StA_ruler
 						value = scope:new_holder
 					}
+					if = {
+						limit = { NOT = { scope:title = scope:new_holder.primary_title }}
+						scope:title = {
+							if = {
+								limit = {
+									NOR = {
+										has_title_law_flag = succession_gender_laws
+										has_title_law_flag = advanced_succession_law
+										has_title_law_flag = elective_succession_law
+									}
+									any_this_title_or_de_jure_above = {
+										NOT = { THIS = PREV }
+										holder = scope:new_holder
+										has_variable = StA_title_realm_law
+										trigger_if = {
+											limit = { scope:title.tier > tier_county }
+											StA_title_has_identical_law_as_target = { TITLE = scope:title }
+										}
+									}
+								}
+								ordered_this_title_or_de_jure_above = {
+									limit = {
+										NOT = { THIS = PREV }
+										holder = scope:new_holder
+										has_variable = StA_title_realm_law
+									}
+									order_by = reverse_tier
+									save_scope_as = new_title_allegiance
+								}
+							}
+							else_if = {
+								limit = {
+									NOR = {
+										has_title_law_flag = succession_gender_laws
+										has_title_law_flag = advanced_succession_law
+										has_title_law_flag = elective_succession_law
+									}
+									tier < scope:new_holder.highest_held_title_tier
+									trigger_if = {
+										limit = { scope:title.tier > tier_county }
+										StA_title_has_identical_law_as_target = { TITLE = scope:new_holder.primary_title }
+									}
+								}
+								scope:new_holder.primary_title = { save_scope_as = new_title_allegiance }
+							}
+						}
+					}
+					else = {
+						if = {
+							limit = {
+								scope:new_holder = { has_variable = primary_title }
+								scope:new_holder.var:primary_title = { StA_title_can_merge_authority_to = { TITLE = scope:title }}
+							}
+							scope:new_holder.var:primary_title = { StA_merge_title_authority = { TITLE = scope:title }}
+						}
+						scope:new_holder = {
+							set_variable = {
+								name = primary_title
+								value = scope:title
+							}
+						}
+					}
 					# update allegiance of pledged titles
 					every_in_list = {
 						variable = StA_pledge_allegiance
-						# remove allegiance of titles owned by scope:new_holder
-						if = {
-							limit = { holder = scope:new_holder }
-							PREV = {
-								remove_list_variable = {
-									name = StA_pledge_allegiance
-									target = PREV
-								}
-							}
-						}
+						# # remove allegiance of titles owned by scope:new_holder
+						# if = {
+						# 	limit = { holder = scope:new_holder }
+						# 	PREV = {
+						# 		remove_list_variable = {
+						# 			name = StA_pledge_allegiance
+						# 			target = PREV
+						# 		}
+						# 	}
+						# }
 						# update allegiance of vassals of scope:new_holder
-						else_if = {
+						if = {
 							limit = { holder.liege = scope:new_holder }
 							if = {
 								StA_remove_current_title_allegiance = yes
@@ -261,11 +351,21 @@ StA_on_title_gain = {
 					}
 					if = {
 						limit = {
-							has_variable_list = StA_pledge_allegiance
-							variable_list_size = {
-								name = StA_pledge_allegiance
-								value = 0
+							OR = {
+								AND = {
+									has_variable_list = StA_pledge_allegiance
+									variable_list_size = {
+										name = StA_pledge_allegiance
+										value = 0
+									}
+								}
+								var:StA_title.tier = tier_county
 							}
+						}
+						scope:title = {
+							debug_log = "END STORY"
+							debug_log_scopes = no
+							remove_variable = StA_title_realm_law
 						}
 						end_story = yes
 					}
@@ -274,7 +374,55 @@ StA_on_title_gain = {
 			StA_remove_current_title_allegiance = yes
 			if = {
 				limit = { THIS = scope:new_holder.primary_title }
-				StA_remove_allegiance_from_non_primary_titles = yes
+				# StA_remove_allegiance_from_non_primary_titles = yes
+				debug_log = "STA NEW PRIMARY TITLE"
+				debug_log_scopes = no
+				if = {
+					limit = { NOT = { has_variable = StA_title_realm_law }}
+					scope:new_holder = {
+						set_variable = {
+							name = StA_title
+							value = scope:title
+						}
+						debug_log = "CREATE STORY 3"
+						var:StA_title = { debug_log_scopes = no }
+						create_story = StA_title_realm_law
+					}
+				}
+				scope:new_holder = {
+					ordered_held_title = {
+						limit = {
+							NOT = { THIS = scope:new_holder.primary_title }
+							target_is_de_jure_liege_or_above = scope:new_holder.primary_title
+							NOR = {
+								has_title_law_flag = succession_gender_laws
+								has_title_law_flag = advanced_succession_law
+								has_title_law_flag = elective_succession_law
+							}
+						}
+						max = 99
+						check_range_bounds = no
+						order_by = tier
+						debug_log = "TITLE_TO_MERGE"
+						debug_log_scopes = no
+						save_scope_as = title_to_merge
+						ordered_this_title_or_de_jure_above = {
+							limit = {
+								NOT = { THIS = PREV }
+								holder = scope:new_holder
+								has_variable = StA_title_realm_law
+							}
+							order_by = reverse_tier
+							if = {
+								limit = { StA_title_has_identical_law_as_target = { TITLE = scope:title_to_merge }}
+								save_scope_as = title_merged_into
+								debug_log = "TITLE_TO_MERGE_INTO"
+								debug_log_scopes = no
+								scope:title_to_merge = { StA_merge_title_authority = { TITLE = scope:title_merged_into }}
+							}
+						}
+					}
+				}
 				if = {
 					limit = { scope:new_holder = { is_independent_ruler = no }}
 					StA_set_title_allegiance_to_liege = { LIEGE = scope:new_holder.liege }
@@ -289,26 +437,31 @@ StA_on_title_gain = {
 							name = StA_title
 							value = scope:title
 						}
+						debug_log = "CREATE STORY 4"
+						var:StA_title = { debug_log_scopes = no }
 						create_story = StA_title_realm_law
 					}
 				}
 			}
 			else_if = {
 				limit = {
-					any_this_title_or_de_jure_above = {
-						NOT = { THIS = PREV }
-						holder = scope:new_holder
-						count = 0
-					}
+					NOT = { has_variable = StA_title_realm_law }
+					tier = scope:new_holder.highest_held_title_tier
 				}
 				scope:new_holder = {
 					set_variable = {
 						name = StA_title
 						value = scope:title
 					}
+					debug_log = "CREATE STORY 5"
+					var:StA_title = { debug_log_scopes = no }
 					create_story = StA_title_realm_law
 				}
 			}
+		}
+		if = {
+			limit = { exists = scope:new_title_allegiance }
+			StA_merge_title_authority = { TITLE = scope:new_title_allegiance }
 		}
 		every_vassal = {
 			limit = { primary_title = { target_is_de_jure_liege_or_above = scope:title }}
@@ -372,6 +525,41 @@ StA_on_war_won_attacker = {
 					StA_remove_current_title_allegiance = yes
 				}
 			}
+		}
+	}
+}
+
+on_death = {
+	on_actions = {
+		StA_on_death
+	}
+}
+
+StA_on_death = {
+	trigger = {
+		is_ruler = yes
+		is_landless_ruler = no			
+	}
+	effect = {
+		every_held_title = { add_to_list = inheritable_titles }
+		every_alert_creatable_title = { add_to_list = inheritable_titles }
+		every_in_list = {
+			list = inheritable_titles
+			ordered_this_title_or_de_jure_above = {
+				limit = {
+					NOT = { THIS = PREV }
+					holder = ROOT
+					has_variable = StA_title_realm_law
+				}
+				order_by = reverse_tier
+				var:StA_title_realm_law = { save_scope_as = inherited_laws }
+			}
+			if = {
+				limit = { NOT = { exists = scope:inherited_laws }}
+				ROOT.primary_title.var:StA_title_realm_law = { save_scope_as = inherited_laws }
+			}
+			StA_set_laws_to_inherit = { TRANSFER_FROM = scope:inherited_laws }
+			clear_saved_scope = inherited_laws
 		}
 	}
 }

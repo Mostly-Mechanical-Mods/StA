@@ -51,7 +51,7 @@ types UniUI_StA_title_window {
 			default_format = "#weak"
 			down = "[GetVariableSystem.HasValue( 'title_view_tab', 'vassals_tab' ) )]"
 			onclick = "[GetVariableSystem.Set( 'title_view_tab', 'vassals_tab' )]"
-			enabled = "[And(TitleViewWindow.GetTitle.MakeScope.Var('StA_title_realm_law').IsSet,GreaterThanOrEqualTo_int32(TitleViewWindow.GetTitle.GetTierFrame,'(int32)4'))]"
+			enabled = "[TitleViewWindow.GetTitle.MakeScope.Var('StA_title_realm_law').IsSet]"
 		}
 
 		button_tab = {
@@ -62,7 +62,7 @@ types UniUI_StA_title_window {
 			default_format = "#weak"
 			down = "[GetVariableSystem.HasValue( 'title_view_tab', 'StA_realm_law_tab' ) )]"
 			onclick = "[GetVariableSystem.Set( 'title_view_tab', 'StA_realm_law_tab' )]"
-			enabled = "[And(TitleViewWindow.GetTitle.MakeScope.Var('StA_title_realm_law').IsSet,GreaterThanOrEqualTo_int32(TitleViewWindow.GetTitle.GetTierFrame,'(int32)4'))]"
+			enabled = "[TitleViewWindow.GetTitle.MakeScope.Var('StA_title_realm_law').IsSet]"
 		}
 	}
 

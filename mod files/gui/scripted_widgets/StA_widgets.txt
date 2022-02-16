@@ -1,3 +1,4 @@
 ﻿gui/StA_widgets.gui = StA_confirm_title_law
 gui/StA_widgets.gui = StA_title_list
-gui/StA_widgets.gui = StA_savegame_compat_2004
+gui/StA_patch_widgets.gui = StA_savegame_compat_2004
+gui/StA_patch_widgets.gui = StA_savegame_compat_2010

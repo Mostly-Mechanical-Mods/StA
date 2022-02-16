@@ -1,0 +1,175 @@
+﻿
+# used in story scope, called from a title scope
+StA_cooldown = {
+	if = {
+		limit = { has_variable = StA_title_realm_law }
+		var:StA_title_realm_law = {
+			if = {
+				limit = { has_variable = StA_cooldown_law_change }
+				add = {
+					value = var:StA_cooldown_law_change
+					desc = "StA_cooldown_law_change"
+				}
+			}
+			if = {
+				limit = { has_variable = StA_cooldown_title_holder_change }
+				add = {
+					value = var:StA_cooldown_title_holder_change
+					desc = "StA_cooldown_title_holder_change"
+				}
+			}
+		}
+	}
+}
+
+# used title scope
+StA_cooldown_title_holder_change = {
+	value = holder.StA_short_reign_modifier
+}
+
+# used title scope
+StA_cooldown_law_change = {
+	add = 100
+	subtract = StA_title_realm_authority_capacity
+	add = StA_title_realm_authority
+}
+
+StA_cooldown_law_change_year = {
+	add = StA_cooldown_law_change
+	divide = 12
+	floor = yes
+	min = 0
+}
+
+StA_cooldown_law_change_month = {
+	add = StA_cooldown_law_change
+	subtract = {
+		add = StA_cooldown_law_change_year
+		multiply = 12
+	}
+	floor = yes
+	min = 0
+}
+
+
+StA_cooldown_year = {
+	add = StA_cooldown
+	divide = 12
+	floor = yes
+	min = 0
+}
+
+StA_cooldown_month = {
+	add = StA_cooldown
+	subtract = {
+		add = StA_cooldown_year
+		multiply = 12
+	}
+	floor = yes
+	min = 0
+}
+
+StA_short_reign_modifier = {
+	save_temporary_scope_as = ruler
+	add = define:NCharacterOpinion|SHORT_REIGN_YEARS
+	multiply = 12
+	if = {
+		limit = { has_game_rule = easy_difficulty }
+		multiply = 0.75
+	}
+	else_if = {
+		limit = { has_game_rule = very_easy_difficulty }
+		multiply = 0.5
+	}
+	culture = {
+		if = {
+			limit = { has_cultural_tradition = tradition_byzantine_succession }
+			multiply = 1.5
+		}
+		if = {
+			limit = { has_innovation = innovation_divine_right }
+			multiply = 0.9
+		}
+	}
+	if = {
+		limit = { is_lowborn = no }
+		dynasty = {
+			if = {
+				limit = { has_dynasty_perk = glory_legacy_4 }
+				multiply = 0.8
+			}
+		}
+	}
+	faith = {
+		if = {
+			limit = { has_doctrine = tenet_consolamentum }
+			multiply = 0.5
+		}
+		if = {
+			limit = {
+				exists = faith:akom_pagan
+				THIS = faith:akom_pagan
+				controls_holy_site = bono
+			}
+			multiply = 0.75
+		}
+	}
+	every_held_title = {
+		limit = { tier = tier_county }
+		every_county_province = {
+			if = {
+				limit = {
+					has_building = holy_site_other_grand_temple_01
+					barony = { is_holy_site_of = scope:ruler.faith }
+				}
+				multiply = 0.9
+			}
+			if = {
+				limit = { has_building = the_pyramids_01 }
+				multiply = 0.8
+			}
+		}
+	}
+	if = {
+		limit = { has_trait = born_in_the_purple }
+		multiply = 0.75
+	}
+	if = {
+		limit = { has_character_modifier = overturned_old_barbarity }
+		multiply = 0.5
+	}
+	every_equipped_character_artifact = {
+		if = {
+			limit = { has_artifact_modifier = artifact_short_reign_duration_mult_1_modifier }
+			multiply = 0.94
+		}
+		else_if = {
+			limit = { has_artifact_modifier = artifact_short_reign_duration_mult_2_modifier }
+			multiply = 0.92
+		}
+		else_if = {
+			limit = { has_artifact_modifier = artifact_short_reign_duration_mult_3_modifier }
+			multiply = 0.88
+		}
+		else_if = {
+			limit = { has_artifact_modifier = artifact_short_reign_duration_mult_4_modifier }
+			multiply = 0.84
+		}
+		else_if = {
+			limit = { has_artifact_modifier = artifact_short_reign_duration_mult_5_modifier }
+			multiply = 0.80
+		}
+		else_if = {
+			limit = { has_artifact_modifier = artifact_short_reign_duration_mult_6_modifier }
+			multiply = 0.76
+		}
+		else_if = {
+			limit = { has_artifact_modifier = artifact_short_reign_duration_mult_7_modifier }
+			multiply = 0.72
+		}
+		else_if = {
+			limit = { has_artifact_modifier = artifact_short_reign_duration_mult_8_modifier }
+			multiply = 0.68
+		}
+	}
+}

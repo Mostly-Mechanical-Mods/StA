@@ -1,0 +1,85 @@
+﻿StA_patch_2004 = {
+  set_global_variable = {
+    name = StA_is_loaded
+    value = 2.004
+  }
+  random_player = {
+    create_story = { type = StA_obligation_levels save_scope_as = zero }
+    create_story = { type = StA_obligation_levels save_scope_as = one }
+    create_story = { type = StA_obligation_levels save_scope_as = two }
+    create_story = { type = StA_obligation_levels save_scope_as = three }
+    create_story = { type = StA_obligation_levels save_scope_as = four }
+    scope:zero = {	set_variable = { name = flag value = flag:0 } set_variable = { name = value value = 0 }}
+    scope:one = {	set_variable = { name = flag value = flag:1 } set_variable = { name = value value = 1 }}
+    scope:two = {	set_variable = { name = flag value = flag:2 } set_variable = { name = value value = 2 }}
+    scope:three = {	set_variable = { name = flag value = flag:3 } set_variable = { name = value value = 3 }}
+    scope:four = {	set_variable = { name = flag value = flag:4 } set_variable = { name = value value = 4 }}
+    add_to_global_variable_list = { name = StA_levels_4 target = scope:zero }
+    add_to_global_variable_list = { name = StA_levels_4 target = scope:one }
+    add_to_global_variable_list = { name = StA_levels_4 target = scope:two }
+    add_to_global_variable_list = { name = StA_levels_4 target = scope:three }
+    add_to_global_variable_list = { name = StA_levels_4 target = scope:four }
+    add_to_global_variable_list = { name = StA_levels_2 target = scope:zero }
+    add_to_global_variable_list = { name = StA_levels_2 target = scope:one }
+    add_to_global_variable_list = { name = StA_levels_2 target = scope:two }
+    add_to_global_variable_list = { name = StA_levels_1 target = scope:zero }
+    add_to_global_variable_list = { name = StA_levels_1 target = scope:one }
+    StA_setup_title_law_story = { LAW = feudal_government_taxes		LEVELS = 4 }
+    StA_setup_title_law_story = { LAW = feudal_government_levies	LEVELS = 4 }
+    StA_setup_title_law_story = { LAW = war_declaration_rights		LEVELS = 1 }
+    StA_setup_title_law_story = { LAW = title_revocation_rights		LEVELS = 1 }
+    StA_setup_title_law_story = { LAW = succession_rights			LEVELS = 1 }
+    StA_setup_title_succession_law_story = { LAW = male_only_law }
+    StA_setup_title_succession_law_story = { LAW = male_preference_law }
+    StA_setup_title_succession_law_story = { LAW = equal_law }
+    StA_setup_title_succession_law_story = { LAW = female_preference_law }
+    StA_setup_title_succession_law_story = { LAW = female_only_law }
+    StA_setup_title_succession_law_story = { LAW = feudal_elective_succession_law }
+    StA_setup_title_succession_law_story = { LAW = princely_elective_succession_law }
+    StA_setup_title_succession_law_story = { LAW = gaelic_elective_succession_law }
+    StA_setup_title_succession_law_story = { LAW = saxon_elective_succession_law }
+    StA_setup_title_succession_law_story = { LAW = scandinavian_elective_succession_law }
+  }
+  every_ruler = {
+    every_held_title = {
+      limit = { has_variable = StA_title_realm_law }
+      var:StA_title_realm_law = {
+        if = {
+          limit = { has_variable = StA_realm_tax NOT = { has_variable = feudal_government_taxes_ }}
+          set_variable = { name = feudal_government_taxes_ value = var:StA_realm_tax }
+        }
+        if = {
+          limit = { has_variable = StA_realm_levies NOT = { has_variable = feudal_government_levies_ }}
+          set_variable = { name = feudal_government_levies_ value = var:StA_realm_levies }
+        }
+        if = {
+          limit = { has_variable = title_revocation_rights NOT = { has_variable = title_revocation_rights_ }}
+          set_variable = { name = title_revocation_rights_ value = var:title_revocation_rights }
+        }
+        if = {
+          limit = { has_variable = succession_rights NOT = { has_variable = succession_rights_ }}
+          set_variable = { name = succession_rights_ value = var:succession_rights }
+        }
+        if = {
+          limit = { has_variable = war_declaration_rights NOT = { has_variable = war_declaration_rights_ }}
+          set_variable = { name = war_declaration_rights_ value = var:war_declaration_rights }
+        }
+      }
+    }
+  }
+}
+
+StA_patch_2010 = {
+  set_global_variable = {
+    name = StA_is_loaded
+    value = 2.010
+  }
+  every_ruler = {
+    every_held_title = {
+      limit = { has_variable = StA_title_realm_law }
+      var:StA_title_realm_law = {
+        StA_reset_cooldown_title_holder_change = yes
+      }
+    }
+  }
+}

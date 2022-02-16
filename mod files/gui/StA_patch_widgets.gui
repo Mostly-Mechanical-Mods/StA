@@ -1,0 +1,19 @@
+widget = {
+	size = { 0 0 }
+	name = "StA_savegame_compat_2004"
+	widgetid = "StA_savegame_compat_2004"
+	state = {
+		trigger_on_create = yes
+		on_start = "[GetScriptedGui('StA_savegame_compat_2004').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+	}
+}
+
+widget = {
+	size = { 0 0 }
+	name = "StA_savegame_compat_2010"
+	widgetid = "StA_savegame_compat_2010"
+	state = {
+		trigger_on_create = yes
+		on_start = "[GetScriptedGui('StA_savegame_compat_2010').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+	}
+}
