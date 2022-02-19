@@ -232,24 +232,22 @@ StA_title_window_player = {
 							target = PREV
 						}
 					}
-					var:StA_title_realm_law = {
-						ordered_in_list = {
-							variable = StA_pledge_allegiance
-							limit = {
-								holder = scope:title.holder
-								trigger_if = {
-									limit = { NOT = { has_variable = StA_title_realm_law }}
-									tier > tier_county
-								}
+					ordered_in_list = {
+						variable = StA_pledge_allegiance
+						limit = {
+							holder = scope:title.holder
+							trigger_if = {
+								limit = { NOT = { has_variable = StA_title_realm_law }}
+								tier > tier_county
 							}
-							order_by = tier
-							max = 99
-							check_range_bounds = no
-							ROOT = {
-								add_to_variable_list = {
-									name = title_window_player
-									target = PREV
-								}
+						}
+						order_by = tier
+						max = 99
+						check_range_bounds = no
+						ROOT = {
+							add_to_variable_list = {
+								name = title_window_player
+								target = PREV
 							}
 						}
 					}
@@ -258,41 +256,7 @@ StA_title_window_player = {
 			every_held_title = {
 				limit = { has_variable = StA_title_realm_law }
 				var:StA_title_realm_law = {
-					set_variable = {
-						name = total_strength
-						value = {
-							every_in_list = {
-								variable = StA_pledge_allegiance
-								limit = {
-									tier >= tier_county
-									NOT = { holder = scope:title.holder }
-									THIS = holder.primary_title
-								}
-								add = holder.max_military_strength
-							}
-							min = 1
-						}
-					}
-					set_variable = {
-						name = average_submission
-						value = {
-							every_in_list = {
-								variable = StA_pledge_allegiance
-								limit = {
-									tier >= tier_county
-									NOT = { holder = scope:title.holder }
-									THIS = holder.primary_title
-								}
-								add = {
-									add = holder.StA_submission
-									multiply = holder.max_military_strength
-								}
-							}
-							divide = var:total_strength
-							max = 100
-							min = -100
-						}
-					}
+					StA_reset_authority = yes
 				}
 			}
 		}
@@ -305,21 +269,21 @@ StA_title_window_allegiance = {
 	is_valid = { has_variable = StA_title_realm_law }
 
 	effect = {
-		var:StA_title_realm_law = {
-			ordered_in_list = {
-				variable = StA_pledge_allegiance
-				limit = { NOT = { holder = ROOT.holder }}
-				order_by = tier
-				max = 99
-				check_range_bounds = no
-				PREV = {
-					add_to_variable_list = {
-						name = StA_title_window_allegiance
-						target = PREV
-					}
+		clear_variable_list = StA_title_window_allegiance
+		ordered_in_list = {
+			variable = StA_pledge_allegiance
+			limit = { NOT = { holder = ROOT.holder }}
+			order_by = tier
+			max = 99
+			check_range_bounds = no
+			PREV = {
+				add_to_variable_list = {
+					name = StA_title_window_allegiance
+					target = PREV
 				}
 			}
 		}
+		var:StA_title_realm_law = { StA_reset_authority = yes }
 	}
 }
 

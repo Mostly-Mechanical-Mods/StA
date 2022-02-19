@@ -125,7 +125,7 @@ types UniUI_StA_title_window {
 
 			blockoverride "scrollbox_content" {
 				vbox = {
-					datamodel = "[TitleViewWindow.GetTitle.MakeScope.Var('StA_title_realm_law').GetList('StA_title_window_allegiance')]"
+					datamodel = "[TitleViewWindow.GetTitle.MakeScope.GetList('StA_title_window_allegiance')]"
 					layoutpolicy_horizontal = expanding
 					spacing = 3
 

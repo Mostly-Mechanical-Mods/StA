@@ -6,13 +6,13 @@
 				limit = { has_variable = StA_cooldown_law_change }
 				change_variable = {
 					name = StA_cooldown_law_change
-					add = var:StA_title.StA_cooldown_law_change
+					add = var:title.StA_cooldown_law_change
 				}
 			}
 			else = {
 				set_variable = {
 					name = StA_cooldown_law_change
-					value = var:StA_title.StA_cooldown_law_change
+					value = var:title.StA_cooldown_law_change
 				}
 			}
 		}
@@ -20,13 +20,10 @@
 }
 
 StA_reset_cooldown_title_holder_change = {
-	if = {
-		limit = { has_variable = StA_title_realm_law }
-		var:StA_title_realm_law = {
-			set_variable = {
-				name = StA_cooldown_title_holder_change
-				value = PREV.StA_cooldown_title_holder_change
-			}
+	var:StA_title_realm_law = {
+		set_variable = {
+			name = StA_cooldown_title_holder_change
+			value = PREV.StA_cooldown_title_holder_change
 		}
 	}
 }
@@ -40,40 +37,20 @@ StA_inherit_title_laws = {
 }
 
 StA_transfer_title_laws = {
-	debug_log = "STA TRANSFER TITLE LAWS"
-	$TRANSFER_FROM$ = { debug_log_scopes = no }
-	$TRANSFER_TO$ = { debug_log_scopes = no }
 	# if = { limit = { $TRANSFER_FROM$ = { has_variable = feudal_government_taxes_ }} $TRANSFER_TO$ = { set_variable = { name = feudal_government_taxes_ value = $TRANSFER_FROM$.var:feudal_government_taxes_ }}}
 	# if = { limit = { $TRANSFER_FROM$ = { has_variable = feudal_government_levies_ }} $TRANSFER_TO$ = { set_variable = { name = feudal_government_levies_ value = $TRANSFER_FROM$.var:feudal_government_levies_ }}}
 	# if = { limit = { $TRANSFER_FROM$ = { has_variable = succession_rights_ }} $TRANSFER_TO$ = { set_variable = { name = succession_rights_ value = $TRANSFER_FROM$.var:succession_rights_ }}}
 	# if = { limit = { $TRANSFER_FROM$ = { has_variable = war_declaration_rights_ }} $TRANSFER_TO$ = { set_variable = { name = war_declaration_rights_ value = $TRANSFER_FROM$.var:war_declaration_rights_ }}}
 	# if = { limit = { $TRANSFER_FROM$ = { has_variable = title_revocation_rights_ }} $TRANSFER_TO$ = { set_variable = { name = title_revocation_rights_ value = $TRANSFER_FROM$.var:title_revocation_rights_ }}}
-	$TRANSFER_FROM$.var:feudal_government_taxes_ = { debug_log = "TRANSFER_FROM tax" debug_log_scopes = no }
 	$TRANSFER_TO$ = { set_variable = { name = feudal_government_taxes_ value = $TRANSFER_FROM$.var:feudal_government_taxes_ }}
 	$TRANSFER_TO$ = { set_variable = { name = feudal_government_levies_ value = $TRANSFER_FROM$.var:feudal_government_levies_ }}
 	$TRANSFER_TO$ = { set_variable = { name = succession_rights_ value = $TRANSFER_FROM$.var:succession_rights_ }}
 	$TRANSFER_TO$ = { set_variable = { name = war_declaration_rights_ value = $TRANSFER_FROM$.var:war_declaration_rights_ }}
 	$TRANSFER_TO$ = { set_variable = { name = title_revocation_rights_ value = $TRANSFER_FROM$.var:title_revocation_rights_ }}
-	$TRANSFER_TO$.var:feudal_government_taxes_ = { debug_log = "TRANSFER_TO tax" debug_log_scopes = no }
-	$TRANSFER_FROM$ = {
-		every_in_list = {
-			variable = StA_pledge_allegiance
-			$TRANSFER_TO$ = {
-				add_to_variable_list = {
-					name = StA_pledge_allegiance
-					target = PREV
-				}
-			}
-			set_variable = {
-				name = StA_title_allegiance
-				value = $TRANSFER_TO$.var:StA_title
-			}
-		}
-	}
 }
 
 StA_set_default_realm_laws = {
-	if = { limit = { NOT = { has_variable = feudal_government_taxes_ }} debug_log = "DEFAULT TAX LAW" var:StA_title = { debug_log_scopes = no } set_variable = { name = feudal_government_taxes_ value = 2 }}
+	if = { limit = { NOT = { has_variable = feudal_government_taxes_ }} set_variable = { name = feudal_government_taxes_ value = 2 }}
 	if = { limit = { NOT = { has_variable = feudal_government_levies_ }} set_variable = { name = feudal_government_levies_ value = 2 }}
 	if = { limit = { NOT = { has_variable = succession_rights_ }} set_variable = { name = succession_rights_ value = 0 }}
 	if = { limit = { NOT = { has_variable = war_declaration_rights_ }} set_variable = { name = war_declaration_rights_ value = 1 }}
@@ -81,10 +58,93 @@ StA_set_default_realm_laws = {
 }
 
 StA_set_laws_to_inherit = {
-	set_variable = inherited_title
+	set_variable = {
+		name = inherited_title
+		days = 1
+	}
 	if = { limit = { $TRANSFER_FROM$ = { has_variable = feudal_government_taxes_ }} set_variable = { name = feudal_government_taxes_ value = $TRANSFER_FROM$.var:feudal_government_taxes_ days = 1 }}
 	if = { limit = { $TRANSFER_FROM$ = { has_variable = feudal_government_levies_ }} set_variable = { name = feudal_government_levies_ value = $TRANSFER_FROM$.var:feudal_government_levies_ days = 1 }}
 	if = { limit = { $TRANSFER_FROM$ = { has_variable = succession_rights_ }} set_variable = { name = succession_rights_ value = $TRANSFER_FROM$.var:succession_rights_ days = 1 }}
 	if = { limit = { $TRANSFER_FROM$ = { has_variable = war_declaration_rights_ }} set_variable = { name = war_declaration_rights_ value = $TRANSFER_FROM$.var:war_declaration_rights_ days = 1 }}
 	if = { limit = { $TRANSFER_FROM$ = { has_variable = title_revocation_rights_ }} set_variable = { name = title_revocation_rights_ value = $TRANSFER_FROM$.var:title_revocation_rights_ days = 1 }}
+}
+
+StA_reset_authority = {
+	save_scope_as = story
+	if = {
+		limit = {
+			debug_only = yes
+			NOT = { has_variable = feudal_government_taxes_ }
+		}
+		debug_log = "StA_reset_authority NO GOVERNMENT TAXES"
+		var:ruler = { debug_log_scopes = no }
+		var:title = { debug_log_scopes = no }
+	}
+	var:ruler = {
+		save_opinion_value_as = {
+			name = opinion_liege
+			target = liege
+		}
+		set_variable = {
+			name = opinion_liege
+			value = scope:opinion_liege
+		}
+		every_vassal = {
+			save_opinion_value_as = {
+				name = opinion_liege
+				target = liege
+			}
+			set_variable = {
+				name = opinion_liege
+				value = scope:opinion_liege
+			}
+		}
+	}
+	set_variable = {
+		name = total_strength
+		value = {
+			var:title = {
+				every_in_list = {
+					variable = StA_pledge_allegiance
+					limit = {
+						tier >= tier_county
+						NOT = { holder = scope:story.var:title.holder }
+						THIS = holder.primary_title
+					}
+					add = holder.max_military_strength
+				}
+				min = 1
+			}
+		}
+	}
+	set_variable = {
+		name = average_submission
+		value = {
+			var:title = {
+				every_in_list = {
+					variable = StA_pledge_allegiance
+					limit = {
+						tier >= tier_county
+						NOT = { holder = scope:story.var:title.holder }
+						THIS = holder.primary_title
+					}
+					add = {
+						add = holder.StA_submission
+						multiply = holder.max_military_strength
+					}
+				}
+			}
+			divide = var:total_strength
+			max = 100
+			min = -100
+		}
+	}
+	set_variable = {
+		name = StA_title_realm_authority
+		value = var:title.StA_title_realm_authority
+	}
+	set_variable = {
+		name = StA_title_realm_authority_capacity
+		value = var:title.StA_title_realm_authority_capacity
+	}
 }

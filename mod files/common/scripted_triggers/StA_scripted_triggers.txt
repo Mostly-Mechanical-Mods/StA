@@ -7,17 +7,18 @@
 }
 
 StA_title_has_identical_law_as_target = {
+	$TITLE$ = { save_temporary_scope_as = target_title }
 	trigger_if = {
 		limit = {
 			has_variable = StA_title_realm_law
-			$TITLE$ = { has_variable = StA_title_realm_law }
+			scope:target_title = { has_variable = StA_title_realm_law }
 		}
 		var:StA_title_realm_law = {
-			var:feudal_government_taxes_ = $TITLE$.var:StA_title_realm_law.var:feudal_government_taxes_
-			var:feudal_government_levies_ = $TITLE$.var:StA_title_realm_law.var:feudal_government_levies_
-			var:succession_rights_ = $TITLE$.var:StA_title_realm_law.var:succession_rights_
-			var:war_declaration_rights_ = $TITLE$.var:StA_title_realm_law.var:war_declaration_rights_
-			var:title_revocation_rights_ = $TITLE$.var:StA_title_realm_law.var:title_revocation_rights_
+			var:feudal_government_taxes_ = scope:target_title.var:StA_title_realm_law.var:feudal_government_taxes_
+			var:feudal_government_levies_ = scope:target_title.var:StA_title_realm_law.var:feudal_government_levies_
+			var:succession_rights_ = scope:target_title.var:StA_title_realm_law.var:succession_rights_
+			var:war_declaration_rights_ = scope:target_title.var:StA_title_realm_law.var:war_declaration_rights_
+			var:title_revocation_rights_ = scope:target_title.var:StA_title_realm_law.var:title_revocation_rights_
 		}
 	}
 }

@@ -118,6 +118,11 @@ StA_title_realm_authority = {
 		limit = { has_variable = StA_title_realm_law }
 		add = {
 			value = {
+				if = {
+					limit = {
+						var:StA_title_realm_law = { has_variable = feudal_government_taxes_ }
+					}
+				}
 				add = var:StA_title_realm_law.var:feudal_government_taxes_
 				multiply = 5
 			}

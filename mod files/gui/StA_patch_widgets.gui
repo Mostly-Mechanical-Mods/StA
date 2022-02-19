@@ -17,3 +17,13 @@ widget = {
 		on_start = "[GetScriptedGui('StA_savegame_compat_2010').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 	}
 }
+
+widget = {
+	size = { 0 0 }
+	name = "StA_pause"
+	widgetid = "StA_pause"
+	state = {
+		trigger_when = "[GetGlobalVariable('pause_me').IsSet]"
+  		on_start = "[OnPause]"
+	}
+}

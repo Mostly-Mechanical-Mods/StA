@@ -2,21 +2,12 @@
 # Needs var:StA_title_allegiance to be set
 StA_remove_current_title_allegiance = {
 	if = {
-		limit = {
-			has_variable = StA_title_allegiance
-			var:StA_title_allegiance = { has_variable = StA_title_realm_law }
-		}
-		if = {
-			limit = { exists = var:StA_title_allegiance.var:StA_title_realm_law }
-			var:StA_title_allegiance.var:StA_title_realm_law = {
-				remove_list_variable = {
-					name = StA_pledge_allegiance
-					target = PREV
-				}
+		limit = { has_variable = StA_title_allegiance }
+		var:StA_title_allegiance = {
+			remove_list_variable = {
+				name = StA_pledge_allegiance
+				target = PREV
 			}
-		}
-		else = {
-			var:StA_title_allegiance = { remove_variable = StA_title_realm_law }
 		}
 	}
 	remove_variable = StA_title_allegiance
@@ -26,50 +17,42 @@ StA_remove_current_title_allegiance = {
 # Holder needs to be a vassal
 StA_set_title_allegiance_to_liege = {
 	save_scope_as = title
-	ordered_this_title_or_de_jure_above = {
-		limit = {
-			holder = $LIEGE$
-			has_variable = StA_title_realm_law
-		}
-		order_by = reverse_tier
-		var:StA_title_realm_law = {
-			add_to_variable_list = {
-				name = StA_pledge_allegiance
-				target = scope:title
+	holder = { save_scope_as = holder }
+	StA_remove_current_title_allegiance = yes
+	if = {
+		limit = { holder = { is_independent_ruler = no }}
+		if = {
+			limit = { scope:holder.liege = { has_government = feudal_government }}
+			ordered_this_title_or_de_jure_above = {
+				limit = {
+					holder = scope:holder.liege
+					has_variable = StA_title_realm_law
+				}
+				order_by = reverse_tier
+				add_to_variable_list = {
+					name = StA_pledge_allegiance
+					target = scope:title
+				}
+				scope:title = {
+					set_variable = {
+						name = StA_title_allegiance
+						value = PREV
+					}
+				}
 			}
 		}
-		scope:title = {
+		if = {
+			limit = { NOT = { has_variable = StA_title_allegiance }}
+			scope:holder.liege.primary_title = {
+				add_to_variable_list = {
+					name = StA_pledge_allegiance
+					target = scope:title
+				}
+			}
 			set_variable = {
 				name = StA_title_allegiance
-				value = PREV
+				value = scope:holder.liege.primary_title
 			}
-		}
-	}
-	if = {
-		limit = {
-			NOT = { has_variable = StA_title_allegiance }
-			holder = { is_independent_ruler = no }
-			$LIEGE$.primary_title = { has_variable = StA_title_realm_law }
-		}
-		$LIEGE$.primary_title.var:StA_title_realm_law = {
-			add_to_variable_list = {
-				name = StA_pledge_allegiance
-				target = scope:title
-			}
-		}
-		set_variable = {
-			name = StA_title_allegiance
-			value = $LIEGE$.primary_title
-		}
-	}
-	holder = {
-		save_opinion_value_as = {
-			name = opinion_liege
-			target = liege
-		}
-		set_variable = {
-			name = opinion_liege
-			value = scope:opinion_liege
 		}
 	}
 }
@@ -96,10 +79,10 @@ StA_update_title_de_jure_allegiance = {
 }
 
 StA_calculate_average_submission_ruler = {
-  save_scope_as = ruler
-  save_opinion_value_as = {
-	name = opinion_liege
-	target = liege
+	save_scope_as = ruler
+	save_opinion_value_as = {
+		name = opinion_liege
+		target = liege
 	}
 	set_variable = {
 		name = opinion_liege
@@ -115,74 +98,78 @@ StA_calculate_average_submission_ruler = {
 			value = scope:opinion_liege
 		}
 	}
-  every_held_title = {
-    limit = { has_variable = StA_title_realm_law }
-    var:StA_title_realm_law = {
-      set_variable = {
-        name = total_strength
-        value = {
-          every_in_list = {
-            variable = StA_pledge_allegiance
-            limit = {
-              tier >= tier_county
-              NOT = { holder = scope:ruler }
-              THIS = holder.primary_title
-            }
-            add = holder.max_military_strength
-          }
-          min = 1
-        }
-      }
-      set_variable = {
-        name = average_submission
-        value = {
-          every_in_list = {
-            variable = StA_pledge_allegiance
-            limit = {
-              tier >= tier_county
-              NOT = { holder = scope:ruler }
-              THIS = holder.primary_title
-            }
-            add = {
-              add = holder.StA_submission
-              multiply = holder.max_military_strength
-            }
-          }
-          divide = var:total_strength
-          max = 100
-          min = -100
-        }
-      }
-    }
-  }
-}
-
-StA_merge_title_authority = {
-	if = {
-		limit = {
-			has_variable = StA_title_realm_law
-			$TITLE$ = { has_variable = StA_title_realm_law }
-		}
-		every_in_list = {
-			variable = StA_pledge_allegiance
-			set_variable = {
-				name = StA_title_allegiance
-				value = $TITLE$
-			}
-			$TITLE$.var:StA_title_realm_law = {
-				add_to_variable_list = {
-					name = StA_pledge_allegiance
-					target = PREV
+	every_held_title = {
+		limit = { has_variable = StA_title_realm_law }
+		var:StA_title_realm_law = {
+		set_variable = {
+			name = total_strength
+			value = {
+				var:title = {
+					every_in_list = {
+						variable = StA_pledge_allegiance
+						limit = {
+							tier >= tier_county
+							NOT = { holder = scope:ruler }
+							THIS = holder.primary_title
+						}
+						add = holder.max_military_strength
+						}
+						min = 1
+					}
 				}
 			}
 		}
-		var:StA_title_realm_law = {
-			PREV = { remove_variable = StA_title_realm_law }
-			var:StA_title = {
-				debug_log = "END STORY"
-				debug_log_scopes = no
+		set_variable = {
+			name = average_submission
+			value = {
+				var:title = {
+					every_in_list = {
+						variable = StA_pledge_allegiance
+						limit = {
+							tier >= tier_county
+							NOT = { holder = scope:ruler }
+							THIS = holder.primary_title
+						}
+						add = {
+							add = holder.StA_submission
+							multiply = holder.max_military_strength
+						}
+					}
+				}
+				divide = var:total_strength
+				max = 100
+				min = -100
 			}
-			end_story = yes
 		}
 	}
 }
+
+# StA_merge_title_authority = {
+# 	if = {
+# 		limit = {
+# 			has_variable = StA_title_realm_law
+# 			$TITLE$ = { has_variable = StA_title_realm_law }
+# 		}
+# 		every_in_list = {
+# 			variable = StA_pledge_allegiance
+# 			set_variable = {
+# 				name = StA_title_allegiance
+# 				value = $TITLE$
+# 			}
+# 			$TITLE$.var:StA_title_realm_law = {
+# 				add_to_variable_list = {
+# 					name = StA_pledge_allegiance
+# 					target = PREV
+# 				}
+# 			}
+# 		}
+# 		var:StA_title_realm_law = {
+# 			PREV = { remove_variable = StA_title_realm_law }
+# 			var:StA_title = {
+# 				debug_log = "END STORY"
+# 				debug_log_scopes = no
+# 			}
+# 			end_story = yes
+# 		}
+# 	}
+# }

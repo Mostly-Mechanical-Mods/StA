@@ -1,19 +1,23 @@
 ﻿StA_title_realm_law = {
 	on_setup = {
 		set_variable = {
-			name = StA_title
+			name = title
 			value = story_owner.var:StA_title
 		}
 		set_variable = {
-			name = StA_ruler
+			name = ruler
 			value = story_owner
 		}
-		story_owner = { save_scope_as = StA_ruler }
+		story_owner = { save_scope_as = ruler }
 		story_owner = { remove_variable = StA_title }
-		var:StA_title = {
-			debug_log = "START STORY"
-			debug_log_scopes = no
-			save_scope_as = StA_title
+		var:title = {
+			if = {
+				limit = { debug_only = yes }
+				debug_log = "START STORY"
+				scope:ruler = { debug_log_scopes = no }
+				debug_log_scopes = no
+			}
+			save_scope_as = title
 			set_variable = {
 				name = StA_title_realm_law
 				value = scope:story
@@ -21,172 +25,112 @@
 			# For inherited titles, inherit laws
 			if = {
 				limit = { has_variable = inherited_title }
-				debug_log = "STA INHERIT TITLE REALM LAW"
+				if = {
+					limit = { debug_only = yes }
+					debug_log = "STA INHERIT TITLE REALM LAW"
+				}
 				StA_inherit_title_laws = yes
+				remove_variable = inherited_title
 			}
-			if = {
-				limit = { THIS = scope:story.var:StA_ruler.primary_title }
-				# For primary titles, transfer laws from previous primary_title
+			# For primary titles
+			else_if = {
+				limit = { THIS = scope:ruler.primary_title }
+				# Transfer laws from previous primary_title
 				if = {
 					limit = {
-						scope:StA_ruler = {
-							has_variable = primary_title
-							NOT = { var:primary_title = scope:StA_title }
-							NOT = { scope:StA_title = { has_variable = inherited_title }}
-						}
+						scope:ruler = { has_variable = StA_primary_title }
+						NOT = { THIS = scope:ruler.var:StA_primary_title }
+						scope:ruler.var:StA_primary_title = { has_variable = StA_title_realm_law }
+						scope:ruler.var:StA_primary_title.var:StA_title_realm_law.var:ruler = scope:ruler
 					}
-					debug_log = "STA TRANSFERT REALM LAWS FROM TO"
-					scope:StA_ruler.var:primary_title = { debug_log_scopes = no }
-					debug_log_scopes = no
-					StA_transfer_title_laws = { TRANSFER_FROM = scope:StA_ruler.var:primary_title.var:StA_title_realm_law TRANSFER_TO = scope:story }
-					if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} debug_log = "NO TAX 1" }
-					else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 1" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
-				}
-				scope:StA_ruler = {
-					set_variable = {
-						name = primary_title
-						value = primary_title
-					}
-				}
-				if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 2" }
-				else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 2" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
-				# Update allegiances
-				StA_remove_allegiance_from_non_primary_titles = yes
-				if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 3" }
-				else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 3" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
-				# Ruler had allegiance
-				if = {
-					limit = { has_variable = StA_title_allegiance }
-					# but ruler is now independent
 					if = {
-						limit = { scope:story.var:StA_ruler = { is_independent_ruler = yes }}
-						# break previous allegiance
-						StA_remove_current_title_allegiance = yes
-						if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 4" }
-						else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 4" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
+						limit = { debug_only = yes }
+						debug_log = "STA TRANSFER REALM LAWS FROM EX PRIMARY TITLE"
+						scope:ruler.var:StA_primary_title = { debug_log_scopes = no }
 					}
-					# ruler is a vassal and his allegiance has changed
-					else_if = {
-						limit = { NOT = { var:StA_title_allegiance.holder = scope:story.var:StA_ruler.liege }}
-						StA_remove_current_title_allegiance = yes
-						if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no }  debug_log = "NO TAX 5" }
-						else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 5" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
-						StA_set_title_allegiance_to_liege = { LIEGE = scope:story.var:StA_ruler }
-						if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 6" }
-						else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 6" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
-					}
+					StA_transfer_title_laws = { TRANSFER_FROM = scope:ruler.var:StA_primary_title.var:StA_title_realm_law TRANSFER_TO = scope:story }
 				}
-				# check vassals allegiance
-				scope:story.var:StA_ruler = {
-					every_vassal = {
-						primary_title = {
-							if = {
-								# break outside allegiances
-								limit = {
-									has_variable = StA_title_allegiance
-									NOT = { var:StA_title_allegiance.holder = scope:story.var:StA_ruler }
-								}
-								StA_remove_current_title_allegiance = yes
-								if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 7" }
-								else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 7" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
-								StA_set_title_allegiance_to_liege = { LIEGE = scope:story.var:StA_ruler }
-								if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 8" }
-								else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 8" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
-							}
-							else_if = {
-								limit = { NOT = { has_variable = StA_title_allegiance }}
-								StA_remove_allegiance_from_non_primary_titles = yes
-								if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 9" }
-								else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 9" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
-								StA_set_title_allegiance_to_liege = { LIEGE = scope:story.var:StA_ruler }
-								if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no }  debug_log = "NO TAX 10" }
-								else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 10" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
-							}
+				# Transfer laws from liege
+				else_if = {
+					limit = {
+						scope:ruler = {
+							is_independent_ruler = no
+							liege = { has_government = feudal_government }
 						}
 					}
+					ordered_this_title_or_de_jure_above = {
+						limit = {
+							NOT = { THIS = PREV }
+							holder = scope:ruler.liege
+							has_variable = StA_title_realm_law
+						}
+						order_by = reverse_tier
+						if = {
+							limit = { debug_only = yes }
+							debug_log = "STA LIEGE DE JURE TITLE"
+							debug_log_scopes = no
+						}
+						var:StA_title_realm_law = { save_scope_as = transfer_from }
+					}
+					if = {
+						limit = { NOT = { exists = scope:transfer_from }}
+						if = {
+							limit = { debug_only = yes }
+							debug_log = "STA LIEGE PRIMARY TITLE"
+							scope:ruler.liege.primary_title = { debug_log_scopes = no }
+						}
+						scope:ruler.liege.primary_title.var:StA_title_realm_law = { save_scope_as = transfer_from }
+					}
+					if = {
+						limit = { debug_only = yes }
+						debug_log = "STA TRANSFER REALM LAWS FROM LIEGE"
+						scope:ruler.liege = { debug_log_scopes = no }
+						scope:transfer_from.var:title = { debug_log_scopes = no }
+					}
+					StA_transfer_title_laws = { TRANSFER_FROM = scope:transfer_from TRANSFER_TO = scope:story }
+				}
+				else = {
+					if = {
+						limit = { debug_only = yes }
+						debug_log = "STA SET DEFAULT REALM LAWS"
+					}
+					scope:story = { StA_set_default_realm_laws = yes }
 				}
 			}
 			else = {
-				scope:story.var:StA_ruler = {
-					every_vassal = {
-						limit = {
-							primary_title = {
-								has_variable = StA_title_allegiance
-								scope:story.var:StA_title = {
-									is_de_jure_liege_or_above_target = PREV
-									NOT = { is_de_jure_liege_or_above_target = PREV.var:StA_title_allegiance }
-								}
-							}
-						}
-						primary_title = {
-							StA_remove_current_title_allegiance = yes
-							if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 11" }
-							else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 11" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
-							StA_set_title_allegiance_to_liege = { LIEGE = scope:story.var:StA_ruler }
-							if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 12" }
-							else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 12" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
-						}
-					}
-				}
-			}
-			remove_variable = inherited_title
-		}
-		if = { limit = { scope:story = { NOT = { has_variable = feudal_government_taxes_ }}} scope:StA_title = { debug_log_scopes = no } debug_log = "NO TAX 13" }
-		else = { scope:story.var:feudal_government_taxes_ = { debug_log = "YES TAX 13" scope:StA_title = { debug_log_scopes = no } debug_log_scopes = no }}
-		debug_log = "OLD TAX"
-		if = { limit = { has_variable = feudal_government_taxes_ } var:feudal_government_taxes_ = { debug_log_scopes = no }}
-		StA_set_default_realm_laws = yes
-		debug_log = "NEW TAX"
-		var:feudal_government_taxes_ = { debug_log_scopes = no }
-		
-		set_variable = {
-			name = total_strength
-			value = {
-				every_in_list = {
-					variable = StA_pledge_allegiance
+				ordered_this_title_or_de_jure_above = {
 					limit = {
-						tier >= tier_county
-						NOT = { holder = scope:StA_title.holder }
-						THIS = holder.primary_title
+						NOT = { THIS = PREV }
+						trigger_if = {
+							limit = { has_variable = StA_holder }
+							var:StA_holder = scope:ruler
+						}
+						trigger_else = {
+							holder = scope:ruler
+						}
+						has_variable = StA_title_realm_law
 					}
-					add = holder.max_military_strength
+					order_by = reverse_tier
+					save_scope_as = transfer_from
 				}
-				min = 1
+				if = {
+					limit = { NOT = { exists = scope:transfer_from }}
+					scope:ruler.primary_title.var:StA_title_realm_law = { save_scope_as = transfer_from }
+				}
+				if = {
+					limit = { debug_only = yes }
+					debug_log = "STA TRANSFERT REALM LAWS FROM OWN TITLE"
+					scope:transfer_from.var:title = { debug_log_scopes = no }
+				}
+				StA_transfer_title_laws = { TRANSFER_FROM = scope:transfer_from TRANSFER_TO = scope:story }
 			}
 		}
-		set_variable = {
-			name = average_submission
-			value = {
-				every_in_list = {
-					variable = StA_pledge_allegiance
-					limit = {
-						tier >= tier_county
-						NOT = { holder = scope:StA_title.holder }
-						THIS = holder.primary_title
-					}
-					add = {
-						add = holder.StA_submission
-						multiply = holder.max_military_strength
-					}
-				}
-				divide = var:total_strength
-				max = 100
-				min = -100
-			}
-		}
-		set_variable = {
-			name = StA_title_realm_authority
-			value = var:StA_title.StA_title_realm_authority
-		}
-		set_variable = {
-			name = StA_title_realm_authority_capacity
-			value = var:StA_title.StA_title_realm_authority_capacity
-		}
-		var:StA_title = {
-			StA_reset_cooldown_title_holder_change = yes
-		}
+		var:title = { StA_reset_cooldown_title_holder_change = yes }
 	}
 	on_end = {
+		var:title = {
+			remove_variable = StA_title_realm_law
+		}
 	}
 	on_owner_death = {
 	}

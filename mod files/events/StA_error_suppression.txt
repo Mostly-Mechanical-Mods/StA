@@ -59,5 +59,6 @@ StA_error_suppression.0001 = {
 		fix_variable_error = { X = StA_realm_levies }
 		fix_variable_error = { X = StA_title_law_cooldown }
 		fix_variable_error = { X = StA_cooldown }
+		fix_variable_error = { X = StA_primary_title_of }
 	}
 }
