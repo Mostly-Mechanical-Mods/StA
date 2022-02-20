@@ -160,9 +160,12 @@ StA_title_realm_law_init = {
 		every_in_list = {
 			list = reset_authority
 			StA_reset_authority = yes
-			save_scope_as = title
-			set_succession_law_on_dependent_titles_global = yes
-			clear_saved_scope = title
+			var:title = {
+				save_scope_as = title
+				set_succession_law_on_dependent_titles_global = yes
+				clear_saved_scope = title
+			}
+			remove_from_list = reset_authority
 		}
 
 		every_ruler = {
@@ -342,9 +345,11 @@ StA_title_and_vassal_change = {
 			every_in_list = {
 				list = reset_authority
 				StA_reset_authority = yes
-				save_scope_as = title
-				set_succession_law_on_dependent_titles_global = yes
-				clear_saved_scope = title
+				var:title = {
+					save_scope_as = title
+					set_succession_law_on_dependent_titles_global = yes
+					clear_saved_scope = title
+				}
 				remove_from_list = reset_authority
 			}
 		}
@@ -498,9 +503,11 @@ StA_title_and_vassal_change = {
 		every_in_list = {
 			list = reset_authority
 			StA_reset_authority = yes
-			save_scope_as = title
-			set_succession_law_on_dependent_titles_global = yes
-			clear_saved_scope = title
+			var:title = {
+				save_scope_as = title
+				set_succession_law_on_dependent_titles_global = yes
+				clear_saved_scope = title
+			}
 			remove_from_list = reset_authority
 		}
 	}
