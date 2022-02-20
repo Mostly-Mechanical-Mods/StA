@@ -148,3 +148,55 @@ StA_reset_authority = {
 		value = var:title.StA_title_realm_authority_capacity
 	}
 }
+
+set_succession_law_on_dependent_titles_global = {
+	switch = {
+		trigger = has_title_law
+		single_heir_succession_law = { set_succession_law_on_dependent_titles = { LAW = set_succession_law_on_dependent_titles }}
+		single_heir_succession_law_youngest = { set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law_youngest }}
+		single_heir_dynasty_house = { set_succession_law_on_dependent_titles = { LAW = single_heir_dynasty_house }}
+	}
+}
+
+set_succession_law_on_dependent_titles = {
+	hidden_effect = {
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "PASS SINGLE HEIR LAW"
+			debug_log_scopes = yes
+		}
+		if = {
+			limit = { exists = scope:title }
+			scope:title = {
+				if = {
+					limit = { debug_only = yes }
+					debug_log_scopes = no
+				}
+				every_in_de_jure_hierarchy = {
+					limit = {
+						holder = PREV.holder
+						is_leased_out = no
+						NOR = {
+							has_variable = StA_title_realm_law
+							any_this_title_or_de_jure_above = {
+								NOR = {
+									THIS = PREV
+									THIS = scope:title
+									target_is_de_jure_liege_or_above = scope:title
+								}
+								holder = PREV.holder
+								has_variable = StA_title_realm_law
+							}
+						}
+					}
+					if = {
+						limit = { debug_only = yes }
+						debug_log = "INHERITS LAW"
+						debug_log_scopes = no
+					}
+					add_title_law = $LAW$
+				}
+			}
+		}
+	}
+}

@@ -162,7 +162,7 @@
 		can_title_have = {
 			trigger_if = {
 				limit = { exists = global_var:StA_is_loaded }
-				holder = { has_government = feudal_government }
+				title_can_have_succession_law = { LAW = single_heir_succession_law }
 			}
 			trigger_else = { always = no }
 		}
@@ -170,8 +170,12 @@
 			trigger_if = {
 				limit = { exists = global_var:StA_is_loaded }
 				holder = { has_government = feudal_government }
+				has_variable = StA_title_realm_law
 			}
 			trigger_else = { always = no }
+		}
+		on_pass = {
+			set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law }
 		}
 		can_keep = {
 			can_keep_single_heir_succession_law_trigger = yes
@@ -188,7 +192,10 @@
 			can_have_single_heir_succession_law_trigger = yes
 		}
 		can_pass = {
-			can_change_succession_law_trigger = yes
+			OR = {
+				can_change_succession_law_trigger = yes
+
+			}
 		}
 		should_start_with = {
 			historical_succession_access_single_heir_succession_law_trigger = yes
@@ -229,7 +236,7 @@
 		can_title_have = {
 			trigger_if = {
 				limit = { exists = global_var:StA_is_loaded }
-				holder = { has_government = feudal_government }
+				title_can_have_succession_law = { LAW = single_heir_succession_law_youngest }
 			}
 			trigger_else = { always = no }
 		}
@@ -237,8 +244,12 @@
 			trigger_if = {
 				limit = { exists = global_var:StA_is_loaded }
 				holder = { has_government = feudal_government }
+				has_variable = StA_title_realm_law
 			}
 			trigger_else = { always = no }
+		}
+		on_pass = {
+			set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law_youngest }
 		}
 		can_keep = {
 			can_keep_single_heir_youngest_succession_law_trigger = yes
@@ -281,7 +292,7 @@
 		can_title_have = {
 			trigger_if = {
 				limit = { exists = global_var:StA_is_loaded }
-				holder = { has_government = feudal_government }
+				title_can_have_succession_law = { LAW = single_heir_dynasty_house }
 			}
 			trigger_else = { always = no }
 		}
@@ -289,8 +300,12 @@
 			trigger_if = {
 				limit = { exists = global_var:StA_is_loaded }
 				holder = { has_government = feudal_government }
+				has_variable = StA_title_realm_law
 			}
 			trigger_else = { always = no }
+		}
+		on_pass = {
+			set_succession_law_on_dependent_titles = { LAW = single_heir_dynasty_house }
 		}
 		can_keep = {
 			can_keep_single_heir_dynasty_house_trigger = yes
