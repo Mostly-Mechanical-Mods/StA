@@ -18,11 +18,12 @@
 		# [StA]
 		should_show_for_title = { # Never show this in the UI, just apply it through script
 			trigger_if = {
-				limit = { exists = global_var:StA_is_loaded }
-				holder = { has_government = feudal_government }
+				limit = {
+					exists = global_var:StA_is_loaded
+					holder = { has_government = feudal_government }
+				}
 				has_variable = StA_title_realm_law
 			}
-			trigger_else = { always = no }
 		}
 		# [/StA]
 		succession = {
@@ -58,11 +59,12 @@
 		# [StA]
 		should_show_for_title = { # Never show this in the UI, just apply it through script
 			trigger_if = {
-				limit = { exists = global_var:StA_is_loaded }
-				holder = { has_government = feudal_government }
+				limit = {
+					exists = global_var:StA_is_loaded
+					holder = { has_government = feudal_government }
+				}
 				has_variable = StA_title_realm_law
 			}
-			trigger_else = { always = no }
 		}
 		# [/StA]
 		succession = {
@@ -102,11 +104,12 @@
 		# [StA]
 		should_show_for_title = { # Never show this in the UI, just apply it through script
 			trigger_if = {
-				limit = { exists = global_var:StA_is_loaded }
-				holder = { has_government = feudal_government }
+				limit = {
+					exists = global_var:StA_is_loaded
+					holder = { has_government = feudal_government }
+				}
 				has_variable = StA_title_realm_law
 			}
-			trigger_else = { always = no }
 		}
 		# [/StA]
 		succession = {
@@ -142,11 +145,12 @@
 		# [StA]
 		should_show_for_title = { # Never show this in the UI, just apply it through script
 			trigger_if = {
-				limit = { exists = global_var:StA_is_loaded }
-				holder = { has_government = feudal_government }
+				limit = {
+					exists = global_var:StA_is_loaded
+					holder = { has_government = feudal_government }
+				}
 				has_variable = StA_title_realm_law
 			}
-			trigger_else = { always = no }
 		}
 		# [/StA]
 		succession = {
@@ -188,11 +192,12 @@
 		# [StA]
 		should_show_for_title = { # Never show this in the UI, just apply it through script
 			trigger_if = {
-				limit = { exists = global_var:StA_is_loaded }
-				holder = { has_government = feudal_government }
+				limit = {
+					exists = global_var:StA_is_loaded
+					holder = { has_government = feudal_government }
+				}
 				has_variable = StA_title_realm_law
 			}
-			trigger_else = { always = no }
 		}
 		# [/StA]
 		succession = {
