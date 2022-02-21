@@ -1,43 +1,4 @@
-﻿StA_update_title_realm_law = {
-	scope = title
-	saved_scopes = {
-		obligation
-		level
-	}
-	effect = {
-		var:StA_title_realm_law = {
-			switch = {
-				trigger = scope:obligation
-				flag:feudal_government_taxes = { set_variable = { name = feudal_government_taxes value = scope:level }}
-				flag:feudal_government_levies = { set_variable = { name = feudal_government_levies value = scope:level }}
-			}
-		}
-		switch = {
-			trigger = scope:obligation
-			flag:feudal_government_taxes = { set_variable = { name = feudal_government_taxes value = scope:level }}
-			flag:feudal_government_levies = { set_variable = { name = feudal_government_levies value = scope:level }}
-		}
-		holder = {
-			every_vassal = {
-				limit = {
-					has_government = feudal_government
-					trigger_if = {
-						limit = { highest_held_title_tier >= tier_county }
-						primary_title.var:StA_title_allegiance = ROOT
-						has_variable = StA_custom_contract
-					}
-				}
-				switch = {
-					trigger = scope:obligation
-					flag:feudal_government_taxes = { vassal_contract_set_obligation_level = { type = feudal_government_taxes level = scope:level }}
-					flag:feudal_government_levies = { vassal_contract_set_obligation_level = { type = feudal_government_levies level = scope:level }}
-				}
-			}
-		}
-	}
-}
-
-StA_change_title_law = {
+﻿StA_change_title_law = {
 	scope = character
 	saved_scopes = {
 		title
@@ -168,21 +129,9 @@ StA_confirm_title_law = {
 		every_vassal = {
 			limit = {
 				has_government = feudal_government
-				trigger_if = {
-					limit = { highest_held_title_tier >= tier_county }
-					primary_title.var:StA_title_allegiance = ROOT.var:StA_change_law_title
-					NOT = { has_variable = StA_custom_contract }
-				}
+				trigger_if = { primary_title.var:StA_title_allegiance = ROOT.var:StA_change_law_title }
 			}
-			switch = {
-				trigger = ROOT.var:StA_change_law_obligation
-				flag:feudal_government_taxes_ = { vassal_contract_set_obligation_level = { type = feudal_government_taxes level = ROOT.var:StA_change_law_level }}
-				flag:feudal_government_levies_ = { vassal_contract_set_obligation_level = { type = feudal_government_levies level = ROOT.var:StA_change_law_level }}
-				flag:succession_rights_ = { vassal_contract_set_obligation_level = { type = succession_rights level = ROOT.var:StA_change_law_level }}
-				flag:war_declaration_rights_ = { vassal_contract_set_obligation_level = { type = war_declaration_rights level = ROOT.var:StA_change_law_level }}
-				flag:title_revocation_rights_ = { vassal_contract_set_obligation_level = { type = title_revocation_rights level = ROOT.var:StA_change_law_level }}
-			}
-			# if = { limit = { var:StA_change_law_obligation = flag:StA_realm_tax } set_variable = { name = StA_realm_tax value = var:StA_change_law_level }}
+			update_vassal_contract = yes
 		}
 		remove_variable = StA_confirm_title_window_on
 		remove_variable = StA_change_law_title
@@ -226,10 +175,33 @@ StA_title_window_player = {
 					max = 99
 					check_range_bounds = no
 					limit = { has_variable = StA_title_realm_law }
+					save_scope_as = title_temp
 					ROOT = {
 						add_to_variable_list = {
 							name = title_window_player
 							target = PREV
+						}
+					}
+					every_in_de_jure_hierarchy = {
+						limit = {
+							NOT = { THIS = PREV }
+							holder = ROOT
+							tier >= tier_duchy
+							any_this_title_or_de_jure_above = {
+								NOR = {
+									THIS = PREV
+									THIS = scope:title_temp
+								}
+								has_variable = StA_title_realm_law
+								target_is_de_jure_liege_or_above = scope:title_temp
+								count = 0
+							}
+						}
+						ROOT = {
+							add_to_variable_list = {
+								name = title_window_player
+								target = PREV
+							}
 						}
 					}
 					ordered_in_list = {

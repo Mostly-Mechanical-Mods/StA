@@ -37,11 +37,6 @@ StA_inherit_title_laws = {
 }
 
 StA_transfer_title_laws = {
-	# if = { limit = { $TRANSFER_FROM$ = { has_variable = feudal_government_taxes_ }} $TRANSFER_TO$ = { set_variable = { name = feudal_government_taxes_ value = $TRANSFER_FROM$.var:feudal_government_taxes_ }}}
-	# if = { limit = { $TRANSFER_FROM$ = { has_variable = feudal_government_levies_ }} $TRANSFER_TO$ = { set_variable = { name = feudal_government_levies_ value = $TRANSFER_FROM$.var:feudal_government_levies_ }}}
-	# if = { limit = { $TRANSFER_FROM$ = { has_variable = succession_rights_ }} $TRANSFER_TO$ = { set_variable = { name = succession_rights_ value = $TRANSFER_FROM$.var:succession_rights_ }}}
-	# if = { limit = { $TRANSFER_FROM$ = { has_variable = war_declaration_rights_ }} $TRANSFER_TO$ = { set_variable = { name = war_declaration_rights_ value = $TRANSFER_FROM$.var:war_declaration_rights_ }}}
-	# if = { limit = { $TRANSFER_FROM$ = { has_variable = title_revocation_rights_ }} $TRANSFER_TO$ = { set_variable = { name = title_revocation_rights_ value = $TRANSFER_FROM$.var:title_revocation_rights_ }}}
 	$TRANSFER_TO$ = { set_variable = { name = feudal_government_taxes_ value = $TRANSFER_FROM$.var:feudal_government_taxes_ }}
 	$TRANSFER_TO$ = { set_variable = { name = feudal_government_levies_ value = $TRANSFER_FROM$.var:feudal_government_levies_ }}
 	$TRANSFER_TO$ = { set_variable = { name = succession_rights_ value = $TRANSFER_FROM$.var:succession_rights_ }}
@@ -98,6 +93,10 @@ StA_reset_authority = {
 				name = opinion_liege
 				value = scope:opinion_liege
 			}
+			if = {
+				limit = { has_government = feudal_government }
+				update_vassal_contract = yes
+			}
 		}
 	}
 	set_variable = {
@@ -152,7 +151,7 @@ StA_reset_authority = {
 set_succession_law_on_dependent_titles_global = {
 	switch = {
 		trigger = has_title_law
-		single_heir_succession_law = { set_succession_law_on_dependent_titles = { LAW = set_succession_law_on_dependent_titles }}
+		single_heir_succession_law = { set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law }}
 		single_heir_succession_law_youngest = { set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law_youngest }}
 		single_heir_dynasty_house = { set_succession_law_on_dependent_titles = { LAW = single_heir_dynasty_house }}
 	}
@@ -199,4 +198,23 @@ set_succession_law_on_dependent_titles = {
 			}
 		}
 	}
+}
+
+update_vassal_contract_obligation = {
+	if = {
+		limit = { NOT = { has_variable = $OBLIGATION$_opt_out }}
+		vassal_contract_set_obligation_level = { type = $OBLIGATION$ level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:$OBLIGATION$_ }
+	}
+	else_if = {
+		limit = { vassal_contract_obligation_level:$OBLIGATION$ = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:$OBLIGATION$_ }
+		remove_variable = $OBLIGATION$_opt_out
+	}
+}
+
+update_vassal_contract = {
+	update_vassal_contract_obligation = { OBLIGATION = feudal_government_taxes }
+	update_vassal_contract_obligation = { OBLIGATION = feudal_government_levies }
+	update_vassal_contract_obligation = { OBLIGATION = title_revocation_rights }
+	update_vassal_contract_obligation = { OBLIGATION = war_declaration_rights }
+	update_vassal_contract_obligation = { OBLIGATION = succession_rights }
 }

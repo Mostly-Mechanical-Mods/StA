@@ -12,15 +12,21 @@ set_obligation_if_changed_effect = {
 		}
 	}
 	if = {
-		limit = { has_title_realm_contract = no }
-		set_variable = StA_custom_contract
-	}
-	else = {
-		remove_variable = StA_custom_contract
-	}
-	set_variable = {
-		name = StA_contract_score
-		value = StA_contract_score
+		limit = {
+			liege = { has_government = feudal_government }
+			primary_title.var:StA_title_allegiance.var:StA_title_realm_law = { has_variable = $OBLIGATION_TYPE$_ }
+		}
+		if = {
+			limit = { NOT = { vassal_contract_obligation_level:$OBLIGATION_TYPE$ = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:$OBLIGATION_TYPE$_ }}
+			set_variable = $OBLIGATION_TYPE$_opt_out
+		}
+		else = {
+			remove_variable = $OBLIGATION_TYPE$_opt_out
+		}
+		set_variable = {
+			name = StA_contract_score
+			value = StA_contract_score
+		}
 	}
 }
 

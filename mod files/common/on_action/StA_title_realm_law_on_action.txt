@@ -176,11 +176,7 @@ StA_title_realm_law_init = {
 				primary_title = { has_variable = StA_title_allegiance }
 				primary_title.var:StA_title_allegiance = { has_variable = StA_title_realm_law }
 			}
-			vassal_contract_set_obligation_level = { type = feudal_government_taxes level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_taxes_ }
-			vassal_contract_set_obligation_level = { type = feudal_government_levies level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_levies_ }
-			vassal_contract_set_obligation_level = { type = title_revocation_rights level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:title_revocation_rights_ }
-			vassal_contract_set_obligation_level = { type = war_declaration_rights level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights_ }
-			vassal_contract_set_obligation_level = { type = succession_rights level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:succession_rights_ }
+			update_vassal_contract = yes
 		}
 	}
 }

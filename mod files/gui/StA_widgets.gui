@@ -155,17 +155,25 @@ window = {
 				datacontext = "[Scope.Title]"
 				icon = {
 					name = "has_laws"
-					visible = "[Title.MakeScope.Var('StA_title_realm_law').IsSet]"
+					visible = "[Title.HasLaws]"
+					# visible = "[Title.MakeScope.Var('StA_title_realm_law').IsSet]"
 					parentanchor = bottom|right
 					size = { 25 25 }
 					position = { 5 0 }
 					texture = "gfx/interface/icons/title_status/icon_title_law.dds"
+				}
+				icon = {
+					name = "has_authority"
+					# visible = "[Title.HasLaws]"
+					visible = "[Title.MakeScope.Var('StA_title_realm_law').IsSet]"
+					parentanchor = bottom|left
+					size = { 25 25 }
+					position = { -5 0 }
+					texture = "gfx/interface/icons/laws/StA_feudal_crown_authority_0.dds"
 				}
 			}
 		}
 		# }
 		expand = {}
 	}
-
-	
 }
