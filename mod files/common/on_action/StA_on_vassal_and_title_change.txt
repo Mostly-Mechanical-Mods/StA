@@ -1,189 +1,39 @@
-﻿on_game_start_after_lobby = {
+﻿on_title_gain = {
 	on_actions = {
-		StA_title_realm_law_init
+		StA_title_and_vassal_change
 	}
 }
 
-StA_title_realm_law_init = {
+on_vassal_gained = {
+	on_actions = {
+		StA_title_and_vassal_change
+	}
+}
+
+on_war_won_attacker = {
+	on_actions = {
+		StA_on_war_won_attacker
+	}
+}
+
+StA_on_war_won_attacker = {
+	trigger = {
+		OR = {
+			scope:war = { using_cb = independence_faction_war }
+			scope:war = { using_cb = independence_war }
+		}
+	}
 	effect = {
-		random_player = {
-			create_story = { type = StA_obligation_levels save_scope_as = zero }
-			create_story = { type = StA_obligation_levels save_scope_as = one }
-			create_story = { type = StA_obligation_levels save_scope_as = two }
-			create_story = { type = StA_obligation_levels save_scope_as = three }
-			create_story = { type = StA_obligation_levels save_scope_as = four }
-			scope:zero = {	set_variable = { name = flag value = flag:0 } set_variable = { name = value value = 0 }}
-			scope:one = {	set_variable = { name = flag value = flag:1 } set_variable = { name = value value = 1 }}
-			scope:two = {	set_variable = { name = flag value = flag:2 } set_variable = { name = value value = 2 }}
-			scope:three = {	set_variable = { name = flag value = flag:3 } set_variable = { name = value value = 3 }}
-			scope:four = {	set_variable = { name = flag value = flag:4 } set_variable = { name = value value = 4 }}
-			add_to_global_variable_list = { name = StA_levels_4 target = scope:zero }
-			add_to_global_variable_list = { name = StA_levels_4 target = scope:one }
-			add_to_global_variable_list = { name = StA_levels_4 target = scope:two }
-			add_to_global_variable_list = { name = StA_levels_4 target = scope:three }
-			add_to_global_variable_list = { name = StA_levels_4 target = scope:four }
-			add_to_global_variable_list = { name = StA_levels_2 target = scope:zero }
-			add_to_global_variable_list = { name = StA_levels_2 target = scope:one }
-			add_to_global_variable_list = { name = StA_levels_2 target = scope:two }
-			add_to_global_variable_list = { name = StA_levels_1 target = scope:zero }
-			add_to_global_variable_list = { name = StA_levels_1 target = scope:one }
-			StA_setup_title_law_story = { LAW = feudal_government_taxes		LEVELS = 4 }
-			StA_setup_title_law_story = { LAW = feudal_government_levies	LEVELS = 4 }
-			StA_setup_title_law_story = { LAW = war_declaration_rights		LEVELS = 1 }
-			StA_setup_title_law_story = { LAW = title_revocation_rights		LEVELS = 1 }
-			StA_setup_title_law_story = { LAW = succession_rights			LEVELS = 1 }
-			StA_setup_title_succession_law_story = { LAW = male_only_law }
-			StA_setup_title_succession_law_story = { LAW = male_preference_law }
-			StA_setup_title_succession_law_story = { LAW = equal_law }
-			StA_setup_title_succession_law_story = { LAW = female_preference_law }
-			StA_setup_title_succession_law_story = { LAW = female_only_law }
-			StA_setup_title_succession_law_story = { LAW = feudal_elective_succession_law }
-			StA_setup_title_succession_law_story = { LAW = princely_elective_succession_law }
-			StA_setup_title_succession_law_story = { LAW = gaelic_elective_succession_law }
-			StA_setup_title_succession_law_story = { LAW = saxon_elective_succession_law }
-			StA_setup_title_succession_law_story = { LAW = scandinavian_elective_succession_law }
-		}
-
-		set_global_variable = {
-			name = 0
-			value = 0
-		}
-		set_global_variable = {
-			name = 1
-			value = 1
-		}
-		set_global_variable = {
-			name = 2
-			value = 2
-		}
-		set_global_variable = {
-			name = 3
-			value = 3
-		}
-		set_global_variable = {
-			name = 4
-			value = 4
-		}
-
-		every_independent_ruler = {
-			limit = { is_landless_ruler = no }
-			primary_title = {
-				ordered_in_de_facto_hierarchy = {
-					limit = { THIS = holder.primary_title }
-					order_by = tier
-					max = 1000
-					continue = { always = yes }
-					check_range_bounds = no
-					set_variable = {
-						name = StA_primary_title_of
-						value = holder
-					}
-					holder = {
-						save_scope_as = ruler
-						set_variable = {
-							name = StA_primary_title
-							value = primary_title
-						}
-						every_vassal = {
-							set_variable = {
-								name = StA_liege
-								value = liege
-							}
-							primary_title = {
-								ordered_this_title_or_de_jure_above = {
-									limit = {
-										holder = scope:ruler
-										tier >= tier_duchy
-										tier = scope:ruler.highest_held_title_tier
-									}
-									add_to_variable_list = {
-										name = StA_pledge_allegiance
-										target = PREV
-									}
-									PREV = {
-										set_variable = {
-											name = StA_title_allegiance
-											value = PREV
-										}
-									}
-								}
-								if = {
-									limit = { NOT = { has_variable = StA_title_allegiance }}
-									holder.liege.primary_title = {
-										add_to_variable_list = {
-											name = StA_pledge_allegiance
-											target = PREV
-										}
-									}
-									set_variable = {
-										name = StA_title_allegiance
-										value = holder.liege.primary_title
-									}
-								}
-							}
-						}
-						every_held_title = {
-							set_variable = {
-								name = StA_holder
-								value = holder
-							}
-						}
-						if = {
-							limit = { has_government = feudal_government }
-							every_held_title = {
-								limit = {
-									tier = PREV.highest_held_title_tier
-									tier >= tier_barony
-									trigger_if = {
-										limit = { tier = tier_county }
-										THIS = PREV.primary_title
-									}
-								}
-								PREV = {
-									set_variable = {
-										name = StA_title
-										value = PREV
-									}
-									create_story = {
-										type = StA_title_realm_law
-										save_scope_as = reset_authority
-									}
-									scope:reset_authority = { add_to_list = reset_authority }
-								}
-							}
-						}
-					}
+		primary_attacker = {
+			trigger_event = {
+				on_action = StA_title_and_vassal_change
+			}
+			every_war_ally = {
+				trigger_event = {
+					on_action = StA_title_and_vassal_change
 				}
 			}
 		}
-
-		every_in_list = {
-			list = reset_authority
-			StA_reset_authority = yes
-			var:title = {
-				save_scope_as = title
-				set_succession_law_on_dependent_titles_global = yes
-				clear_saved_scope = title
-			}
-			remove_from_list = reset_authority
-		}
-
-		every_ruler = {
-			limit = {
-				has_government = feudal_government
-				is_independent_ruler = no
-				# highest_held_title_tier >= tier_county
-				primary_title = { has_variable = StA_title_allegiance }
-				primary_title.var:StA_title_allegiance = { has_variable = StA_title_realm_law }
-			}
-			update_vassal_contract = yes
-		}
-	}
-}
-
-on_title_gain = {
-	on_actions = {
-		StA_title_and_vassal_change
 	}
 }
 
@@ -206,8 +56,11 @@ StA_title_and_vassal_change = {
 		}
 	}
 	effect = {
-		debug_log = "StA_title_and_vassal_change"
-		debug_log_scopes = no
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "StA_title_and_vassal_change"
+			debug_log_scopes = no
+		}
 		every_vassal = {
 			limit = {
 				NAND = {
@@ -215,11 +68,19 @@ StA_title_and_vassal_change = {
 					var:StA_liege = PREV
 				}
 			}
+			if = {
+				limit = { debug_only = yes }
+				debug_log_scopes = no
+			}
 			add_to_list = vassal_change
 			if = {
 				limit = { has_variable = StA_liege }
 				var:StA_liege = { add_to_list = title_or_vassal_lost }
 			}
+		}
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STEP 1"
 		}
 		every_held_title = {
 			limit = {
@@ -227,6 +88,10 @@ StA_title_and_vassal_change = {
 					has_variable = StA_holder
 					var:StA_holder = PREV
 				}
+			}
+			if = {
+				limit = { debug_only = yes }
+				debug_log_scopes = no
 			}
 			add_to_list = title_change
 			if = {
@@ -236,6 +101,10 @@ StA_title_and_vassal_change = {
 				}
 				var:StA_holder = { add_to_list = title_or_vassal_lost }
 			}
+		}
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STEP 2"
 		}
 		every_in_list = {
 			list = title_or_vassal_lost
@@ -350,10 +219,42 @@ StA_title_and_vassal_change = {
 			}
 		}
 		if = {
-			limit = { has_government = feudal_government }
+			limit = { debug_only = yes }
+			debug_log = "STEP 3"
+		}
+		if = {
+			limit = { debug_only = yes }
+			if = {
+				limit = { has_variable = StA_primary_title }
+				var:StA_primary_title = { debug_log_scopes = no }
+			}
+			else = {
+				debug_log = "NO STA_PRIMARY_TITLE"
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_government = feudal_government
+					trigger_if = {
+						limit = { NOT = { has_variable = StA_primary_title }}
+						exists = capital_province
+						capital_province = { has_holding_type = castle_holding }
+					}
+				}
+			}
+			if = {
+				limit = { debug_only = yes }
+				debug_log = "IS FEUDAL"
+			}
 			primary_title = {
 				if = {
 					limit = { is_in_list = title_change }
+					if = {
+						limit = { debug_only = yes }
+						debug_log = "NEW PRIMARY TITLE"
+						debug_log_scopes = no
+					}
 					if = {
 						limit = {
 							has_variable = StA_title_realm_law
@@ -405,6 +306,7 @@ StA_title_and_vassal_change = {
 				if = {
 					limit = {
 						tier = ROOT.highest_held_title_tier
+						tier >= tier_duchy
 						NOT = { has_variable = StA_title_realm_law }
 					}
 					ROOT = {
@@ -426,12 +328,14 @@ StA_title_and_vassal_change = {
 						tier < ROOT.highest_held_title_tier
 						has_variable = StA_title_realm_law
 						NOR = {
+							has_title_law_flag = succession_gender_laws
 							has_title_law_flag = advanced_succession_law
 							has_title_law_flag = elective_succession_law
 						}
 					}
 					ordered_this_title_or_de_jure_above = {
 						limit = {
+							NOT = { THIS = PREV }
 							holder = ROOT
 							has_variable = StA_title_realm_law
 							StA_title_has_identical_law_as_target = { TITLE = PREV }
@@ -472,6 +376,10 @@ StA_title_and_vassal_change = {
 			}
 		}
 		else = {
+			if = {
+				limit = { debug_only = yes }
+				debug_log = "NOT FEUDAL"
+			}
 			every_in_list = {
 				list = title_change
 				limit = { has_variable = StA_title_realm_law }
@@ -481,12 +389,31 @@ StA_title_and_vassal_change = {
 				}
 			}
 		}
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STEP 4"
+		}
 		every_held_title = {
 			StA_remove_current_title_allegiance = yes
 			clear_variable_list = StA_pledge_allegiance
 		}
+		every_in_list = {
+			list = title_change
+			set_variable = {
+				name = StA_holder
+				value = PREV
+			}
+		}
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STEP 5"
+		}
 		primary_title = {
 			StA_set_title_allegiance_to_liege = yes
+		}
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STEP 6"
 		}
 		every_vassal = {
 			every_held_title = {
@@ -495,6 +422,10 @@ StA_title_and_vassal_change = {
 			primary_title = {
 				StA_set_title_allegiance_to_liege = yes
 			}
+		}
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STEP 7"
 		}
 		every_in_list = {
 			list = reset_authority
@@ -506,18 +437,10 @@ StA_title_and_vassal_change = {
 			}
 			remove_from_list = reset_authority
 		}
-	}
-}
-
-on_vassal_gained = {
-	on_actions = {
-		StA_title_and_vassal_change
-	}
-}
-
-on_war_won_attacker = {
-	on_actions = {
-		StA_on_war_won_attacker
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STEP OVER"
+		}
 	}
 }
 
@@ -525,26 +448,7 @@ on_war_won_attacker = {
 # same scopes are available in these events as in the CBs themselves, this just fires for all CBs instead of a specific CB.
 # note that any events/effects fired here WILL NOT show up in the war summary tooltip; they fire at the same time as the war resolution, but are not actually part of the war resolution itself.
 
-StA_on_war_won_attacker = {
-	trigger = {
-		OR = {
-			scope:war = { using_cb = independence_faction_war }
-			scope:war = { using_cb = independence_war }
-		}
-	}
-	effect = {
-		primary_attacker = {
-			trigger_event = {
-				on_action = StA_title_and_vassal_change
-			}
-			every_war_ally = {
-				trigger_event = {
-					on_action = StA_title_and_vassal_change
-				}
-			}
-		}
-	}
-}
+
 
 on_death = {
 	on_actions = {
@@ -559,11 +463,14 @@ StA_on_death = {
 		is_landless_ruler = no
 	}
 	effect = {
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STA_ON_DEATH"
+			debug_log_scopes = no
+			primary_title = { debug_log_scopes = no }
+		}
 		every_held_title = {
-			limit = {
-				tier > tier_barony
-				is_landless_type_title = no
-			}
+			limit = { tier > tier_barony }
 			add_to_list = inheritable_titles
 		}
 		every_alert_creatable_title = { add_to_list = inheritable_titles }

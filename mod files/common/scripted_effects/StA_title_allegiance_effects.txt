@@ -19,8 +19,20 @@ StA_set_title_allegiance_to_liege = {
 	save_scope_as = title
 	holder = { save_scope_as = holder }
 	StA_remove_current_title_allegiance = yes
+	scope:holder = {
+		set_variable = {
+			name = StA_primary_title
+			value = primary_title
+		}
+	}
 	if = {
 		limit = { holder = { is_independent_ruler = no }}
+		scope:holder = {
+			set_variable = {
+				name = StA_liege
+				value = liege
+			}
+		}
 		if = {
 			limit = { scope:holder.liege = { has_government = feudal_government }}
 			ordered_this_title_or_de_jure_above = {
@@ -55,6 +67,7 @@ StA_set_title_allegiance_to_liege = {
 			}
 		}
 	}
+	else = { remove_variable = StA_liege }
 }
 
 # Supported Scopes: title
@@ -68,13 +81,6 @@ StA_remove_allegiance_from_non_primary_titles = {
 				StA_remove_current_title_allegiance = yes
 			}
 		}
-	}
-}
-
-StA_update_title_de_jure_allegiance = {
-	save_scope_as = title
-	ordered_this_title_or_de_jure_above = {
-
 	}
 }
 
@@ -143,33 +149,3 @@ StA_calculate_average_submission_ruler = {
 		}
 	}
 }
-
-# StA_merge_title_authority = {
-# 	if = {
-# 		limit = {
-# 			has_variable = StA_title_realm_law
-# 			$TITLE$ = { has_variable = StA_title_realm_law }
-# 		}
-# 		every_in_list = {
-# 			variable = StA_pledge_allegiance
-# 			set_variable = {
-# 				name = StA_title_allegiance
-# 				value = $TITLE$
-# 			}
-# 			$TITLE$.var:StA_title_realm_law = {
-# 				add_to_variable_list = {
-# 					name = StA_pledge_allegiance
-# 					target = PREV
-# 				}
-# 			}
-# 		}
-# 		var:StA_title_realm_law = {
-# 			PREV = { remove_variable = StA_title_realm_law }
-# 			var:StA_title = {
-# 				debug_log = "END STORY"
-# 				debug_log_scopes = no
-# 			}
-# 			end_story = yes
-# 		}
-# 	}
-# }

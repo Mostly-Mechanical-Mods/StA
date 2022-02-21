@@ -20,6 +20,16 @@ widget = {
 
 widget = {
 	size = { 0 0 }
+	name = "StA_savegame_compat_2100"
+	widgetid = "StA_savegame_compat_2100"
+	state = {
+		trigger_on_create = yes
+		on_start = "[GetScriptedGui('StA_savegame_compat_2100').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+	}
+}
+
+widget = {
+	size = { 0 0 }
 	name = "StA_pause"
 	widgetid = "StA_pause"
 	state = {

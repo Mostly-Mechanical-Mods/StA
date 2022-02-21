@@ -85,17 +85,26 @@ StA_reset_authority = {
 			value = scope:opinion_liege
 		}
 		every_vassal = {
-			save_opinion_value_as = {
-				name = opinion_liege
-				target = liege
-			}
-			set_variable = {
-				name = opinion_liege
-				value = scope:opinion_liege
-			}
 			if = {
-				limit = { has_government = feudal_government }
-				update_vassal_contract = yes
+				limit = { NOT = { primary_title = { has_variable = StA_title_allegiance }}}
+				debug_log = "NO PRIMARY TITLE ALLEGIANCE"
+				debug_log_scopes = no
+				primary_title = { debug_log_scopes = no }
+			}
+			else_if = {
+				limit = { primary_title.var:StA_title_allegiance = scope:story.var:title }
+				save_opinion_value_as = {
+					name = opinion_liege
+					target = liege
+				}
+				set_variable = {
+					name = opinion_liege
+					value = scope:opinion_liege
+				}
+				if = {
+					limit = { has_government = feudal_government }
+					update_vassal_contract = yes
+				}
 			}
 		}
 	}

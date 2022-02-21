@@ -128,8 +128,11 @@
 		var:title = { StA_reset_cooldown_title_holder_change = yes }
 	}
 	on_end = {
-		var:title = {
-			remove_variable = StA_title_realm_law
+		if = {
+			limit = { exists = var:title }
+			var:title = {
+				remove_variable = StA_title_realm_law
+			}
 		}
 	}
 	on_owner_death = {
