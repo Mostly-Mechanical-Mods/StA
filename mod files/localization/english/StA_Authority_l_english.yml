@@ -60,7 +60,10 @@
 
   TITLE_SWEARS_ALLEGIANCE_TO: "Swears [title_allegiance|E] to [Title.MakeScope.Var('StA_title_allegiance').Title.GetBaseName]"
   STA_CONFIRM_TITLE_LAW: "Title Realm Law Change"
-  STA_LAW_CHANGE_DESC: "You wish to change the [Localize(Concatenate(GetVariableSystem.Get('StA_confirm_title_law'),'icon_first'))] law\nin the [GetPlayer.MakeScope.Var('StA_change_law_title').Title.GetBaseName]\nand set it to [Localize(Concatenate(GetVariableSystem.Get('StA_confirm_title_law'),GetVariableSystem.Get('StA_confirm_title_law_level')))]\n\nThis will cost you [GetPlayer.MakeScope.Var('StA_change_law_cost').GetValue] @authority_icon! Authority.\n\nThis will increase the cooldown by [GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_cooldown_law_change_year')|0] years and [GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_cooldown_law_change_month')|0] months."
+  STA_LAW_CHANGE_DESC: "You wish to change the [Localize(Concatenate(GetVariableSystem.Get('StA_confirm_title_law'),'icon_first'))] law in the [GetPlayer.MakeScope.Var('StA_change_law_title').Title.GetBaseName] and set it to [Localize(Concatenate(GetVariableSystem.Get('StA_confirm_title_law'),GetVariableSystem.Get('StA_confirm_title_law_level')))]\n\nThis will cost you [GetPlayer.MakeScope.Var('StA_change_law_cost').GetValue] @authority_icon! Authority and increase the cooldown by @time_icon! [GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_cooldown_law_change_year')|0] years and [GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_cooldown_law_change_month')|0] months."
+
+  STA_LAW_CHANGE_VASSAL_OPT_IN: "[GetDataModelSize(GetPlayer.MakeScope.GetList('vassal_opt_in'))|0] Vassals impacted"
+  STA_LAW_CHANGE_VASSAL_OPT_OUT: "[GetDataModelSize(GetPlayer.MakeScope.GetList('vassal_opt_out'))|0] Vassals exempted"
 
   STA_LAW_CHANGE_COST_ALERT: "You do not have the necessary Authority to enact this law!"
   STA_LAW_CHANGE_COOLDOWN_ALERT: "You cannot spend Authority while a cooldown is active!"

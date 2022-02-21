@@ -6,6 +6,8 @@
 		level
 	}
 	effect = {
+		clear_variable_list = vassal_opt_in
+		clear_variable_list = vassal_opt_out
 		set_variable = {
 			name = StA_change_law_title
 			value = scope:title
@@ -22,31 +24,31 @@
 			name = StA_change_law_cost
 			value = {
 				if = {
-					limit = { var:StA_change_law_obligation = flag:feudal_government_taxes_ }
+					limit = { scope:obligation = flag:feudal_government_taxes_ }
 					add = scope:level
 					subtract = scope:title.var:StA_title_realm_law.var:feudal_government_taxes_
 					multiply = 5
 				}
 				else_if = {
-					limit = { var:StA_change_law_obligation = flag:feudal_government_levies_ }
+					limit = { scope:obligation = flag:feudal_government_levies_ }
 					add = scope:level
 					subtract = scope:title.var:StA_title_realm_law.var:feudal_government_levies_
 					multiply = 5
 				}
 				else_if = {
-					limit = { var:StA_change_law_obligation = flag:succession_rights_ }
+					limit = { scope:obligation = flag:succession_rights_ }
 					add = scope:level
 					subtract = scope:title.var:StA_title_realm_law.var:succession_rights_
 					multiply = 20
 				}
 				else_if = {
-					limit = { var:StA_change_law_obligation = flag:war_declaration_rights_ }
+					limit = { scope:obligation = flag:war_declaration_rights_ }
 					add = scope:level
 					subtract = scope:title.var:StA_title_realm_law.var:war_declaration_rights_
 					multiply = -20
 				}
 				else_if = {
-					limit = { var:StA_change_law_obligation = flag:title_revocation_rights_ }
+					limit = { scope:obligation = flag:title_revocation_rights_ }
 					add = scope:level
 					subtract = scope:title.var:StA_title_realm_law.var:title_revocation_rights_
 					multiply = -20
@@ -64,6 +66,35 @@
 			}
 		}
 		set_variable = StA_confirm_title_window_on
+		scope:title = {
+			ordered_in_list = {
+				variable = StA_pledge_allegiance
+				limit = {
+					holder = { has_government = feudal_government }
+					tier >= tier_county
+				}
+				order_by = tier
+				max = 99
+				check_range_bounds = no
+				if = {
+					limit = { holder = { has_contract_obligation_opt_out = yes }}
+					ROOT = {
+						add_to_variable_list = {
+							name = vassal_opt_out
+							target = PREV
+						}
+					}
+				}
+				else = {
+					ROOT = {
+						add_to_variable_list = {
+							name = vassal_opt_in
+							target = PREV
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -225,10 +256,12 @@ StA_title_window_player = {
 					}
 				}
 			}
-			every_held_title = {
-				limit = { has_variable = StA_title_realm_law }
-				var:StA_title_realm_law = {
-					StA_reset_authority = yes
+			scope:title = {
+				if = {
+					limit = { has_variable = StA_title_realm_law }
+					var:StA_title_realm_law = {
+						StA_reset_authority = yes
+					}
 				}
 			}
 		}

@@ -2,7 +2,8 @@ window = {
 	name = "StA_confirm_title_law"
 	widgetid = "StA_confirm_title_law"
 	parentanchor = center
-	size = { 500 300 }
+	size = { 900 650 }
+	position = { 200 0 }
 	layer = top
 	filter_mouse = all
 	alwaystransparent = no
@@ -10,108 +11,273 @@ window = {
 	visible = "[And(GetVariableSystem.Exists('StA_confirm_title_law'),GetPlayer.MakeScope.Var('StA_confirm_title_window_on').IsSet)]"
 	
 	using = Background_Fade
+	using = Window_Background_Popup
 
-	widget = {
-		parentanchor = center
-		using = Window_Background_Popup
-		alwaystransparent = no
-
-		vbox = {
-			set_parent_size_to_minimum = yes
+	vbox = {
+		# set_parent_size_to_minimum = yes
+		layoutpolicy_horizontal = expanding
+		using = Window_Margins
+		spacing = 10
+		
+		header_standard = {
 			layoutpolicy_horizontal = expanding
-			using = Window_Margins
-			spacing = 10
 			
-			header_standard = {
-				layoutpolicy_horizontal = expanding
-				
-				blockoverride "header_text"
-				{
-					text = "STA_CONFIRM_TITLE_LAW"
-				}
-
-				blockoverride "button_close"
-				{
-					visible = no
-				}
+			blockoverride "header_text"
+			{
+				text = "STA_CONFIRM_TITLE_LAW"
 			}
 
-			text_multi = {
-				name = "description"
-				autoresize = yes
-				max_width = 430
-				min_width = 430
-				margin = {15 10}
+			blockoverride "button_close"
+			{
+				visible = no
+			}
+		}
 
-				text = "STA_LAW_CHANGE_DESC"
-				using = "Font_Size_Small"
+		# spacer = { size = { 0 10 }}
 
-				background = {
-					using = Background_Area
+		text_multi = {
+			name = "description"
+			autoresize = yes
+			min_width = 800
+			margin = {15 10}
+
+			text = "STA_LAW_CHANGE_DESC"
+			using = "Font_Size_Small"
+
+			background = {
+				using = Background_Area
+			}
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			vbox = {
+				layoutpolicy_vertical = expanding
+				text_label_center = {
+					text = "STA_LAW_CHANGE_VASSAL_OPT_IN"
+				}
+				scrollbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					minimumsize = { 400 275 }
+
+					blockoverride "scrollbox_content" {
+						vbox = {
+							datamodel = "[GetPlayer.MakeScope.GetList('vassal_opt_in')]"
+							layoutpolicy_horizontal = expanding
+							spacing = 3
+
+							item = {
+								button_standard_list = {
+									datacontext = "[Scope.Title.GetHolder]"
+									layoutpolicy_horizontal = expanding
+									minimumsize = { 0 50 }
+									onclick = "[DefaultOnCharacterClick(Character.GetID)]"
+									onrightclick = "[DefaultOnCharacterRightClick(Character.GetID)]"
+									button_ignore = none
+
+									hbox = {
+										layoutpolicy_horizontal = expanding
+										margin = { 5 0 }
+										position = {0 -2 }
+
+										coa_realm_tiny_crown = {}
+
+										text_single = {
+											text = "[Character.GetNameNoTooltip]"
+											layoutpolicy_horizontal = expanding
+											margin = { 10 0 }
+										}
+										expand = {}
+
+										hbox = {
+											
+											visible = "[Not(Character.GetPrimaryTitle.IsBarony)]"
+											icon = {
+												size = { 25 25 }
+												texture = "gfx/interface/icons/icon_soldier.dds"
+											}
+
+											text_single = {
+												min_width = 50
+												text = "[Character.MakeScope.ScriptValue('StA_max_mil_strength')|0]"
+											}
+											
+											
+											button = {
+												tooltip = "[Character.MakeScope.GetScriptValueDesc('StA_submission')]"
+												min_width = 30
+												visible = "[GreaterThanOrEqualTo_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0')]"
+												name = "submission_icon_up"
+												size = { 30 30 }
+												texture = "gfx/interface/icons/message_feed/tier_up.dds"
+												alpha = "[Multiply_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0.01')]"
+											}
+											button = {
+												tooltip = "[Character.MakeScope.GetScriptValueDesc('StA_submission')]"
+												min_width = 30
+												visible = "[LessThan_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0')]"
+												name = "submission_icon_down"
+												size = { 30 30 }
+												texture = "gfx/interface/icons/message_feed/tier_down.dds"
+												alpha = "[Abs_CFixedPoint(Multiply_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0.01'))]"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}	
+			}
+			expand = {}
+			vbox = {
+				layoutpolicy_vertical = expanding
+				text_label_center = {
+					text = "STA_LAW_CHANGE_VASSAL_OPT_OUT"
+				}
+				scrollbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					minimumsize = { 400 275 }
+
+					blockoverride "scrollbox_content" {
+						vbox = {
+							datamodel = "[GetPlayer.MakeScope.GetList('vassal_opt_out')]"
+							layoutpolicy_horizontal = expanding
+							spacing = 3
+
+							item = {
+								button_standard_list = {
+									datacontext = "[Scope.Title.GetHolder]"
+									layoutpolicy_horizontal = expanding
+									minimumsize = { 0 50 }
+									onclick = "[DefaultOnCharacterClick(Character.GetID)]"
+									onrightclick = "[DefaultOnCharacterRightClick(Character.GetID)]"
+									button_ignore = none
+
+									hbox = {
+										layoutpolicy_horizontal = expanding
+										margin = { 5 0 }
+										position = {0 -2 }
+
+										coa_realm_tiny_crown = {}
+
+										text_single = {
+											text = "[Character.GetNameNoTooltip]"
+											layoutpolicy_horizontal = expanding
+											margin = { 10 0 }
+										}
+										expand = {}
+
+										hbox = {
+											
+											visible = "[Not(Character.GetPrimaryTitle.IsBarony)]"
+											icon = {
+												size = { 25 25 }
+												texture = "gfx/interface/icons/icon_soldier.dds"
+											}
+
+											text_single = {
+												min_width = 50
+												text = "[Character.MakeScope.ScriptValue('StA_max_mil_strength')|0]"
+											}
+											
+											
+											button = {
+												tooltip = "[Character.MakeScope.GetScriptValueDesc('StA_submission')]"
+												min_width = 30
+												visible = "[GreaterThanOrEqualTo_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0')]"
+												name = "submission_icon_up"
+												size = { 30 30 }
+												texture = "gfx/interface/icons/message_feed/tier_up.dds"
+												alpha = "[Multiply_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0.01')]"
+											}
+											button = {
+												tooltip = "[Character.MakeScope.GetScriptValueDesc('StA_submission')]"
+												min_width = 30
+												visible = "[LessThan_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0')]"
+												name = "submission_icon_down"
+												size = { 30 30 }
+												texture = "gfx/interface/icons/message_feed/tier_down.dds"
+												alpha = "[Abs_CFixedPoint(Multiply_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0.01'))]"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
 				}
 			}
+		}
 
-			text_multi = {
+		expand = {}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			expand = {}
+			text_single = {
 				name = "StA_law_change_cost_alert"
 				autoresize = yes
-				max_width = 430
-				min_width = 430
-				margin = {15 10}
+				# max_width = 430
+				# min_width = 430
+				margin = { 5 10 }
 				visible = "[Not(GetScriptedGui( 'StA_law_change_cost_alert' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End))]"
 				text = "STA_LAW_CHANGE_COST_ALERT"
 				using = "Font_Size_Small"
 				default_format = "#warning"
 
-				background = {
-					using = Background_Area
-				}
+				# background = {
+				# 	using = Background_Area
+				# }
 			}
 
-			text_multi = {
+			text_single = {
 				name = "StA_law_change_cooldown_alert"
 				autoresize = yes
-				max_width = 430
-				min_width = 430
-				margin = {15 10}
+				# max_width = 430
+				# min_width = 430
+				margin = { 5 10 }
 				visible = "[Not(GetScriptedGui( 'StA_law_change_cooldown_alert' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End))]"
 				text = "STA_LAW_CHANGE_COOLDOWN_ALERT"
 				using = "Font_Size_Small"
 				default_format = "#warning"
 
-				background = {
-					using = Background_Area
-				}
-			}
-			
-			block "bd_buttons" {
-				hbox = {
-			layoutpolicy_horizontal = expanding
-			spacing = 10
-
-			button_standard= {
-				name = "decline_button"
-				layoutpolicy_horizontal = growing
-
-				text = "CANCEL_BUTTON"
-				onclick = "[GetVariableSystem.Clear('StA_confirm_title_law')]"
-				onclick = "[GetScriptedGui('StA_cancel_title_law_change').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-				shortcut = "close_window"
-			}
-
-			button_primary = {
-				layoutpolicy_horizontal = growing
-				name = "accept_button"
-
-				text = "CONFIRM"
-				shortcut = "confirm"
-				enabled = "[GetScriptedGui( 'StA_confirm_title_law' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
-				onclick = [GameDialog.Accept]
-				# [StA]
-				onclick = "[GetVariableSystem.Clear('StA_confirm_title_law')]"
-				onclick = "[GetScriptedGui( 'StA_confirm_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
-				clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_confirm"
+				# background = {
+				# 	using = Background_Area
+				# }
 			}
 		}
+		
+		block "bd_buttons" {
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 10
+
+				button_standard = {
+					name = "decline_button"
+					layoutpolicy_horizontal = growing
+
+					text = "CANCEL_BUTTON"
+					onclick = "[GetVariableSystem.Clear('StA_confirm_title_law')]"
+					onclick = "[GetScriptedGui('StA_cancel_title_law_change').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+					shortcut = "close_window"
+				}
+
+				button_primary = {
+					layoutpolicy_horizontal = growing
+					name = "accept_button"
+
+					text = "CONFIRM"
+					shortcut = "confirm"
+					enabled = "[GetScriptedGui( 'StA_confirm_title_law' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+					onclick = [GameDialog.Accept]
+					# [StA]
+					onclick = "[GetVariableSystem.Clear('StA_confirm_title_law')]"
+					onclick = "[GetScriptedGui( 'StA_confirm_title_law' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End)]"
+					clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_confirm"
+				}
 			}
 		}
 	}

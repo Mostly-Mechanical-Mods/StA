@@ -39,3 +39,14 @@ title_can_have_succession_law = {
 		}
 	}
 }
+
+has_contract_obligation_opt_out = {
+	switch = {
+		trigger = scope:obligation
+		flag:feudal_government_taxes_ = { has_variable = feudal_government_taxes_opt_out }
+		flag:feudal_government_levies_ = { has_variable = feudal_government_levies_opt_out }
+		flag:succession_rights_ = { has_variable = succession_rights_opt_out }
+		flag:war_declaration_rights_ = { has_variable = war_declaration_rights_opt_out }
+		flag:title_revocation_rights_ = { has_variable = title_revocation_rights_opt_out }
+	}
+}
