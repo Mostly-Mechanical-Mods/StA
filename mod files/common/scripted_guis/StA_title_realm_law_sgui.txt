@@ -277,7 +277,6 @@ StA_title_window_allegiance = {
 		clear_variable_list = StA_title_window_allegiance
 		ordered_in_list = {
 			variable = StA_pledge_allegiance
-			limit = { NOT = { holder = ROOT.holder }}
 			order_by = tier
 			max = 99
 			check_range_bounds = no

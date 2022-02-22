@@ -89,6 +89,13 @@ StA_reset_authority = {
 		name = StA_title_realm_authority_capacity
 		value = var:title.StA_title_realm_authority_capacity
 	}
+	var:title = {
+		every_in_list = {
+			variable = StA_pledge_allegiance
+			limit = { holder = { has_government = feudal_government }}
+			holder = { update_vassal_contract = yes }
+		}
+	}
 }
 
 set_succession_law_on_dependent_titles_global = {
@@ -145,7 +152,12 @@ set_succession_law_on_dependent_titles = {
 
 update_vassal_contract_obligation = {
 	if = {
-		limit = { NOT = { has_variable = $OBLIGATION$_opt_out }}
+		limit = {
+			NOR = {
+				has_variable = $OBLIGATION$_opt_out
+				vassal_contract_obligation_level:$OBLIGATION$ = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:$OBLIGATION$_
+			}
+		}
 		vassal_contract_set_obligation_level = { type = $OBLIGATION$ level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:$OBLIGATION$_ }
 	}
 	else_if = {
