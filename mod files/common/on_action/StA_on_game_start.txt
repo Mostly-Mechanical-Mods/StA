@@ -1,14 +1,11 @@
-﻿StA_savegame_compat_2004 = {
-	scope = character
-	is_valid = {
-		NOT = { exists = global_var:StA_savegame_compat_2004 }
-		NOT = { global_var:StA_is_loaded = 2.004 }
+﻿on_game_start_after_lobby = {
+	on_actions = {
+		StA_title_realm_law_init
 	}
+}
+
+StA_title_realm_law_init = {
 	effect = {
-		set_global_variable = {
-			name = StA_savegame_compat_2004
-			value = yes
-		}
 		random_player = {
 			create_story = { type = StA_obligation_levels save_scope_as = zero }
 			create_story = { type = StA_obligation_levels save_scope_as = one }
@@ -46,32 +43,98 @@
 			StA_setup_title_succession_law_story = { LAW = saxon_elective_succession_law }
 			StA_setup_title_succession_law_story = { LAW = scandinavian_elective_succession_law }
 		}
-		every_ruler = {
-			every_held_title = {
-				limit = { has_variable = StA_title_realm_law }
-				var:StA_title_realm_law = {
-					if = {
-						limit = { has_variable = StA_realm_tax NOT = { has_variable = feudal_government_taxes_ }}
-						set_variable = { name = feudal_government_taxes_ value = var:StA_realm_tax }
+
+		set_global_variable = {
+			name = 0
+			value = 0
+		}
+		set_global_variable = {
+			name = 1
+			value = 1
+		}
+		set_global_variable = {
+			name = 2
+			value = 2
+		}
+		set_global_variable = {
+			name = 3
+			value = 3
+		}
+		set_global_variable = {
+			name = 4
+			value = 4
+		}
+
+		
+		every_independent_ruler = {
+			limit = { is_landless_ruler = no }
+			primary_title = {
+				ordered_in_de_facto_hierarchy = {
+					limit = { THIS = holder.primary_title }
+					order_by = tier
+					max = 1000
+					continue = { always = yes }
+					check_range_bounds = no
+					set_variable = {
+						name = StA_primary_title_of
+						value = holder
 					}
-					if = {
-						limit = { has_variable = StA_realm_levies NOT = { has_variable = feudal_government_levies_ }}
-						set_variable = { name = feudal_government_levies_ value = var:StA_realm_levies }
-					}
-					if = {
-						limit = { has_variable = title_revocation_rights NOT = { has_variable = title_revocation_rights_ }}
-						set_variable = { name = title_revocation_rights_ value = var:title_revocation_rights }
-					}
-					if = {
-						limit = { has_variable = succession_rights NOT = { has_variable = succession_rights_ }}
-						set_variable = { name = succession_rights_ value = var:succession_rights }
-					}
-					if = {
-						limit = { has_variable = war_declaration_rights NOT = { has_variable = war_declaration_rights_ }}
-						set_variable = { name = war_declaration_rights_ value = var:war_declaration_rights }
+					StA_set_title_allegiance_to_liege = yes
+					holder = {
+						every_held_title = {
+							set_variable = {
+								name = StA_holder
+								value = holder
+							}
+						}
+						if = {
+							limit = { has_government = feudal_government }
+							every_held_title = {
+								limit = {
+									tier = PREV.highest_held_title_tier
+									tier >= tier_barony
+									trigger_if = {
+										limit = { tier = tier_county }
+										THIS = PREV.primary_title
+									}
+								}
+								PREV = {
+									set_variable = {
+										name = StA_title
+										value = PREV
+									}
+									create_story = {
+										type = StA_title_realm_law
+										save_scope_as = reset_authority
+									}
+									scope:reset_authority = { add_to_list = reset_authority }
+								}
+							}
+						}
 					}
 				}
 			}
+		}
+		every_in_list = {
+			list = reset_authority
+			StA_reset_authority = yes
+			var:title = {
+				save_scope_as = title
+				set_succession_law_on_dependent_titles_global = yes
+				clear_saved_scope = title
+			}
+			remove_from_list = reset_authority
+		}
+
+		every_ruler = {
+			limit = {
+				has_government = feudal_government
+				is_independent_ruler = no
+				# highest_held_title_tier >= tier_county
+				primary_title = { has_variable = StA_title_allegiance }
+				primary_title.var:StA_title_allegiance = { has_variable = StA_title_realm_law }
+			}
+			update_vassal_contract = yes
 		}
 	}
 }

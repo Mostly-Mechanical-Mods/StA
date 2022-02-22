@@ -1,0 +1,163 @@
+﻿StA_update_cooldown_law_change = {
+	if = {
+		limit = { has_variable = StA_title_realm_law }
+		var:StA_title_realm_law = {
+			if = {
+				limit = { has_variable = StA_cooldown_law_change }
+				change_variable = {
+					name = StA_cooldown_law_change
+					add = var:title.StA_cooldown_law_change
+				}
+			}
+			else = {
+				set_variable = {
+					name = StA_cooldown_law_change
+					value = var:title.StA_cooldown_law_change
+				}
+			}
+		}
+	}
+}
+
+StA_reset_cooldown_title_holder_change = {
+	var:StA_title_realm_law = {
+		set_variable = {
+			name = StA_cooldown_title_holder_change
+			value = PREV.StA_cooldown_title_holder_change
+		}
+	}
+}
+
+StA_inherit_title_laws = {
+	if = { limit = { has_variable = feudal_government_taxes_ } var:StA_title_realm_law = { set_variable = { name = feudal_government_taxes_ value = PREV.var:feudal_government_taxes_ }} remove_variable = feudal_government_taxes_ }
+	if = { limit = { has_variable = feudal_government_levies_ } var:StA_title_realm_law = { set_variable = { name = feudal_government_levies_ value = PREV.var:feudal_government_levies_ }} remove_variable = feudal_government_levies_ }
+	if = { limit = { has_variable = succession_rights_ } var:StA_title_realm_law = { set_variable = { name = succession_rights_ value = PREV.var:succession_rights_ }} remove_variable = succession_rights_ }
+	if = { limit = { has_variable = war_declaration_rights_ } var:StA_title_realm_law = { set_variable = { name = war_declaration_rights_ value = PREV.var:war_declaration_rights_ }} remove_variable = war_declaration_rights_ }
+	if = { limit = { has_variable = title_revocation_rights_ } var:StA_title_realm_law = { set_variable = { name = title_revocation_rights_ value = PREV.var:title_revocation_rights_ }} remove_variable = title_revocation_rights_ }
+}
+
+StA_transfer_title_laws = {
+	$TRANSFER_TO$ = { set_variable = { name = feudal_government_taxes_ value = $TRANSFER_FROM$.var:feudal_government_taxes_ }}
+	$TRANSFER_TO$ = { set_variable = { name = feudal_government_levies_ value = $TRANSFER_FROM$.var:feudal_government_levies_ }}
+	$TRANSFER_TO$ = { set_variable = { name = succession_rights_ value = $TRANSFER_FROM$.var:succession_rights_ }}
+	$TRANSFER_TO$ = { set_variable = { name = war_declaration_rights_ value = $TRANSFER_FROM$.var:war_declaration_rights_ }}
+	$TRANSFER_TO$ = { set_variable = { name = title_revocation_rights_ value = $TRANSFER_FROM$.var:title_revocation_rights_ }}
+}
+
+StA_set_default_realm_laws = {
+	if = { limit = { NOT = { has_variable = feudal_government_taxes_ }} set_variable = { name = feudal_government_taxes_ value = 2 }}
+	if = { limit = { NOT = { has_variable = feudal_government_levies_ }} set_variable = { name = feudal_government_levies_ value = 2 }}
+	if = { limit = { NOT = { has_variable = succession_rights_ }} set_variable = { name = succession_rights_ value = 0 }}
+	if = { limit = { NOT = { has_variable = war_declaration_rights_ }} set_variable = { name = war_declaration_rights_ value = 1 }}
+	if = { limit = { NOT = { has_variable = title_revocation_rights_ }} set_variable = { name = title_revocation_rights_ value = 1 }}
+}
+
+StA_set_laws_to_inherit = {
+	set_variable = {
+		name = inherited_title
+		days = 1
+	}
+	if = { limit = { $TRANSFER_FROM$ = { has_variable = feudal_government_taxes_ }} set_variable = { name = feudal_government_taxes_ value = $TRANSFER_FROM$.var:feudal_government_taxes_ days = 1 }}
+	if = { limit = { $TRANSFER_FROM$ = { has_variable = feudal_government_levies_ }} set_variable = { name = feudal_government_levies_ value = $TRANSFER_FROM$.var:feudal_government_levies_ days = 1 }}
+	if = { limit = { $TRANSFER_FROM$ = { has_variable = succession_rights_ }} set_variable = { name = succession_rights_ value = $TRANSFER_FROM$.var:succession_rights_ days = 1 }}
+	if = { limit = { $TRANSFER_FROM$ = { has_variable = war_declaration_rights_ }} set_variable = { name = war_declaration_rights_ value = $TRANSFER_FROM$.var:war_declaration_rights_ days = 1 }}
+	if = { limit = { $TRANSFER_FROM$ = { has_variable = title_revocation_rights_ }} set_variable = { name = title_revocation_rights_ value = $TRANSFER_FROM$.var:title_revocation_rights_ days = 1 }}
+}
+
+StA_reset_authority = {
+	save_scope_as = story
+	if = {
+		limit = { debug_only = yes }
+		debug_log = "RESET AUTHORITY"
+		var:title = { debug_log_scopes = no }
+	}
+	if = {
+		limit = {
+			debug_only = yes
+			NOT = { has_variable = feudal_government_taxes_ }
+		}
+		debug_log = "StA_reset_authority NO GOVERNMENT TAXES"
+		var:ruler = { debug_log_scopes = no }
+		var:title = { debug_log_scopes = no }
+	}
+	StA_calculate_average_submission_ruler = yes
+	set_variable = {
+		name = StA_title_realm_authority
+		value = var:title.StA_title_realm_authority
+	}
+	set_variable = {
+		name = StA_title_realm_authority_capacity
+		value = var:title.StA_title_realm_authority_capacity
+	}
+}
+
+set_succession_law_on_dependent_titles_global = {
+	switch = {
+		trigger = has_title_law
+		single_heir_succession_law = { set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law }}
+		single_heir_succession_law_youngest = { set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law_youngest }}
+		single_heir_dynasty_house = { set_succession_law_on_dependent_titles = { LAW = single_heir_dynasty_house }}
+	}
+}
+
+set_succession_law_on_dependent_titles = {
+	hidden_effect = {
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "PASS SINGLE HEIR LAW"
+			debug_log_scopes = yes
+		}
+		if = {
+			limit = { exists = scope:title }
+			scope:title = {
+				if = {
+					limit = { debug_only = yes }
+					debug_log_scopes = no
+				}
+				every_in_de_jure_hierarchy = {
+					limit = {
+						holder = PREV.holder
+						is_leased_out = no
+						NOR = {
+							has_variable = StA_title_realm_law
+							any_this_title_or_de_jure_above = {
+								NOR = {
+									THIS = PREV
+									THIS = scope:title
+									target_is_de_jure_liege_or_above = scope:title
+								}
+								holder = PREV.holder
+								has_variable = StA_title_realm_law
+							}
+						}
+					}
+					if = {
+						limit = { debug_only = yes }
+						debug_log = "INHERITS LAW"
+						debug_log_scopes = no
+					}
+					add_title_law = $LAW$
+				}
+			}
+		}
+	}
+}
+
+update_vassal_contract_obligation = {
+	if = {
+		limit = { NOT = { has_variable = $OBLIGATION$_opt_out }}
+		vassal_contract_set_obligation_level = { type = $OBLIGATION$ level = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:$OBLIGATION$_ }
+	}
+	else_if = {
+		limit = { vassal_contract_obligation_level:$OBLIGATION$ = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:$OBLIGATION$_ }
+		remove_variable = $OBLIGATION$_opt_out
+	}
+}
+
+update_vassal_contract = {
+	update_vassal_contract_obligation = { OBLIGATION = feudal_government_taxes }
+	update_vassal_contract_obligation = { OBLIGATION = feudal_government_levies }
+	update_vassal_contract_obligation = { OBLIGATION = title_revocation_rights }
+	update_vassal_contract_obligation = { OBLIGATION = war_declaration_rights }
+	update_vassal_contract_obligation = { OBLIGATION = succession_rights }
+}
