@@ -1,10 +1,10 @@
 template UniUI_StA_title_window_states {
-	state = {
-		name = _show
-		on_start = "[GetVariableSystem.Set('StA_title_window_tracker',TitleViewWindow.GetTitle.GetKey)]"
-		on_start = "[GetScriptedGui('StA_title_window_player').Execute( GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('title',TitleViewWindow.GetTitle.MakeScope).End)]"
-		on_start = "[GetScriptedGui('StA_title_window_allegiance').Execute( GuiScope.SetRoot(TitleViewWindow.GetTitle.MakeScope).End)]"
-	}
+	# state = {
+	# 	name = _show
+	# 	on_start = "[GetVariableSystem.Set('StA_title_window_tracker',TitleViewWindow.GetTitle.GetKey)]"
+	# 	on_start = "[GetScriptedGui('StA_title_window_player').Execute( GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('title',TitleViewWindow.GetTitle.MakeScope).End)]"
+	# 	on_start = "[GetScriptedGui('StA_title_window_allegiance').Execute( GuiScope.SetRoot(TitleViewWindow.GetTitle.MakeScope).End)]"
+	# }
 	state = {
 		name = "StA_title_window"
 		trigger_when = "[Not(GetVariableSystem.HasValue('StA_title_window_tracker',TitleViewWindow.GetTitle.GetKey))]"
@@ -51,7 +51,7 @@ types UniUI_StA_title_window {
 			default_format = "#weak"
 			down = "[GetVariableSystem.HasValue( 'title_view_tab', 'vassals_tab' ) )]"
 			onclick = "[GetVariableSystem.Set( 'title_view_tab', 'vassals_tab' )]"
-			enabled = "[And(TitleViewWindow.GetTitle.MakeScope.Var('StA_title_realm_law').IsSet,GreaterThanOrEqualTo_int32(TitleViewWindow.GetTitle.GetTierFrame,'(int32)4'))]"
+			enabled = "[TitleViewWindow.GetTitle.MakeScope.Var('StA_title_realm_law').IsSet]"
 		}
 
 		button_tab = {
@@ -62,7 +62,7 @@ types UniUI_StA_title_window {
 			default_format = "#weak"
 			down = "[GetVariableSystem.HasValue( 'title_view_tab', 'StA_realm_law_tab' ) )]"
 			onclick = "[GetVariableSystem.Set( 'title_view_tab', 'StA_realm_law_tab' )]"
-			enabled = "[And(TitleViewWindow.GetTitle.MakeScope.Var('StA_title_realm_law').IsSet,GreaterThanOrEqualTo_int32(TitleViewWindow.GetTitle.GetTierFrame,'(int32)4'))]"
+			enabled = "[TitleViewWindow.GetTitle.MakeScope.Var('StA_title_realm_law').IsSet]"
 		}
 	}
 
@@ -93,7 +93,7 @@ types UniUI_StA_title_window {
 
 			text_single = {
 				min_width = 50
-				text = "[Title.MakeScope.Var('StA_title_realm_law').Var('total_strength').GetValue|0]"
+				text = "STA_TITLE_MIL_STRENGTH"
 			}
 
 			spacer = { size = { 50 0 }}
@@ -125,7 +125,7 @@ types UniUI_StA_title_window {
 
 			blockoverride "scrollbox_content" {
 				vbox = {
-					datamodel = "[TitleViewWindow.GetTitle.MakeScope.Var('StA_title_realm_law').GetList('StA_title_window_allegiance')]"
+					datamodel = "[TitleViewWindow.GetTitle.MakeScope.GetList('StA_title_window_allegiance')]"
 					layoutpolicy_horizontal = expanding
 					spacing = 3
 
@@ -154,17 +154,13 @@ types UniUI_StA_title_window {
 
 								hbox = {
 									
-									visible = "[Not(Character.GetPrimaryTitle.IsBarony)]"
+									# visible = "[Not(Character.GetPrimaryTitle.IsBarony)]"
+									margin = { 5 0 }
 									icon = {
 										size = { 25 25 }
 										texture = "gfx/interface/icons/icon_soldier.dds"
+										alpha = "[Min_CFixedPoint(Multiply_CFixedPoint(Character.MakeScope.ScriptValue('StA_relative_mil_strength'),'(CFixedPoint)2'),'(CFixedPoint)1')]"
 									}
-
-									text_single = {
-										min_width = 50
-										text = "[Character.MakeScope.ScriptValue('StA_max_mil_strength')|0]"
-									}
-									
 									
 									button = {
 										tooltip = "[Character.MakeScope.GetScriptValueDesc('StA_submission')]"
@@ -220,7 +216,7 @@ types UniUI_StA_title_window {
 						size = { 240 30 }
 
 						min = 0
-						max = 10000
+						max = "[FixedPointToProgressbarValue(Title.MakeScope.ScriptValue('StA_title_realm_authority_capacity'))]"
 						value = "[FixedPointToProgressbarValue(Title.MakeScope.ScriptValue('StA_title_realm_authority'))]"
 					}
 					progressbar_green = {
@@ -229,27 +225,21 @@ types UniUI_StA_title_window {
 						size = { 240 30 }
 
 						min = 0
-						max = 10000
+						max = "[FixedPointToProgressbarValue(Title.MakeScope.ScriptValue('StA_title_realm_authority_capacity'))]"
 						value = "[FixedPointToProgressbarValue(Title.MakeScope.ScriptValue('StA_title_realm_authority'))]"
 					}
-					container = {
-						state = {
-							name = "target"
-							next = "target"
-							trigger_on_create = yes
-							position_x = "[Multiply_CFixedPoint(Title.MakeScope.ScriptValue('StA_title_realm_authority_capacity'),'(CFixedPoint)2.35')]"
-							duration = 0
-						}
-						alwaystransparent = yes
-						icon = {
-							parentanchor = top
-							alwaystransparent = yes
-							texture = "gfx/interface/window_factions/faction_progress_threshold.dds"
-						}
+					
+					text_single = {
+						# tooltip = "[Title.MakeScope.GetScriptValueDesc('StA_title_realm_authority')]"
+						# texture = "gfx/interface/icons/icon_time.dds"
+						# text = "TEST"
+						text = "StA_title_law_cooldown"
+						position = { 240 0 }
+						# default_format = "#low"
 					}
 				}
 			}
-
+			
 			text_label_center = {
 				tooltip = "[Title.MakeScope.GetScriptValueDesc('StA_title_realm_authority')]"
 				text = "STA_AUTHORITY_SPENT"

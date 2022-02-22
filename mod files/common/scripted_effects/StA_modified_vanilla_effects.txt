@@ -1,338 +1,4 @@
-﻿# # [check on version update]
-
-# unite_the_spanish_thrones_decision_effects = {
-# 	#Prestige
-# 	add_prestige = massive_prestige_gain
-
-# 	#Laws
-# 	# [StA] [check on version update]
-# 	if = {
-# 		limit = {
-# 			OR = {
-# 				has_realm_law = crown_authority_0
-# 				has_realm_law = crown_authority_1
-# 			}
-# 		}
-# 		increase_crown_authority_effect = yes
-# 		increase_crown_authority_effect = yes
-# 	}
-# 	else_if = {
-# 		limit = { has_realm_law = crown_authority_2 }
-# 		increase_crown_authority_effect = yes
-# 	}
-# 	# [/StA]
-	
-# 	# Coat of Arms
-# 	if = {
-# 		limit = { scope:spain_uniter.primary_title = title:k_castille }
-# 		primary_title = { set_coa = k_castille_leon }
-# 	}
-# 	else_if = {
-# 		limit = { scope:spain_uniter.primary_title = title:k_leon }
-# 		primary_title = { set_coa = k_leon_castille }
-# 	}
-
-# 	#Handle other Kingdom titles
-# 	title:k_castille = { add_to_list = spanish_kingdoms }
-# 	title:k_leon = { add_to_list = spanish_kingdoms }
-# 	title:k_spanish_galicia = { add_to_list = spanish_kingdoms }
-# 	title:k_portugal = { add_to_list = spanish_kingdoms }
-# 	title:k_aragon = { add_to_list = spanish_kingdoms }
-# 	title:k_navarra = { add_to_list = spanish_kingdoms }
-# 	title:k_andalusia = { add_to_list = spanish_kingdoms }
-# 	title:k_badajoz = { add_to_list = spanish_kingdoms }
-# 	title:k_valencia = { add_to_list = spanish_kingdoms }
-
-# 	custom_tooltip = unite_the_spanish_thrones_decision_titles_tt
-# 	hidden_effect = {
-# 		every_in_list = {
-# 			list = spanish_kingdoms
-# 			limit = {
-# 				NOT = { this = scope:spain_uniter.primary_title }
-# 				scope:spain_uniter = { completely_controls = prev }
-# 			}
-
-# 			#De jure shift all held spanish titles into your primary title
-# 			every_in_de_jure_hierarchy = {
-# 				limit = { tier = tier_duchy }
-# 				set_de_jure_liege_title = scope:spain_uniter.primary_title
-# 			}
-
-# 			#Destroys them all!
-# 			scope:spain_uniter = { destroy_title = prev }
-# 		}
-# 	}
-# }
-
-# unite_the_western_slavs_decision_effects = {
-# 	#Prestige
-# 	add_prestige = massive_prestige_gain
-
-# 	#Innovations
-# 	culture = {
-# 		add_random_innovation = culture_group_military
-# 		add_random_innovation = culture_group_civic
-# 	}
-
-# 	#Laws
-# 	# [StA] [check on version update]
-# 	if = {
-# 		limit = {
-# 			OR = {
-# 				has_realm_law = crown_authority_0
-# 				has_realm_law = crown_authority_1
-# 			}
-# 		}
-# 		increase_crown_authority_effect = yes
-# 		increase_crown_authority_effect = yes
-# 	}
-# 	else_if = {
-# 		limit = { has_realm_law = crown_authority_2 }
-# 		increase_crown_authority_effect = yes
-# 	}
-# 	# [/StA]
-
-# 	#Handle de jure drift & destructions of other kingdom titles
-# 	title:k_poland = { add_to_list = west_slavic_kingdoms }
-# 	title:k_pomerania = { add_to_list = west_slavic_kingdoms }
-# 	title:k_bohemia = { add_to_list = west_slavic_kingdoms }
-# 	title:k_moravia = { add_to_list = west_slavic_kingdoms }
-
-# 	if = {
-# 		limit = { highest_held_title_tier = tier_kingdom }
-# 		custom_tooltip = unite_the_western_slavs_decision_titles_tt
-# 	}
-# 	else = { custom_tooltip = unite_the_western_slavs_decision_titles_empire_tt }
-# 	hidden_effect = {
-# 		scope:western_slav_uniter = {
-# 			#If king-tier, proceed as normal.
-# 			if = {
-# 				limit = { highest_held_title_tier = tier_kingdom }
-# 				primary_title = { save_scope_as = wsu_primary_title }
-# 				every_in_list = {
-# 					list = west_slavic_kingdoms
-# 					limit = {
-# 						NOT = { this = scope:wsu_primary_title }
-# 						scope:western_slav_uniter = { completely_controls = prev }
-# 					}
-# 					#De jure shift all held west slavic titles into your primary title
-# 					every_in_de_jure_hierarchy = {
-# 						limit = { tier = tier_duchy }
-# 						set_de_jure_liege_title = scope:western_slav_uniter.primary_title
-# 					}
-# 				}
-# 				#Destroy the waste titles
-# 				every_in_list = {
-# 					list = west_slavic_kingdoms
-# 					limit = {
-# 						NOT = { this = scope:wsu_primary_title }
-# 					}
-# 					scope:western_slav_uniter = { destroy_title = prev }
-# 				}
-# 			}
-# 			#If higher than king tier, drift kingdoms to empire
-# 			else = {
-# 				every_in_list = {
-# 					list = west_slavic_kingdoms
-# 					set_de_jure_liege_title = scope:western_slav_uniter.primary_title
-# 				}
-# 			}
-# 		}
-# 	}	
-# }
-
-# form_switzerland_scripted_effect = {
-# 	save_scope_as = scoped_ruler
-# 	title:e_hre.holder = { save_scope_as = scoped_emperor }
-# 	title:d_savoie = { save_scope_as = savoy }
-# 	title:k_switzerland = { save_scope_as = switzerland }
-# 	#De jure shifts.
-# 	title:d_currezia = { set_de_jure_liege_title = title:k_switzerland }
-# 	title:d_transjurania = { set_de_jure_liege_title = title:k_switzerland }
-# 	if = {
-# 		limit = { completely_controls = title:d_savoie }
-# 		title:d_savoie = { set_de_jure_liege_title = title:k_switzerland }
-# 	}
-# 	else = { custom_tooltip = form_switzerland_kingdom_decision_effect_tooltip }
-# 	title:k_switzerland = { set_de_jure_liege_title = root.top_liege.primary_title }
-# 	create_title_and_vassal_change = {
-# 		type = created
-# 		save_scope_as = change
-# 		add_claim_on_loss = no
-# 	}
-# 	title:k_switzerland = {
-# 		change_title_holder = {
-# 			holder = root
-# 			change = scope:change
-# 		}
-# 	}
-# 	resolve_title_and_vassal_change = scope:change
-# 	hidden_effect = { set_primary_title_to = title:k_switzerland }
-# 	add_prestige = major_prestige_gain
-# 	# [StA] [check on version update]
-# 	if = {
-# 		limit = { has_realm_law = crown_authority_0 }
-# 		increase_crown_authority_effect = yes
-# 		increase_crown_authority_effect = yes
-# 		increase_crown_authority_effect = yes
-# 	}
-# 	else_if = {
-# 		limit = { has_realm_law = crown_authority_1 }
-# 		increase_crown_authority_effect = yes
-# 		increase_crown_authority_effect = yes
-# 	}
-# 	else_if = {
-# 		limit = { has_realm_law = crown_authority_2 }
-# 		increase_crown_authority_effect = yes
-# 	}
-# 	# [/StA]
-# }
-
-# empower_sicilian_parliament_decision_scripted_effect = {
-# 	# [StA] [check on version update]
-# 	root = { increase_crown_authority_effect = yes }
-# 	# [/StA]
-# 	if = {
-# 		limit = { has_title = title:k_sicily }
-# 		title:k_sicily = {
-# 			every_in_de_jure_hierarchy = {
-# 				custom = empower_sicilian_parliament_decision_every_province_custom
-# 				limit = {
-# 					tier = tier_county
-# 					title_province = { geographical_region = custom_sicily }
-# 					 holder = {
-# 						OR = {
-# 							this = root
-# 							target_is_liege_or_above = root
-# 						}
-# 					}
-# 				}
-# 				title_province = {
-# 					add_province_modifier = {
-# 						modifier = parliamentary_bureaucracy_modifier
-# 						years = 150
-# 					}
-# 				}
-# 			}
-# 		}
-# 	}
-# 	else_if = {
-# 		limit = { has_title = title:k_naples }
-# 		title:k_naples = {
-# 			every_in_de_jure_hierarchy = {
-# 				custom = empower_sicilian_parliament_decision_every_province_custom
-# 				limit = {
-# 					tier = tier_county
-# 					title_province = { geographical_region = custom_sicily }
-# 					 holder = {
-# 						OR = {
-# 							this = root
-# 							target_is_liege_or_above = root
-# 						}
-# 					}
-# 				}
-# 				title_province = {
-# 					add_province_modifier = {
-# 						modifier = parliamentary_bureaucracy_modifier
-# 						years = 150
-# 					}
-# 				}
-# 			}
-# 		}
-# 	}
-# 	else_if = {
-# 		limit = { has_title = title:k_trinacria }
-# 		title:k_trinacria = {
-# 			every_in_de_jure_hierarchy = {
-# 				custom = empower_sicilian_parliament_decision_every_province_custom
-# 				limit = {
-# 					tier = tier_county
-# 					title_province = { geographical_region = custom_sicily }
-# 					 holder = {
-# 						OR = {
-# 							this = root
-# 							target_is_liege_or_above = root
-# 						}
-# 					}
-# 				}
-# 				title_province = {
-# 					add_province_modifier = {
-# 						modifier = parliamentary_bureaucracy_modifier
-# 						years = 150
-# 					}
-# 				}
-# 			}
-# 		}
-# 	}
-# }
-
-# promote_gothic_innovations_decision_scripted_effect = {
-# 	# [StA]
-# 	increase_crown_authority_effect = yes
-# 	# [/StA]
-# 	culture = {
-# 		if = {
-# 			limit = {
-# 				NOT = { has_innovation = innovation_french_peerage }
-# 			}
-# 			add_innovation = innovation_french_peerage
-# 		}
-# 	}
-# 	if = {
-# 		limit = {
-# 			this = { completely_controls = title:d_valois }
-# 		}
-# 		title:c_ile_de_france = {
-# 			title_province = {
-# 				add_province_modifier = {
-# 					modifier = flourishing_culture_modifier
-# 					years = 150
-# 				}
-# 			}
-# 		}
-# 	}
-# 	if = {
-# 		limit = {
-# 			this = { completely_controls = title:d_orleans }
-# 		}
-# 		title:c_orleans = {
-# 			title_province = {
-# 				add_province_modifier = {
-# 					modifier = flourishing_culture_modifier
-# 					years = 150
-# 				}
-# 			}
-# 		}
-# 	}
-# 	if = {
-# 		limit = {
-# 			this = { completely_controls = title:d_provence }
-# 		}
-# 		title:c_nice = {
-# 			title_province = {
-# 				add_province_modifier = {
-# 					modifier = flourishing_culture_modifier
-# 					years = 150
-# 				}
-# 			}
-# 		}
-# 	}
-# 	if = {
-# 		limit = {
-# 			this = { completely_controls = title:d_toulouse }
-# 		}
-# 		title:c_toulouse = {
-# 			title_province = {
-# 				add_province_modifier = {
-# 					modifier = flourishing_culture_modifier
-# 					years = 150
-# 				}
-# 			}
-# 		}
-# 	}
-# }
-
-# OBLIGATION_TYPE - The type of the obligation in a vassal contract to set
+﻿# OBLIGATION_TYPE - The type of the obligation in a vassal contract to set
 # this - The person who's obligation will be changed
 # Requires a local variable of the same name as OBLIGATION_TYPE
 set_obligation_if_changed_effect = {
@@ -346,14 +12,405 @@ set_obligation_if_changed_effect = {
 		}
 	}
 	if = {
-		limit = { has_title_realm_contract = no }
-		set_variable = StA_custom_contract
+		limit = {
+			liege = { has_government = feudal_government }
+			primary_title.var:StA_title_allegiance.var:StA_title_realm_law = { has_variable = $OBLIGATION_TYPE$_ }
+		}
+		if = {
+			limit = { NOT = { vassal_contract_obligation_level:$OBLIGATION_TYPE$ = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:$OBLIGATION_TYPE$_ }}
+			set_variable = $OBLIGATION_TYPE$_opt_out
+		}
+		else = {
+			remove_variable = $OBLIGATION_TYPE$_opt_out
+		}
+		set_variable = {
+			name = StA_contract_score
+			value = StA_contract_score
+		}
 	}
-	else = {
-		remove_variable = StA_custom_contract
+}
+
+convert_whole_realm_to_feudalism_effect = {
+	#TOOLTIP INFO
+	#PLAYER EFFECTS
+	##Liege has clan? Convert to clan!
+	if = {
+		limit = {
+			is_independent_ruler = no
+			OR = {
+				liege = { has_government = clan_government }
+				AND = {
+					liege = { has_government = tribal_government }
+					religion = religion:islam_religion
+				}
+			}
+		}
+		change_government = clan_government
+	}
+	##Liege has feudal? Convert to feudal!
+	else_if = {
+		limit = {
+			is_independent_ruler = no
+			OR = {
+				liege = { has_government = feudal_government }
+				AND = {
+					liege = { has_government = tribal_government }
+					NOT = { religion = religion:islam_religion }
+				}
+			}
+		}
+		change_government = feudal_government
+	}
+	##You're an independent Muslim? Convert to clan!
+	else_if = {
+		limit = {
+			is_independent_ruler = yes
+			faith = { religion_tag = islam_religion }
+		}
+		change_government = clan_government
+	}
+	##You're an independent anything else? Convert to feudal!
+	else = { change_government = feudal_government }
+	##General
+	custom_tooltip = all_holding_will_change
+	##Liege has clan? Convert to clan!
+	if = {
+		limit = {
+			is_independent_ruler = no
+			liege = { has_government = clan_government }
+		}
+		custom_tooltip = clan_liege_vassals_will_convert
+	}
+	#Liege has feudal? Convert to feudal!
+	if = {
+		limit = {
+			is_independent_ruler = no
+			liege = { has_government = feudal_government }
+		}
+		custom_tooltip = feudal_liege_vassals_will_convert
+	}
+	##If I am Islamic, we will become clan.
+	if = {
+		limit = {
+			is_independent_ruler = yes
+			faith = { religion_tag = islam_religion }
+		}
+		custom_tooltip = islamic_vassals_will_convert
+	}
+	##If I am not Islamic, we will become feudal.
+	else_if = {
+		limit = { is_independent_ruler = yes }
+		custom_tooltip = other_vassals_will_convert
+	}
+
+	hidden_effect = {
+		#Nuke tribal authorities.
+		if = {
+			limit = { has_realm_law = tribal_authority_0 }
+			remove_realm_law = tribal_authority_0
+		}
+		if = {
+			limit = { has_realm_law = tribal_authority_1 }
+			remove_realm_law = tribal_authority_1
+		}
+		if = {
+			limit = { has_realm_law = tribal_authority_2 }
+			remove_realm_law = tribal_authority_2
+		}
+		if = {
+			limit = { has_realm_law = tribal_authority_3 }
+			remove_realm_law = tribal_authority_3
+		}
+		#Start off crown authorities.
+		if = {
+			limit = {
+				NOT = { has_realm_law = crown_authority_0 }
+			}
+			add_realm_law_skip_effects = crown_authority_0
+		}
+
+		#Also convert every vassal.
+		#Liege has taken clan, so become clan.
+		if = {
+			limit = {
+				has_government = clan_government
+			}
+			every_vassal_or_below = {
+				limit = { has_government = tribal_government }
+				change_government = clan_government
+				#Nuke tribal authorities.
+				if = {
+					limit = { has_realm_law = tribal_authority_0 }
+					remove_realm_law = tribal_authority_0
+				}
+				if = {
+					limit = { has_realm_law = tribal_authority_1 }
+					remove_realm_law = tribal_authority_1
+				}
+				if = {
+					limit = { has_realm_law = tribal_authority_2 }
+					remove_realm_law = tribal_authority_2
+				}
+				if = {
+					limit = { has_realm_law = tribal_authority_3 }
+					remove_realm_law = tribal_authority_3
+				}
+				if = {
+					limit = {
+						NOT = { has_realm_law = crown_authority_0 }
+					}
+					add_realm_law_skip_effects = crown_authority_0
+				}
+			}
+		}
+		#Liege is not clan, become feudal.
+		else = {
+			every_vassal_or_below = {
+				limit = { has_government = tribal_government }
+				change_government = feudal_government
+				#Nuke tribal authorities.
+				if = {
+					limit = { has_realm_law = tribal_authority_0 }
+					remove_realm_law = tribal_authority_0
+				}
+				if = {
+					limit = { has_realm_law = tribal_authority_1 }
+					remove_realm_law = tribal_authority_1
+				}
+				if = {
+					limit = { has_realm_law = tribal_authority_2 }
+					remove_realm_law = tribal_authority_2
+				}
+				if = {
+					limit = { has_realm_law = tribal_authority_3 }
+					remove_realm_law = tribal_authority_3
+				}
+				if = {
+					limit = {
+						NOT = { has_realm_law = crown_authority_0 }
+					}
+					add_realm_law_skip_effects = crown_authority_0
+				}
+			}
+		}
+		
+		## Spawn holdings in tribal counties
+		
+		every_sub_realm_county = { # Spawn temples in your holy sites
+			limit = {
+				any_county_province = {
+					has_holding_type = tribal_holding
+				}
+				NOT = {
+					any_county_province = {
+						has_holding_type = church_holding
+					}
+				}
+				any_county_province = {
+					has_holding = no
+					barony = {
+						is_holy_site_of = root.faith
+					}
+				}
+			}
+			random_county_province = {
+				limit = {
+					has_holding = no
+					barony = {
+						is_holy_site_of = root.faith
+					}
+				}
+				set_holding_type = church_holding
+			}
+		}
+		
+		every_sub_realm_county = { # Spawn a City
+			limit = {
+				any_county_province = {
+					has_holding_type = tribal_holding
+				}
+				any_county_province = {
+					has_holding = no
+				}
+				NOT = {
+					any_county_province = {
+						has_holding_type = city_holding
+					}
+				}
+			}
+			random_county_province = {
+				limit = {
+					has_holding = no
+					OR = {
+						terrain = floodplains
+						terrain = oasis
+						terrain = farmlands
+					}
+					is_coastal = yes
+					has_special_building_slot = no
+				}
+				alternative_limit = {
+					has_holding = no
+					OR = {
+						terrain = floodplains
+						terrain = oasis
+						terrain = farmlands
+					}
+					has_special_building_slot = no
+				}
+				alternative_limit = {
+					has_holding = no
+					OR = {
+						terrain = floodplains
+						terrain = oasis
+						terrain = farmlands
+					}
+				}
+				alternative_limit = {
+					has_holding = no
+				}
+				random = {
+					chance = 60
+					modifier = {
+						add = county.development_level
+					}
+					modifier = {
+						add = 50
+						this.county = root.capital_county
+					}
+					modifier = {
+						add = 20
+						OR = {
+							terrain = floodplains
+							terrain = oasis
+							terrain = farmlands
+						}
+					}
+					set_holding_type = city_holding
+				}
+			}
+		}
+		
+		every_sub_realm_county = { # Spawn a Temple
+			limit = {
+				any_county_province = {
+					has_holding_type = tribal_holding
+				}
+				any_county_province = {
+					has_holding = no
+				}
+				NOT = {
+					any_county_province = {
+						has_holding_type = church_holding
+					}
+				}
+			}
+			random_county_province = {
+				limit = {
+					has_holding = no
+					OR = {
+						terrain = floodplains
+						terrain = oasis
+						terrain = farmlands
+					}
+					is_coastal = yes
+					has_special_building_slot = no
+				}
+				alternative_limit = {
+					has_holding = no
+					OR = {
+						terrain = floodplains
+						terrain = oasis
+						terrain = farmlands
+					}
+					has_special_building_slot = no
+				}
+				alternative_limit = {
+					has_holding = no
+					OR = {
+						terrain = floodplains
+						terrain = oasis
+						terrain = farmlands
+					}
+				}
+				alternative_limit = {
+					has_holding = no
+				}
+				random = {
+					chance = 50
+					modifier = {
+						add = county.development_level
+					}
+					modifier = {
+						add = 50
+						this.county = root.capital_county
+					}
+					modifier = {
+						add = 20
+						OR = {
+							terrain = floodplains	
+							terrain = oasis
+							terrain = farmlands
+						}
+					}
+					set_holding_type = church_holding
+				}
+			}
+		}
+
+		##Sort out new buildings for liege and all vassals
+		every_realm_province = {
+			limit = {
+				has_holding_type = tribal_holding
+				NOT = { is_in_list = feudal_conversion }
+			}
+			add_to_list = feudal_conversion
+
+		}
+		every_vassal_or_below = {
+			every_realm_province = {
+				limit = {
+					has_holding_type = tribal_holding
+					NOT = { is_in_list = feudal_conversion }
+				}
+				add_to_list = feudal_conversion
+
+			}
+		}
+		every_in_list = {
+			list = feudal_conversion
+			set_variable = {
+				name = tribal_to_feudal_building_level
+				value = combined_building_level
+				days = 1
+			}
+			set_holding_type = castle_holding
+			while = {
+				limit = {
+					var:tribal_to_feudal_building_level > 1
+				}
+				generate_building = yes
+				change_variable = {
+					name = tribal_to_feudal_building_level
+					subtract = 1
+				}
+			}
+			remove_variable = tribal_to_feudal_building_level
+			remove_from_list = feudal_conversion
+		}
+	}
+	if = {
+		limit = { debug_only = yes }
+		debug_log = "FEUDALIZATION"
+		debug_log_scopes = no
+		primary_title = { debug_log_scopes = no }
 	}
 	set_variable = {
-		name = StA_contract_score
-		value = StA_contract_score
+		name = feudalization
+		value = yes
+		days = 1
+	}
+	trigger_event = {
+		on_action = StA_title_and_vassal_change
 	}
 }

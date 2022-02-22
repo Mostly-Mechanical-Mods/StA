@@ -210,12 +210,12 @@ StA_submission_tyranny = {
 StA_submission_powerful_vassal = {
 	value = 0
 	if = {
-		limit = { is_powerful_vassal = yes }
+		limit = {
+			is_powerful_vassal = yes
+			is_adult = yes
+		}
 		if = {
 			limit = { is_councillor = no }
-			subtract = 50
-		}
-		else = {
 			subtract = 25
 		}
 	}

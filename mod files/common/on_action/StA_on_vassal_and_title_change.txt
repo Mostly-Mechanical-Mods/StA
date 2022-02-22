@@ -1,0 +1,520 @@
+﻿on_title_gain = {
+	on_actions = {
+		StA_title_and_vassal_change
+	}
+}
+
+on_vassal_gained = {
+	on_actions = {
+		StA_title_and_vassal_change
+	}
+}
+
+on_war_won_attacker = {
+	on_actions = {
+		StA_on_war_won_attacker
+	}
+}
+
+StA_on_war_won_attacker = {
+	trigger = {
+		OR = {
+			scope:war = { using_cb = independence_faction_war }
+			scope:war = { using_cb = independence_war }
+		}
+	}
+	effect = {
+		primary_attacker = {
+			trigger_event = {
+				on_action = StA_title_and_vassal_change
+			}
+			every_war_ally = {
+				trigger_event = {
+					on_action = StA_title_and_vassal_change
+				}
+			}
+		}
+	}
+}
+
+StA_title_and_vassal_change = {
+	trigger = {
+		OR = {
+			any_vassal = {
+				NAND = {
+					has_variable = StA_liege
+					var:StA_liege = PREV
+				}
+			}
+			any_held_title = {
+				NAND = {
+					has_variable = StA_holder
+					var:StA_holder = PREV
+				}
+			}
+			has_variable = feudalization
+		}
+	}
+	effect = {
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "StA_title_and_vassal_change"
+			debug_log_scopes = no
+		}
+		every_vassal = {
+			limit = {
+				NAND = {
+					has_variable = StA_liege
+					var:StA_liege = PREV
+				}
+			}
+			if = {
+				limit = { debug_only = yes }
+				debug_log_scopes = no
+			}
+			add_to_list = vassal_change
+			if = {
+				limit = { has_variable = StA_liege }
+				var:StA_liege = { add_to_list = title_or_vassal_lost }
+			}
+		}
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STEP 1"
+		}
+		every_held_title = {
+			limit = {
+				NAND = {
+					has_variable = StA_holder
+					var:StA_holder = PREV
+				}
+			}
+			if = {
+				limit = { debug_only = yes }
+				debug_log_scopes = no
+			}
+			add_to_list = title_change
+			if = {
+				limit = {
+					has_variable = StA_holder
+					exists = var:StA_holder
+				}
+				var:StA_holder = { add_to_list = title_or_vassal_lost }
+			}
+		}
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STEP 2"
+		}
+		every_in_list = {
+			list = title_or_vassal_lost
+			limit = {
+				is_alive = yes
+				is_ruler = yes
+				is_landless_ruler = no
+			}
+			save_scope_as = ruler_lost
+			if = {
+				limit = { has_government = feudal_government }
+				if = {
+					limit = { NOT = { primary_title = { has_variable = StA_title_realm_law }}}
+					set_variable = {
+						name = StA_title
+						value = primary_title
+					}
+					create_story = {
+						type = StA_title_realm_law
+						save_scope_as = reset_authority
+					}
+					scope:reset_authority = { add_to_list = reset_authority }
+					clear_saved_scope = reset_authority
+				}
+				ordered_held_title = {
+					limit = {
+						tier > tier_county
+						NOT = { has_variable = StA_title_realm_law }
+					}
+					order_by = tier
+					if = {
+						limit = {
+							tier = scope:ruler_lost.highest_held_title_tier
+							NOT = { has_variable = StA_title_realm_law }
+						}
+						scope:ruler_lost = {
+							set_variable = {
+								name = StA_title
+								value = PREV
+							}
+							create_story = {
+								type = StA_title_realm_law
+								save_scope_as = reset_authority
+							}
+							scope:reset_authority = { add_to_list = reset_authority }
+							clear_saved_scope = reset_authority
+						}
+					}
+					else_if = {
+						limit = {
+							any_this_title_or_de_jure_above = {
+								is_in_list = title_change
+								has_variable = StA_title_realm_law
+								has_variable = StA_holder
+								var:StA_holder = scope:ruler_lost
+								trigger_if = {
+									limit = {
+										NOR = {
+											has_title_law_flag = elective_succession_law
+											has_title_law_flag = advanced_succession_law
+										}
+									}
+									any_this_title_or_de_jure_above = {
+										NOT = { THIS = PREV }
+										holder = scope:ruler_lost
+										has_variable = StA_title_realm_law
+										StA_title_has_identical_law_as_target = { TITLE = PREV }
+										count = 0
+									}
+								}
+							}
+						}
+						scope:ruler_lost = {
+							set_variable = {
+								name = StA_title
+								value = PREV
+							}
+							create_story = {
+								type = StA_title_realm_law
+								save_scope_as = reset_authority
+							}
+							scope:reset_authority = { add_to_list = reset_authority }
+							clear_saved_scope = reset_authority
+						}
+					}
+				}
+			}
+			every_held_title = {
+				StA_remove_current_title_allegiance = yes
+				clear_variable_list = StA_pledge_allegiance
+			}
+			primary_title = {
+				StA_set_title_allegiance_to_liege = yes
+			}
+			every_vassal = {
+				every_held_title = {
+					StA_remove_current_title_allegiance = yes
+				}
+				primary_title = {
+					StA_set_title_allegiance_to_liege = yes
+				}
+			}
+			every_in_list = {
+				list = reset_authority
+				StA_reset_authority = yes
+				var:title = {
+					save_scope_as = title
+					set_succession_law_on_dependent_titles_global = yes
+					clear_saved_scope = title
+				}
+				remove_from_list = reset_authority
+			}
+		}
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STEP 3"
+		}
+		if = {
+			limit = { debug_only = yes }
+			if = {
+				limit = { has_variable = StA_primary_title }
+				var:StA_primary_title = { debug_log_scopes = no }
+			}
+			else = {
+				debug_log = "NO STA_PRIMARY_TITLE"
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_government = feudal_government
+					trigger_if = {
+						limit = { NOT = { has_variable = StA_primary_title }}
+						exists = capital_province
+						capital_province = { has_holding_type = castle_holding }
+					}
+				}
+			}
+			if = {
+				limit = { debug_only = yes }
+				debug_log = "IS FEUDAL"
+			}
+			primary_title = {
+				if = {
+					limit = { is_in_list = title_change }
+					if = {
+						limit = { debug_only = yes }
+						debug_log = "NEW PRIMARY TITLE"
+						debug_log_scopes = no
+					}
+					if = {
+						limit = {
+							has_variable = StA_title_realm_law
+							NOT = { var:StA_title_realm_law.var:ruler = ROOT }
+						}
+						var:StA_title_realm_law = {
+							make_story_owner = ROOT
+							set_variable = {
+								name = ruler
+								value = ROOT
+							}
+							add_to_list = reset_authority
+						}
+						StA_reset_cooldown_title_holder_change = yes
+					}
+					else = {
+						ROOT = {
+							set_variable = {
+								name = StA_title
+								value = PREV
+							}
+							create_story = {
+								type = StA_title_realm_law
+								save_scope_as = reset_authority
+							}
+							scope:reset_authority = { add_to_list = reset_authority }
+							clear_saved_scope = reset_authority
+						}
+					}
+				}
+			}
+			if = {
+				limit = { NOT = { primary_title = { has_variable = StA_title_realm_law }}}
+				debug_log = "NO TITLE REALM LAWS"
+				set_variable = {
+					name = StA_title
+					value = primary_title
+				}
+				create_story = {
+					type = StA_title_realm_law
+					save_scope_as = reset_authority
+				}
+				scope:reset_authority = { add_to_list = reset_authority }
+				clear_saved_scope = reset_authority
+			}
+			every_in_list = {
+				list = title_change
+				limit = { NOT = { THIS = ROOT.primary_title }}
+				if = {
+					limit = {
+						tier = ROOT.highest_held_title_tier
+						tier >= tier_duchy
+						NOT = { has_variable = StA_title_realm_law }
+					}
+					ROOT = {
+						set_variable = {
+							name = StA_title
+							value = PREV
+						}
+						create_story = {
+							type = StA_title_realm_law
+							save_scope_as = reset_authority
+						}
+						scope:reset_authority = { add_to_list = reset_authority }
+						clear_saved_scope = reset_authority
+					}
+				}
+				else_if = {
+					limit = {
+						NOT = { THIS = ROOT.primary_title }
+						tier < ROOT.highest_held_title_tier
+						has_variable = StA_title_realm_law
+						NOR = {
+							has_title_law_flag = succession_gender_laws
+							has_title_law_flag = advanced_succession_law
+							has_title_law_flag = elective_succession_law
+						}
+					}
+					ordered_this_title_or_de_jure_above = {
+						limit = {
+							NOT = { THIS = PREV }
+							holder = ROOT
+							has_variable = StA_title_realm_law
+							StA_title_has_identical_law_as_target = { TITLE = PREV }
+						}
+						save_scope_as = title_merge
+					}
+					if = {
+						limit = {
+							NOT = { exists = scope:title_merge }
+							trigger_if = {
+								limit = { tier > tier_county }
+								StA_title_has_identical_law_as_target = { TITLE = ROOT.primary_title }
+							}
+						}
+						ROOT.primary_title = {
+							save_scope_as = title_merge
+						}
+					}
+					if = {
+						limit = { exists = scope:title_merge }
+						var:StA_title_realm_law = {
+							remove_from_list = reset_authority
+							end_story = yes
+						}
+					}
+					else = {
+						var:StA_title_realm_law = {
+							make_story_owner = ROOT
+							set_variable = {
+								name = ruler
+								value = ROOT
+							}
+							add_to_list = reset_authority
+						}
+						StA_reset_cooldown_title_holder_change = yes
+					}					
+				}
+			}
+		}
+		else = {
+			if = {
+				limit = { debug_only = yes }
+				debug_log = "NOT FEUDAL"
+			}
+			every_in_list = {
+				list = title_change
+				limit = { has_variable = StA_title_realm_law }
+				var:StA_title_realm_law = {
+					remove_from_list = reset_authority
+					end_story = yes
+				}
+			}
+		}
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STEP 4"
+		}
+		every_held_title = {
+			StA_remove_current_title_allegiance = yes
+			clear_variable_list = StA_pledge_allegiance
+		}
+		every_in_list = {
+			list = title_change
+			set_variable = {
+				name = StA_holder
+				value = PREV
+			}
+		}
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STEP 5"
+		}
+		primary_title = {
+			StA_set_title_allegiance_to_liege = yes
+		}
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STEP 6"
+		}
+		every_vassal = {
+			every_held_title = {
+				StA_remove_current_title_allegiance = yes
+			}
+			primary_title = {
+				StA_set_title_allegiance_to_liege = yes
+			}
+		}
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STEP 7"
+		}
+		every_in_list = {
+			list = reset_authority
+			StA_reset_authority = yes
+			var:title = {
+				save_scope_as = title
+				set_succession_law_on_dependent_titles_global = yes
+				clear_saved_scope = title
+			}
+			remove_from_list = reset_authority
+		}
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STEP OVER"
+		}
+		if = {
+			limit = {
+				has_government = feudal_government
+				liege = { has_government = feudal_government }
+			}
+			update_vassal_contract = yes
+		}
+	}
+}
+
+# called for when a casus belli resolves in one of the following ways.
+# same scopes are available in these events as in the CBs themselves, this just fires for all CBs instead of a specific CB.
+# note that any events/effects fired here WILL NOT show up in the war summary tooltip; they fire at the same time as the war resolution, but are not actually part of the war resolution itself.
+
+
+
+on_death = {
+	on_actions = {
+		StA_on_death
+	}
+}
+
+StA_on_death = {
+	trigger = {
+		highest_held_title_tier >= tier_county
+		has_government = feudal_government
+		is_landless_ruler = no
+	}
+	effect = {
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STA_ON_DEATH"
+			debug_log_scopes = no
+			primary_title = { debug_log_scopes = no }
+		}
+		every_held_title = {
+			limit = { tier > tier_barony }
+			add_to_list = inheritable_titles
+		}
+		every_alert_creatable_title = { add_to_list = inheritable_titles }
+		every_in_list = {
+			list = inheritable_titles
+			if = {
+				limit = {
+					THIS = PREV.primary_title
+					NOT = { has_variable = StA_title_realm_law }
+				}
+				debug_log = "PRIMARY TITLE HAS NO STA_TITLE_REALM_LAW"
+			}
+			ordered_this_title_or_de_jure_above = {
+				limit = {
+					holder = ROOT
+					has_variable = StA_title_realm_law
+				}
+				order_by = reverse_tier
+				var:StA_title_realm_law = { save_scope_as = inherited_laws }
+			}
+			if = {
+				limit = { NOT = { exists = scope:inherited_laws }}
+				ROOT.primary_title.var:StA_title_realm_law = { save_scope_as = inherited_laws }
+			}
+			if = {
+				limit = { NOT = { exists = scope:inherited_laws }}
+				debug_log = "ON_DEATH SCOPE:INHERITED_LAW DOESN'T EXISTS"
+				set_global_variable = {
+					name = pause_me
+					value = yes
+				}
+				remove_global_variable = pause_me
+				ROOT = { debug_log_scopes = no }
+				ROOT.primary_title = { debug_log_scopes = no }
+			}
+			StA_set_laws_to_inherit = { TRANSFER_FROM = scope:inherited_laws }
+			clear_saved_scope = inherited_laws
+		} 
+	}
+}

@@ -224,11 +224,14 @@ StA_feudal_crown_authority = {
 	cumulative = yes
 	flag = realm_law
 	StA_feudal_crown_authority_0 = {
+		# triggered_flag = {
+			
+		# }
 		flag = can_change_partition_succession_laws
 		flag = can_change_succession_laws
 		flag = title_revocation_allowed
 		flag = vassal_retraction_allowed
-
+		flag = can_designate_heirs
 		can_keep = {
 			# [StA]
 			trigger_if = {

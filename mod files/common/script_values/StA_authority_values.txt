@@ -8,6 +8,11 @@ StA_max_mil_strength = {
 	add = max_military_strength
 }
 
+StA_relative_mil_strength = {
+	add = max_military_strength
+	divide = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:total_strength
+}
+
 StA_contract_score = {
 	add = {
 		add = vassal_contract_obligation_level:feudal_government_taxes
@@ -118,6 +123,11 @@ StA_title_realm_authority = {
 		limit = { has_variable = StA_title_realm_law }
 		add = {
 			value = {
+				if = {
+					limit = {
+						var:StA_title_realm_law = { has_variable = feudal_government_taxes_ }
+					}
+				}
 				add = var:StA_title_realm_law.var:feudal_government_taxes_
 				multiply = 5
 			}
@@ -199,7 +209,7 @@ StA_title_realm_authority = {
 			has_title_law = single_heir_dynasty_house
 		}
 		add = {
-			value =s ingle_heir_dynasty_house_cost
+			value = single_heir_dynasty_house_cost
 			desc = "single_heir_dynasty_house"
 			format = "BASE_VALUE_FORMAT"
 		}
@@ -276,8 +286,8 @@ StA_title_realm_authority = {
 			has_title_law = princely_elective_succession_law
 		}
 		add = {
-			value = princely_elective_succession_law
-			desc = "princely_elective_succession_law_cost"
+			value = princely_elective_succession_law_cost
+			desc = "princely_elective_succession_law"
 			format = "BASE_VALUE_FORMAT"
 		}
 	}
@@ -287,8 +297,8 @@ StA_title_realm_authority = {
 			has_title_law = gaelic_elective_succession_law
 		}
 		add = {
-			value = gaelic_elective_succession_law
-			desc = "gaelic_elective_succession_law_cost"
+			value = gaelic_elective_succession_law_cost
+			desc = "gaelic_elective_succession_law"
 			format = "BASE_VALUE_FORMAT"
 		}
 	}
@@ -298,8 +308,8 @@ StA_title_realm_authority = {
 			has_title_law = saxon_elective_succession_law
 		}
 		add = {
-			value = saxon_elective_succession_law
-			desc = "saxon_elective_succession_law_cost"
+			value = saxon_elective_succession_law_cost
+			desc = "saxon_elective_succession_law"
 			format = "BASE_VALUE_FORMAT"
 		}
 	}
@@ -309,8 +319,8 @@ StA_title_realm_authority = {
 			has_title_law = scandinavian_elective_succession_law
 		}
 		add = {
-			value = scandinavian_elective_succession_law
-			desc = "scandinavian_elective_succession_law_cost"
+			value = scandinavian_elective_succession_law_cost
+			desc = "scandinavian_elective_succession_law"
 			format = "BASE_VALUE_FORMAT"
 		}
 	}
@@ -456,3 +466,4 @@ high_authority_capacity = {
 medium_authority_capacity = {
 	value = 25
 }
+
