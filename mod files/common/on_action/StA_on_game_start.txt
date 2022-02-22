@@ -126,15 +126,15 @@ StA_title_realm_law_init = {
 			remove_from_list = reset_authority
 		}
 
-		# every_ruler = {
-		# 	limit = {
-		# 		has_government = feudal_government
-		# 		is_independent_ruler = no
-		# 		# highest_held_title_tier >= tier_county
-		# 		primary_title = { has_variable = StA_title_allegiance }
-		# 		primary_title.var:StA_title_allegiance = { has_variable = StA_title_realm_law }
-		# 	}
-		# 	update_vassal_contract = yes
-		# }
+		every_ruler = {
+			limit = {
+				has_government = feudal_government
+				is_independent_ruler = no
+				# highest_held_title_tier >= tier_county
+				primary_title = { has_variable = StA_title_allegiance }
+				primary_title.var:StA_title_allegiance = { has_variable = StA_title_realm_law }
+			}
+			update_vassal_contract = yes
+		}
 	}
 }
