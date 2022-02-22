@@ -81,11 +81,6 @@ StA_title_realm_law_init = {
 					}
 					StA_set_title_allegiance_to_liege = yes
 					holder = {
-						save_scope_as = ruler
-						set_variable = {
-							name = StA_primary_title
-							value = primary_title
-						}
 						every_held_title = {
 							set_variable = {
 								name = StA_holder

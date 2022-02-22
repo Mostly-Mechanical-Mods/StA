@@ -15,5 +15,13 @@ StA_compat = {
 			name = mods_loaded
 			target = global_var:StA_is_loaded
 		}
+		set_global_variable = {
+			name = StA_savegame_compat_2004
+			value = yes
+		}
+		set_global_variable = {
+			name = StA_savegame_compat_2100
+			value = yes
+		}
 	}
 }

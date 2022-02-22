@@ -8,7 +8,7 @@ StA_remove_current_title_allegiance = {
 				name = StA_pledge_allegiance
 				target = PREV
 			}
-		}
+		} 
 	}
 	remove_variable = StA_title_allegiance
 }
@@ -85,16 +85,9 @@ StA_remove_allegiance_from_non_primary_titles = {
 }
 
 StA_calculate_average_submission_ruler = {
-	save_scope_as = ruler
-	save_opinion_value_as = {
-		name = opinion_liege
-		target = liege
-	}
-	set_variable = {
-		name = opinion_liege
-		value = scope:opinion_liege
-	}
-	every_vassal = {
+	save_scope_as = this_story
+	var:ruler = {
+		if = { limit = { debug_only = yes } debug_log_scopes = no }
 		save_opinion_value_as = {
 			name = opinion_liege
 			target = liege
@@ -104,48 +97,64 @@ StA_calculate_average_submission_ruler = {
 			value = scope:opinion_liege
 		}
 	}
-	every_held_title = {
-		limit = { has_variable = StA_title_realm_law }
-		var:StA_title_realm_law = {
-		set_variable = {
-			name = total_strength
-			value = {
-				var:title = {
-					every_in_list = {
-						variable = StA_pledge_allegiance
-						limit = {
-							tier >= tier_county
-							NOT = { holder = scope:ruler }
-							THIS = holder.primary_title
-						}
-						add = holder.max_military_strength
-						}
-						min = 1
-					}
+	set_variable = {
+		name = total_strength
+		value = 0
+	}
+	set_variable = {
+		name = total_weighted_submission
+		value = 0
+	}
+	var:title = {
+		if = { limit = { debug_only = yes } debug_log_scopes = no }
+		every_in_list = {
+			variable = StA_pledge_allegiance
+			if = { limit = { debug_only = yes } debug_log_scopes = no }
+			holder = {
+				save_opinion_value_as = {
+					name = opinion_liege
+					target = liege
 				}
-			}
-		}
-		set_variable = {
-			name = average_submission
-			value = {
-				var:title = {
-					every_in_list = {
-						variable = StA_pledge_allegiance
-						limit = {
-							tier >= tier_county
-							NOT = { holder = scope:ruler }
-							THIS = holder.primary_title
-						}
+				set_variable = {
+					name = opinion_liege
+					value = scope:opinion_liege
+				}
+				if = { limit = { debug_only = yes } var:opinion_liege = { debug_log_scopes = no }}
+				scope:this_story = {
+					change_variable = {
+						name = total_strength
+						add = PREV.max_military_strength
+					}
+					if = { limit = { debug_only = yes } var:total_strength = { debug_log_scopes = no }}
+					change_variable = {
+						name = total_weighted_submission
 						add = {
-							add = holder.StA_submission
-							multiply = holder.max_military_strength
+							add = PREV.StA_submission
+							multiply = PREV.max_military_strength
 						}
 					}
+					if = { limit = { debug_only = yes } var:total_weighted_submission = { debug_log_scopes = no }}
 				}
-				divide = var:total_strength
-				max = 100
-				min = -100
 			}
 		}
 	}
+	if = {
+		limit = { var:total_strength > 0 }
+		debug_log = "total strength > 0"
+		set_variable = {
+			name = average_submission
+			value = {
+				add = var:total_weighted_submission
+				divide = var:total_strength
+			}
+		}
+	}
+	else = {
+		debug_log = "total strength = 0"
+		set_variable = {
+			name = average_submission
+			value = 0
+		}
+	}
+	if = { limit = { debug_only = yes } var:average_submission = { debug_log_scopes = no }}
 }

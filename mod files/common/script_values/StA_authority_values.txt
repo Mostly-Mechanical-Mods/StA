@@ -8,6 +8,11 @@ StA_max_mil_strength = {
 	add = max_military_strength
 }
 
+StA_relative_mil_strength = {
+	add = max_military_strength
+	divide = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:total_strength
+}
+
 StA_contract_score = {
 	add = {
 		add = vassal_contract_obligation_level:feudal_government_taxes

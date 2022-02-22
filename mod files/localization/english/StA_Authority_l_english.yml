@@ -3,8 +3,8 @@
   game_concept_submission: "Submission"
   game_concept_submission_desc: "$game_concept_submission$ reflects to what extent a feudal [vassal|El] submits to their [liege|El]'s power.\n\nIt is primarily determined by their personality. Powerful vassals will be less submissive and highly expect a council position, and vassals of a different culture are also much more likely to be unruly."
 
-  game_concept_authority_capacity: "Realm Authority"
-  game_concept_authority_capacity_desc: "Realm Authority represents a ruler's capacity to enact laws in a given Realm.\n\nIt depends, amongst other things, on their rank, their Court Grandeur, and their average Vassal [submission|E]."
+  game_concept_authority_capacity: "Authority Capacity"
+  game_concept_authority_capacity_desc: "Authority Capacity represents a ruler's capacity to enact laws in a given Realm.\n\nIt depends, amongst other things, on their rank, their Court Grandeur, and their average Vassal [submission|E]."
   game_concept_authority_spent: "Authority Used"
   game_concept_authority_spent_desc: "Authority Used represents the cost of enforcing currently enacted laws over a given Realm.\n\nA ruler that uses more Authority than he has cannot enact more Realm Laws, and vassals of the Realm are likely to be angered by over-exertion."
 
@@ -56,7 +56,8 @@
   StA_submission: "Submission"
   STA_VASSAL_SUBMISSION: "[submission|E]: [Character.MakeScope.ScriptValue('StA_submission')]"
   StA_submission_dread: "Reaction to Dread"
-  STA_TITLE_SUBMISSION: "Average [submission|E]: [Title.MakeScope.Var('StA_title_realm_law').Var('average_submission').GetValue|0]"
+  STA_TITLE_SUBMISSION: "Average [submission|E]: #V [Title.MakeScope.Var('StA_title_realm_law').Var('average_submission').GetValue|0]#!"
+  STA_TITLE_MIL_STRENGTH: "Total vassal militay: #V [Title.MakeScope.Var('StA_title_realm_law').Var('total_strength').GetValue|0]#!"
 
   TITLE_SWEARS_ALLEGIANCE_TO: "Swears [title_allegiance|E] to [Title.MakeScope.Var('StA_title_allegiance').Title.GetBaseName]"
   STA_CONFIRM_TITLE_LAW: "Title Realm Law Change"

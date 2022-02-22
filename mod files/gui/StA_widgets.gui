@@ -96,13 +96,8 @@ window = {
 											icon = {
 												size = { 25 25 }
 												texture = "gfx/interface/icons/icon_soldier.dds"
+												alpha = "[Min_CFixedPoint(Multiply_CFixedPoint(Character.MakeScope.ScriptValue('StA_relative_mil_strength'),'(CFixedPoint)2'),'(CFixedPoint)1')]"
 											}
-
-											text_single = {
-												min_width = 50
-												text = "[Character.MakeScope.ScriptValue('StA_max_mil_strength')|0]"
-											}
-											
 											
 											button = {
 												tooltip = "[Character.MakeScope.GetScriptValueDesc('StA_submission')]"
