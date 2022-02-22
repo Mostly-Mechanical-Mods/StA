@@ -213,6 +213,16 @@ StA_title_law = {
 	}
 }
 
+StA_title_law = {
+	on_setup = {
+		debug_log = "StA_title_law"
+	}
+	on_end = {
+	}
+	on_owner_death = {
+	}
+}
+
 StA_obligation_levels = {
 	on_setup = {
 	}
