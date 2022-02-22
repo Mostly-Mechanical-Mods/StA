@@ -18,8 +18,6 @@ StA_error_suppression.0001 = {
 	}
 
 	immediate = {
-		set_variable = StA_custom_contract
-		set_variable = StA_transfer_realm_laws
 		fix_variable_error = { X = succession_rights }
 		fix_variable_error = { X = war_declaration_rights }
 		fix_variable_error = { X = title_revocation_rights }
@@ -41,5 +39,32 @@ StA_error_suppression.0001 = {
 		fix_variable_error = { X = StA_title_tree_obligation }
 		fix_variable_error = { X = tree_obligation }
 		fix_variable_error = { X = boolean_obligation }
+		fix_variable_error = { X = feudal_elective_succession_law }
+		fix_variable_error = { X = gaelic_elective_succession_law }
+		fix_variable_error = { X = male_only_law }
+		fix_variable_error = { X = female_only_law }
+		fix_variable_error = { X = equal_law }
+		fix_variable_error = { X = princely_elective_succession_law }
+		fix_variable_error = { X = male_preference_law }
+		fix_variable_error = { X = scandinavian_elective_succession_law }
+		fix_variable_error = { X = female_preference_law }
+		fix_variable_error = { X = saxon_elective_succession_law }
+		fix_variable_error = { X = StA_title_realm_authority_capacity }
+		fix_variable_error = { X = cost }
+		fix_variable_error = { X = StA_title_succession_laws }
+		fix_variable_error = { X = StA_savegame_compat_2004 }
+		fix_variable_error = { X = StA_realm_tax }
+		fix_variable_error = { X = StA_realm_levies }
+		fix_variable_error = { X = StA_title_law_cooldown }
+		fix_variable_error = { X = StA_cooldown }
+		fix_variable_error = { X = StA_primary_title_of }
+		fix_variable_error = { X = feudal_government_taxes }
+		fix_variable_error = { X = feudal_government_levies }
+		fix_variable_error = { X = StA_custom_contract }
+		fix_variable_error = { X = religious_rights_ }
+		fix_variable_error = { X = coinage_rights_ }
+		fix_variable_error = { X = special_contract_ }
+		fix_variable_error = { X = council_rights_ }
+		fix_variable_error = { X = fortification_rights_ }
 	}
 }

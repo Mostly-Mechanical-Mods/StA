@@ -21,40 +21,40 @@
 
   single_heir_dynasty_house_effects_other:1 "\n#V Under $single_heir_dynasty_house$ [succession], the oldest member of your [house] will inherit all your titles.#!\n\n#weak Upon succession, all of the late Ruler's [titles|e] will be given to the oldest eligible member of their [house|E]. Your children will not be given anything, unless one of them happens to be the oldest House member.\n#!"
 
-# Male only
-  male_only_law_effects: "$male_only_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('male_only_law_cost'),'')]"
+# # Male only
+#   male_only_law_effects: "$male_only_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('male_only_law_cost'),'')]"
 
- male_only_law_effects_other:0 "$EFFECT_LIST_BULLET$Women are disqualified from inheritance\n$EFFECT_LIST_BULLET$Women cannot inherit [claims|E]\n$EFFECT_LIST_BULLET$Male [rulers|E] can have [concubines|E] or multiple [spouses|E] if their [faith|E] has the [GetFaithDoctrine('doctrine_concubines').GetBaseName] or [GetFaithDoctrine('doctrine_polygamy').GetBaseName] [doctrine|E]"
+#  male_only_law_effects_other:0 "$EFFECT_LIST_BULLET$Women are disqualified from inheritance\n$EFFECT_LIST_BULLET$Women cannot inherit [claims|E]\n$EFFECT_LIST_BULLET$Male [rulers|E] can have [concubines|E] or multiple [spouses|E] if their [faith|E] has the [GetFaithDoctrine('doctrine_concubines').GetBaseName] or [GetFaithDoctrine('doctrine_polygamy').GetBaseName] [doctrine|E]"
 
-  male_only_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('male_only_law_cost')] @authority_icon! Authority #!"
+#   male_only_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('male_only_law_cost')] @authority_icon! Authority #!"
 
-# Male Preference
-  male_preference_law_effects: "$male_preference_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('male_preference_law_cost'),'')]"
+# # Male Preference
+#   male_preference_law_effects: "$male_preference_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('male_preference_law_cost'),'')]"
 
-  male_preference_law_effects_other:1 "$EFFECT_LIST_BULLET$Men take precedence over women in succession\n$EFFECT_LIST_BULLET$Male [rulers|E] can have [concubines|E] or multiple [spouses|E] if their [faith|E] has the [GetFaithDoctrine('doctrine_concubines').GetBaseName] or [GetFaithDoctrine('doctrine_polygamy').GetBaseName] [doctrine|E]"
+#   male_preference_law_effects_other:1 "$EFFECT_LIST_BULLET$Men take precedence over women in succession\n$EFFECT_LIST_BULLET$Male [rulers|E] can have [concubines|E] or multiple [spouses|E] if their [faith|E] has the [GetFaithDoctrine('doctrine_concubines').GetBaseName] or [GetFaithDoctrine('doctrine_polygamy').GetBaseName] [doctrine|E]"
 
-  male_preference_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('male_preference_law_cost')] @authority_icon! Authority #!"
+#   male_preference_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('male_preference_law_cost')] @authority_icon! Authority #!"
 
-# Equal
-  equal_law_effects: "$equal_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('equal_law_cost'),'')]"
+# # Equal
+#   equal_law_effects: "$equal_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('equal_law_cost'),'')]"
 
-  equal_law_effects_other:0 "$EFFECT_LIST_BULLET$Men and women are equal in succession\n$EFFECT_LIST_BULLET$All [rulers|E] can have [concubines|E] or multiple [spouses|E] if their [faith|E] has the [GetFaithDoctrine('doctrine_concubines').GetBaseName] or [GetFaithDoctrine('doctrine_polygamy').GetBaseName] [doctrine|E]"
+#   equal_law_effects_other:0 "$EFFECT_LIST_BULLET$Men and women are equal in succession\n$EFFECT_LIST_BULLET$All [rulers|E] can have [concubines|E] or multiple [spouses|E] if their [faith|E] has the [GetFaithDoctrine('doctrine_concubines').GetBaseName] or [GetFaithDoctrine('doctrine_polygamy').GetBaseName] [doctrine|E]"
 
-  equal_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('equal_law_cost')] @authority_icon! Authority #!"
+#   equal_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('equal_law_cost')] @authority_icon! Authority #!"
 
-# Female Preference
-  female_preference_law_effects: "$female_preference_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('female_preference_law_cost'),'')]"
+# # Female Preference
+#   female_preference_law_effects: "$female_preference_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('female_preference_law_cost'),'')]"
 
-  female_preference_law_effects_other:0 "$EFFECT_LIST_BULLET$Women take precedence over men in succession\n$EFFECT_LIST_BULLET$Female [rulers|E] can have [concubines|E] or multiple [spouses|E] if their [faith|E] has the [GetFaithDoctrine('doctrine_concubines').GetBaseName] or [GetFaithDoctrine('doctrine_polygamy').GetBaseName] [doctrine|E]"
+#   female_preference_law_effects_other:0 "$EFFECT_LIST_BULLET$Women take precedence over men in succession\n$EFFECT_LIST_BULLET$Female [rulers|E] can have [concubines|E] or multiple [spouses|E] if their [faith|E] has the [GetFaithDoctrine('doctrine_concubines').GetBaseName] or [GetFaithDoctrine('doctrine_polygamy').GetBaseName] [doctrine|E]"
 
-  female_preference_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('female_preference_law_cost')] @authority_icon! Authority #!"
+#   female_preference_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('female_preference_law_cost')] @authority_icon! Authority #!"
 
-# Female Only
-  female_only_law_effects: "$female_only_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('female_only_law_cost'),'')]"
+# # Female Only
+#   female_only_law_effects: "$female_only_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('female_only_law_cost'),'')]"
 
-  female_only_law_effects_other:0 "$EFFECT_LIST_BULLET$Men are disqualified from inheritance\n$EFFECT_LIST_BULLET$Men cannot inherit [claims|E]\n$EFFECT_LIST_BULLET$Female [rulers|E] can have [concubines|E] or multiple [spouses|E] if their [faith|E] has the [GetFaithDoctrine('doctrine_concubines').GetBaseName] or [GetFaithDoctrine('doctrine_polygamy').GetBaseName] [doctrine|E]"
+#   female_only_law_effects_other:0 "$EFFECT_LIST_BULLET$Men are disqualified from inheritance\n$EFFECT_LIST_BULLET$Men cannot inherit [claims|E]\n$EFFECT_LIST_BULLET$Female [rulers|E] can have [concubines|E] or multiple [spouses|E] if their [faith|E] has the [GetFaithDoctrine('doctrine_concubines').GetBaseName] or [GetFaithDoctrine('doctrine_polygamy').GetBaseName] [doctrine|E]"
 
-  female_only_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('female_only_law_cost')] @authority_icon! Authority #!"
+#   female_only_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('female_only_law_cost')] @authority_icon! Authority #!"
 
 # Feudal Elective
   feudal_elective_succession_law_effects: "$feudal_elective_succession_law_effects_other$\n[Select_CString(GetPlayer.GetGovernment.IsType('feudal_government'),Localize('feudal_elective_succession_law_cost'),'')]"

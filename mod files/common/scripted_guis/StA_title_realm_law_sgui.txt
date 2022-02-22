@@ -1,43 +1,4 @@
-﻿StA_update_title_realm_law = {
-	scope = title
-	saved_scopes = {
-		obligation
-		level
-	}
-	effect = {
-		var:StA_title_realm_law = {
-			switch = {
-				trigger = scope:obligation
-				flag:feudal_government_taxes = { set_variable = { name = feudal_government_taxes value = scope:level }}
-				flag:feudal_government_levies = { set_variable = { name = feudal_government_levies value = scope:level }}
-			}
-		}
-		switch = {
-			trigger = scope:obligation
-			flag:feudal_government_taxes = { set_variable = { name = feudal_government_taxes value = scope:level }}
-			flag:feudal_government_levies = { set_variable = { name = feudal_government_levies value = scope:level }}
-		}
-		holder = {
-			every_vassal = {
-				limit = {
-					has_government = feudal_government
-					trigger_if = {
-						limit = { highest_held_title_tier >= tier_county }
-						primary_title.var:StA_title_allegiance = ROOT
-						has_variable = StA_custom_contract
-					}
-				}
-				switch = {
-					trigger = scope:obligation
-					flag:feudal_government_taxes = { vassal_contract_set_obligation_level = { type = feudal_government_taxes level = scope:level }}
-					flag:feudal_government_levies = { vassal_contract_set_obligation_level = { type = feudal_government_levies level = scope:level }}
-				}
-			}
-		}
-	}
-}
-
-StA_change_title_law = {
+﻿StA_change_title_law = {
 	scope = character
 	saved_scopes = {
 		title
@@ -45,6 +6,8 @@ StA_change_title_law = {
 		level
 	}
 	effect = {
+		clear_variable_list = vassal_opt_in
+		clear_variable_list = vassal_opt_out
 		set_variable = {
 			name = StA_change_law_title
 			value = scope:title
@@ -61,31 +24,31 @@ StA_change_title_law = {
 			name = StA_change_law_cost
 			value = {
 				if = {
-					limit = { var:StA_change_law_obligation = flag:feudal_government_taxes_ }
+					limit = { scope:obligation = flag:feudal_government_taxes_ }
 					add = scope:level
 					subtract = scope:title.var:StA_title_realm_law.var:feudal_government_taxes_
 					multiply = 5
 				}
 				else_if = {
-					limit = { var:StA_change_law_obligation = flag:feudal_government_levies_ }
+					limit = { scope:obligation = flag:feudal_government_levies_ }
 					add = scope:level
 					subtract = scope:title.var:StA_title_realm_law.var:feudal_government_levies_
 					multiply = 5
 				}
 				else_if = {
-					limit = { var:StA_change_law_obligation = flag:succession_rights_ }
+					limit = { scope:obligation = flag:succession_rights_ }
 					add = scope:level
 					subtract = scope:title.var:StA_title_realm_law.var:succession_rights_
 					multiply = 20
 				}
 				else_if = {
-					limit = { var:StA_change_law_obligation = flag:war_declaration_rights_ }
+					limit = { scope:obligation = flag:war_declaration_rights_ }
 					add = scope:level
 					subtract = scope:title.var:StA_title_realm_law.var:war_declaration_rights_
 					multiply = -20
 				}
 				else_if = {
-					limit = { var:StA_change_law_obligation = flag:title_revocation_rights_ }
+					limit = { scope:obligation = flag:title_revocation_rights_ }
 					add = scope:level
 					subtract = scope:title.var:StA_title_realm_law.var:title_revocation_rights_
 					multiply = -20
@@ -103,6 +66,35 @@ StA_change_title_law = {
 			}
 		}
 		set_variable = StA_confirm_title_window_on
+		scope:title = {
+			ordered_in_list = {
+				variable = StA_pledge_allegiance
+				limit = {
+					holder = { has_government = feudal_government }
+					tier >= tier_county
+				}
+				order_by = tier
+				max = 99
+				check_range_bounds = no
+				if = {
+					limit = { holder = { has_contract_obligation_opt_out = yes }}
+					ROOT = {
+						add_to_variable_list = {
+							name = vassal_opt_out
+							target = PREV
+						}
+					}
+				}
+				else = {
+					ROOT = {
+						add_to_variable_list = {
+							name = vassal_opt_in
+							target = PREV
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -122,7 +114,7 @@ StA_cancel_title_law_change = {
 	}
 }
 
-StA_confirm_title_law = {
+StA_law_change_cost_alert = {
 	scope = character
 	is_valid = {
 		trigger_if = {
@@ -130,35 +122,47 @@ StA_confirm_title_law = {
 			var:StA_change_law_cost_check > 0
 		}
 	}
+}
+
+StA_law_change_cooldown_alert = {
+	scope = character
+	is_valid = {
+		trigger_if = {
+			limit = { var:StA_change_law_cost > 0 }
+			var:StA_change_law_title.StA_cooldown = 0
+		}
+	}
+}
+
+StA_confirm_title_law = {
+	scope = character
+	is_valid = {
+		trigger_if = {
+			limit = { var:StA_change_law_cost > 0 }
+			var:StA_change_law_cost_check > 0
+			var:StA_change_law_title.StA_cooldown = 0
+		}
+	}
 	effect = {
-		var:StA_change_law_title.var:StA_title_realm_law = {
-			switch = {
-				trigger = ROOT.var:StA_change_law_obligation
-				flag:feudal_government_taxes_ = { set_variable = { name = feudal_government_taxes_ value = ROOT.var:StA_change_law_level }}
-				flag:feudal_government_levies_ = { set_variable = { name = feudal_government_levies_ value = ROOT.var:StA_change_law_level }}
-				flag:succession_rights_ = { set_variable = { name = succession_rights_ value = ROOT.var:StA_change_law_level }}
-				flag:war_declaration_rights_ = { set_variable = { name = war_declaration_rights_ value = ROOT.var:StA_change_law_level }}
-				flag:title_revocation_rights_ = { set_variable = { name = title_revocation_rights_ value = ROOT.var:StA_change_law_level }}
+		var:StA_change_law_title = {
+			StA_update_cooldown_law_change = yes
+			var:StA_title_realm_law = {
+				switch = {
+					trigger = ROOT.var:StA_change_law_obligation
+					flag:feudal_government_taxes_ = { set_variable = { name = feudal_government_taxes_ value = ROOT.var:StA_change_law_level }}
+					flag:feudal_government_levies_ = { set_variable = { name = feudal_government_levies_ value = ROOT.var:StA_change_law_level }}
+					flag:succession_rights_ = { set_variable = { name = succession_rights_ value = ROOT.var:StA_change_law_level }}
+					flag:war_declaration_rights_ = { set_variable = { name = war_declaration_rights_ value = ROOT.var:StA_change_law_level }}
+					flag:title_revocation_rights_ = { set_variable = { name = title_revocation_rights_ value = ROOT.var:StA_change_law_level }}
+				}
 			}
 		}
 		every_vassal = {
 			limit = {
 				has_government = feudal_government
-				trigger_if = {
-					limit = { highest_held_title_tier >= tier_county }
-					primary_title.var:StA_title_allegiance = ROOT.var:StA_change_law_title
-					NOT = { has_variable = StA_custom_contract }
-				}
+				trigger_if = { primary_title.var:StA_title_allegiance = ROOT.var:StA_change_law_title }
 			}
-			switch = {
-				trigger = ROOT.var:StA_change_law_obligation
-				flag:feudal_government_taxes_ = { vassal_contract_set_obligation_level = { type = feudal_government_taxes level = ROOT.var:StA_change_law_level }}
-				flag:feudal_government_levies_ = { vassal_contract_set_obligation_level = { type = feudal_government_levies level = ROOT.var:StA_change_law_level }}
-				flag:succession_rights_ = { vassal_contract_set_obligation_level = { type = succession_rights level = ROOT.var:StA_change_law_level }}
-				flag:war_declaration_rights_ = { vassal_contract_set_obligation_level = { type = war_declaration_rights level = ROOT.var:StA_change_law_level }}
-				flag:title_revocation_rights_ = { vassal_contract_set_obligation_level = { type = title_revocation_rights level = ROOT.var:StA_change_law_level }}
-			}
-			# if = { limit = { var:StA_change_law_obligation = flag:StA_realm_tax } set_variable = { name = StA_realm_tax value = var:StA_change_law_level }}
+			update_vassal_contract = yes
 		}
 		remove_variable = StA_confirm_title_window_on
 		remove_variable = StA_change_law_title
@@ -202,72 +206,61 @@ StA_title_window_player = {
 					max = 99
 					check_range_bounds = no
 					limit = { has_variable = StA_title_realm_law }
+					save_scope_as = title_temp
 					ROOT = {
 						add_to_variable_list = {
 							name = title_window_player
 							target = PREV
 						}
 					}
-					var:StA_title_realm_law = {
-						ordered_in_list = {
-							variable = StA_pledge_allegiance
-							limit = {
-								holder = scope:title.holder
-								trigger_if = {
-									limit = { NOT = { has_variable = StA_title_realm_law }}
-									tier > tier_county
+					every_in_de_jure_hierarchy = {
+						limit = {
+							NOT = { THIS = PREV }
+							holder = ROOT
+							tier >= tier_duchy
+							any_this_title_or_de_jure_above = {
+								NOR = {
+									THIS = PREV
+									THIS = scope:title_temp
 								}
+								has_variable = StA_title_realm_law
+								target_is_de_jure_liege_or_above = scope:title_temp
+								count = 0
 							}
-							order_by = tier
-							max = 99
-							check_range_bounds = no
-							ROOT = {
-								add_to_variable_list = {
-									name = title_window_player
-									target = PREV
-								}
+						}
+						ROOT = {
+							add_to_variable_list = {
+								name = title_window_player
+								target = PREV
+							}
+						}
+					}
+					ordered_in_list = {
+						variable = StA_pledge_allegiance
+						limit = {
+							holder = scope:title.holder
+							trigger_if = {
+								limit = { NOT = { has_variable = StA_title_realm_law }}
+								tier > tier_county
+							}
+						}
+						order_by = tier
+						max = 99
+						check_range_bounds = no
+						ROOT = {
+							add_to_variable_list = {
+								name = title_window_player
+								target = PREV
 							}
 						}
 					}
 				}
 			}
-			every_held_title = {
-				limit = { has_variable = StA_title_realm_law }
-				var:StA_title_realm_law = {
-					set_variable = {
-						name = total_strength
-						value = {
-							every_in_list = {
-								variable = StA_pledge_allegiance
-								limit = {
-									tier >= tier_county
-									NOT = { holder = scope:title.holder }
-									THIS = holder.primary_title
-								}
-								add = holder.max_military_strength
-							}
-							min = 1
-						}
-					}
-					set_variable = {
-						name = average_submission
-						value = {
-							every_in_list = {
-								variable = StA_pledge_allegiance
-								limit = {
-									tier >= tier_county
-									NOT = { holder = scope:title.holder }
-									THIS = holder.primary_title
-								}
-								add = {
-									add = holder.StA_submission
-									multiply = holder.max_military_strength
-								}
-							}
-							divide = var:total_strength
-							max = 100
-							min = -100
-						}
+			scope:title = {
+				if = {
+					limit = { has_variable = StA_title_realm_law }
+					var:StA_title_realm_law = {
+						StA_reset_authority = yes
 					}
 				}
 			}
@@ -281,21 +274,21 @@ StA_title_window_allegiance = {
 	is_valid = { has_variable = StA_title_realm_law }
 
 	effect = {
-		var:StA_title_realm_law = {
-			ordered_in_list = {
-				variable = StA_pledge_allegiance
-				limit = { NOT = { holder = ROOT.holder }}
-				order_by = tier
-				max = 99
-				check_range_bounds = no
-				PREV = {
-					add_to_variable_list = {
-						name = StA_title_window_allegiance
-						target = PREV
-					}
+		clear_variable_list = StA_title_window_allegiance
+		ordered_in_list = {
+			variable = StA_pledge_allegiance
+			limit = { NOT = { holder = ROOT.holder }}
+			order_by = tier
+			max = 99
+			check_range_bounds = no
+			PREV = {
+				add_to_variable_list = {
+					name = StA_title_window_allegiance
+					target = PREV
 				}
 			}
 		}
+		var:StA_title_realm_law = { StA_reset_authority = yes }
 	}
 }
 
@@ -305,43 +298,45 @@ StA_title_window_create_title = {
 		creator
 	}
 	effect = {
-		if = {
-			limit = {
-				any_this_title_or_de_jure_above = {
-					NOT = { THIS = PREV }
-					has_variable = StA_title_realm_law
-				}
-			}
-			ordered_this_title_or_de_jure_above = {
-				limit = {
-					NOT = { THIS = PREV }
-					has_variable = StA_title_realm_law
-				}
-				order_by = tier
-				max = 4
-				check_range_bounds = no
-				var:StA_title_realm_law = {
-					add_to_variable_list = {
-						name = StA_pledge_allegiance
-						target = ROOT
-					}
-				}
-				ROOT = {
-					set_variable = {
-						name = StA_title_allegiance
-						value = PREV
-					}
-				}
-			}
-		}
-		else = {
-			scope:creator = {
-				set_variable = {
-					name = StA_title
-					value = PREV
-				}
-				create_story = StA_title_realm_law
-			}
-		}
+		debug_log = "SGUI CREATE TITLE"
+		debug_log_scopes = no
+	# 	if = {
+	# 		limit = {
+	# 			any_this_title_or_de_jure_above = {
+	# 				NOT = { THIS = PREV }
+	# 				has_variable = StA_title_realm_law
+	# 			}
+	# 		}
+	# 		ordered_this_title_or_de_jure_above = {
+	# 			limit = {
+	# 				NOT = { THIS = PREV }
+	# 				has_variable = StA_title_realm_law
+	# 			}
+	# 			order_by = tier
+	# 			max = 4
+	# 			check_range_bounds = no
+	# 			var:StA_title_realm_law = {
+	# 				add_to_variable_list = {
+	# 					name = StA_pledge_allegiance
+	# 					target = ROOT
+	# 				}
+	# 			}
+	# 			ROOT = {
+	# 				set_variable = {
+	# 					name = StA_title_allegiance
+	# 					value = PREV
+	# 				}
+	# 			}
+	# 		}
+	# 	}
+	# 	else = {
+	# 		scope:creator = {
+	# 			set_variable = {
+	# 				name = StA_title
+	# 				value = PREV
+	# 			}
+	# 			create_story = StA_title_realm_law
+	# 		}
+	# 	}
 	}
 }

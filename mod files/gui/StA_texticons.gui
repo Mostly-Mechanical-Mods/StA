@@ -12,7 +12,7 @@ texticon = {
 	icon = succession_rights_icon
 	iconsize = {
 		texture = "gfx/interface/icons/portraits/heir_small.dds"
-		size = { 20 20 }
+		size = { 25 25 }
 		offset = { 0 6 }
 		fontsize = 16
 	}

@@ -9,11 +9,19 @@ StA_compat = {
 	effect = {
 		set_global_variable = {
 			name = StA_is_loaded
-			value = 2.004
+			value = 2.100
 		}
 		add_to_global_variable_list = {
 			name = mods_loaded
 			target = global_var:StA_is_loaded
+		}
+		set_global_variable = {
+			name = StA_savegame_compat_2004
+			value = yes
+		}
+		set_global_variable = {
+			name = StA_savegame_compat_2100
+			value = yes
 		}
 	}
 }

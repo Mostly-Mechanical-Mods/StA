@@ -1,7 +1,52 @@
-﻿has_title_realm_contract = {
-	vassal_contract_obligation_level:feudal_government_taxes = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_taxes_
-	vassal_contract_obligation_level:feudal_government_levies = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_levies_
-	vassal_contract_obligation_level:succession_rights = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:succession_rights_
-	vassal_contract_obligation_level:war_declaration_rights = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights_
-	vassal_contract_obligation_level:title_revocation_rights = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:title_revocation_rights_
+﻿StA_title_has_identical_law_as_target = {
+	$TITLE$ = { save_temporary_scope_as = target_title }
+	trigger_if = {
+		limit = {
+			has_variable = StA_title_realm_law
+			scope:target_title = { has_variable = StA_title_realm_law }
+		}
+		var:StA_title_realm_law = {
+			var:feudal_government_taxes_ = scope:target_title.var:StA_title_realm_law.var:feudal_government_taxes_
+			var:feudal_government_levies_ = scope:target_title.var:StA_title_realm_law.var:feudal_government_levies_
+			var:succession_rights_ = scope:target_title.var:StA_title_realm_law.var:succession_rights_
+			var:war_declaration_rights_ = scope:target_title.var:StA_title_realm_law.var:war_declaration_rights_
+			var:title_revocation_rights_ = scope:target_title.var:StA_title_realm_law.var:title_revocation_rights_
+		}
+	}
+}
+
+StA_title_can_merge_authority_to = {
+	NOT = { THIS = $TITLE$ }
+	# target_is_de_jure_liege_or_above = $TITLE$
+	NOR = {
+		has_title_law_flag = succession_gender_laws
+		has_title_law_flag = advanced_succession_law
+		has_title_law_flag = elective_succession_law
+	}
+	StA_title_has_identical_law_as_target = { TITLE = $TITLE$ }
+}
+
+title_can_have_succession_law = {
+	holder = { has_government = feudal_government }
+	save_temporary_scope_as = title
+	OR = {
+		has_variable = StA_title_realm_law
+		any_this_title_or_de_jure_above = {
+			NOT = { THIS = PREV }
+			holder = PREV.holder
+			has_variable = StA_title_realm_law
+			has_title_law = $LAW$
+		}
+	}
+}
+
+has_contract_obligation_opt_out = {
+	switch = {
+		trigger = scope:obligation
+		flag:feudal_government_taxes_ = { has_variable = feudal_government_taxes_opt_out }
+		flag:feudal_government_levies_ = { has_variable = feudal_government_levies_opt_out }
+		flag:succession_rights_ = { has_variable = succession_rights_opt_out }
+		flag:war_declaration_rights_ = { has_variable = war_declaration_rights_opt_out }
+		flag:title_revocation_rights_ = { has_variable = title_revocation_rights_opt_out }
+	}
 }
