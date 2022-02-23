@@ -8,6 +8,11 @@
 		value = yes
 	}
 	random_player = {
+		clear_global_variable_list = StA_levels_4
+		clear_global_variable_list = StA_levels_2
+		clear_global_variable_list = StA_levels_1
+		clear_global_variable_list = StA_title_laws
+		clear_global_variable_list = StA_title_succession_laws
 		create_story = { type = StA_obligation_levels save_scope_as = zero }
 		create_story = { type = StA_obligation_levels save_scope_as = one }
 		create_story = { type = StA_obligation_levels save_scope_as = two }
