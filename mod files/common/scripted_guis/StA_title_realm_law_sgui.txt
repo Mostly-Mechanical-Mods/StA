@@ -156,13 +156,11 @@ StA_confirm_title_law = {
 					flag:title_revocation_rights_ = { set_variable = { name = title_revocation_rights_ value = ROOT.var:StA_change_law_level }}
 				}
 			}
-		}
-		every_vassal = {
-			limit = {
-				has_government = feudal_government
-				trigger_if = { primary_title.var:StA_title_allegiance = ROOT.var:StA_change_law_title }
+			every_in_list = {
+				variable = StA_pledge_allegiance
+				limit = { holder = { has_government = feudal_government }}
+				holder = { update_vassal_contract = yes }
 			}
-			update_vassal_contract = yes
 		}
 		remove_variable = StA_confirm_title_window_on
 		remove_variable = StA_change_law_title

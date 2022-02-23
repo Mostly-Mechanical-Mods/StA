@@ -41,7 +41,6 @@
 						scope:ruler = { has_variable = StA_primary_title }
 						NOT = { THIS = scope:ruler.var:StA_primary_title }
 						scope:ruler.var:StA_primary_title = { has_variable = StA_title_realm_law }
-						scope:ruler.var:StA_primary_title.var:StA_title_realm_law.var:ruler = scope:ruler
 					}
 					if = {
 						limit = { debug_only = yes }
@@ -57,8 +56,8 @@
 							is_independent_ruler = no
 							liege = { has_government = feudal_government }
 						}
-						scope:ruler.liege.primary_title.var:StA_title_realm_law = { save_scope_as = transfer_from }
 					}
+					scope:ruler.liege.primary_title.var:StA_title_realm_law = { save_scope_as = transfer_from }
 					if = {
 						limit = { debug_only = yes }
 						debug_log = "STA TRANSFER REALM LAWS FROM LIEGE"
@@ -67,42 +66,47 @@
 					}
 					StA_transfer_title_laws = { TRANSFER_FROM = scope:transfer_from TRANSFER_TO = scope:story }
 				}
-				else = {
-					if = {
-						limit = { debug_only = yes }
-						debug_log = "STA SET DEFAULT REALM LAWS"
-					}
-					ordered_this_title_or_de_jure_above = {
-						limit = {
-							NOT = { THIS = PREV }
-							holder = scope:ruler.liege
-							has_variable = StA_title_realm_law
-						}
-						order_by = reverse_tier
-						if = {
-							limit = { debug_only = yes }
-							debug_log = "STA LIEGE DE JURE TITLE"
-							debug_log_scopes = no
-						}
-						var:StA_title_realm_law = { save_scope_as = transfer_from }
-					}
-					if = {
-						limit = { NOT = { exists = scope:transfer_from }}
-						if = {
-							limit = { debug_only = yes }
-							debug_log = "STA LIEGE PRIMARY TITLE"
-							scope:ruler.liege.primary_title = { debug_log_scopes = no }
-						}
-						scope:ruler.liege.primary_title.var:StA_title_realm_law = { save_scope_as = transfer_from }
-					}
-					if = {
-						limit = { debug_only = yes }
-						debug_log = "STA TRANSFER REALM LAWS FROM LIEGE"
-						scope:ruler.liege = { debug_log_scopes = no }
-						scope:transfer_from.var:title = { debug_log_scopes = no }
-					}
-					StA_transfer_title_laws = { TRANSFER_FROM = scope:transfer_from TRANSFER_TO = scope:story }
-				}
+				# # Transfer laws from own title
+				# else_if = {
+				# 	if = {
+				# 		limit = { debug_only = yes }
+				# 		debug_log = "STA SET DEFAULT REALM LAWS"
+				# 	}
+				# 	ordered_this_title_or_de_jure_above = {
+				# 		limit = {
+				# 			NOT = { THIS = PREV }
+				# 			holder = scope:ruler.liege
+				# 			has_variable = StA_title_realm_law
+				# 		}
+				# 		order_by = reverse_tier
+				# 		if = {
+				# 			limit = { debug_only = yes }
+				# 			debug_log = "STA LIEGE DE JURE TITLE"
+				# 			debug_log_scopes = no
+				# 		}
+				# 		var:StA_title_realm_law = { save_scope_as = transfer_from }
+				# 	}
+				# 	if = {
+				# 		limit = {
+				# 			NOT = { exists = scope:transfer_from }
+				# 			scope:ruler = { is_independent_ruler = no }
+				# 		}
+				# 		if = {
+				# 			limit = { debug_only = yes }
+				# 			debug_log = "STA LIEGE PRIMARY TITLE"
+				# 			scope:ruler.liege.primary_title = { debug_log_scopes = no }
+				# 		}
+				# 		scope:ruler.liege.primary_title.var:StA_title_realm_law = { save_scope_as = transfer_from }
+				# 	}
+				# 	if = {
+				# 		limit = { debug_only = yes }
+				# 		debug_log = "STA TRANSFER REALM LAWS FROM LIEGE"
+				# 		scope:ruler.liege = { debug_log_scopes = no }
+				# 		scope:transfer_from.var:title = { debug_log_scopes = no }
+				# 	}
+				# 	StA_transfer_title_laws = { TRANSFER_FROM = scope:transfer_from TRANSFER_TO = scope:story }
+				# }
+				# Set default laws
 				else = {
 					if = {
 						limit = { debug_only = yes }
