@@ -394,6 +394,18 @@ StA_title_and_vassal_change = {
 				name = StA_holder
 				value = PREV
 			}
+			if = {
+				limit = { NOT = { has_variable = StA_title_realm_size }}
+				set_variable = {
+					name = StA_title_realm_size
+					value = {
+						ordered_in_de_jure_hierarchy = {
+							limit = { tier = tier_county }
+							add = 1
+						}
+					}
+				}
+			}
 		}
 		if = {
 			limit = { debug_only = yes }
@@ -508,5 +520,61 @@ StA_on_death = {
 			StA_set_laws_to_inherit = { TRANSFER_FROM = scope:inherited_laws }
 			clear_saved_scope = inherited_laws
 		} 
+	}
+}
+
+on_title_destroyed = {
+	on_actions = {
+		StA_on_title_destroyed
+	}
+}
+
+StA_on_title_destroyed = {
+	effect = {
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "STA TITLE DESTROYED"
+			scope:landed_title = { debug_log_scopes = no }
+		}
+		if = {
+			limit = { has_variable = StA_title_realm_law }
+			if = {
+				limit = {
+					scope:landed_title = ROOT.primary_title
+					has_government = feudal_government
+				}
+				if = {
+					limit = {
+						any_held_title = {
+							NOT = { THIS = scope:landed_title }
+							has_variable = StA_title_realm_law
+							count = 0
+						}
+					}
+					ordered_held_title = {
+						limit = { NOT = { THIS = scope:landed_title }}
+						order_by = tier
+						StA_set_laws_to_inherit = { TRANSFER_FROM = scope:landed_title }
+						ROOT = {
+							set_variable = {
+								name = StA_title
+								value = PREV
+							}
+							create_story = StA_title_realm_law
+						}
+					}
+				}
+			}
+			scope:landed_title.var:StA_title_realm_law = { end_story = yes }
+			every_held_title = {
+				limit = {
+					NOT = { THIS = scope:landed_title }
+					has_variable = StA_title_realm_law
+				}
+				var:StA_title_realm_law = { StA_reset_authority = yes }
+			}
+		}
+		remove_variable = StA_holder
+		remove_variable = StA_title_realm_size
 	}
 }

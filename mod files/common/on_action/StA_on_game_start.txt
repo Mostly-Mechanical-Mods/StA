@@ -86,6 +86,18 @@ StA_title_realm_law_init = {
 								name = StA_holder
 								value = holder
 							}
+							if = {
+								limit = { is_landless_type_title = no }
+								set_variable = {
+									name = StA_title_realm_size
+									value = {
+										ordered_in_de_jure_hierarchy = {
+											limit = { tier = tier_county }
+											add = 1
+										}
+									}
+								}
+							}
 						}
 						if = {
 							limit = { has_government = feudal_government }

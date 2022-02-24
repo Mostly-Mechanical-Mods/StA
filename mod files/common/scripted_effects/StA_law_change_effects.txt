@@ -95,6 +95,7 @@ StA_reset_authority = {
 			limit = { holder = { has_government = feudal_government }}
 			holder = { update_vassal_contract = yes }
 		}
+		StA_reset_title_realm_coverage = yes
 	}
 }
 

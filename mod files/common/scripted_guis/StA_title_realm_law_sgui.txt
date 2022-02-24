@@ -191,6 +191,7 @@ StA_title_window_player = {
 
 	is_valid = {
 		exists = scope:title
+		exists = scope:title.holder
 		scope:title = { has_variable = StA_title_realm_law }
 	}
 
@@ -269,7 +270,10 @@ StA_title_window_player = {
 StA_title_window_allegiance = {
 	scope = title
 
-	is_valid = { has_variable = StA_title_realm_law }
+	is_valid = {
+		has_variable = StA_title_realm_law
+		exists = holder
+	}
 
 	effect = {
 		clear_variable_list = StA_title_window_allegiance

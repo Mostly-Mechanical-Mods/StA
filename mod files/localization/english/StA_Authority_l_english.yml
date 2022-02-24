@@ -77,6 +77,7 @@
   STA_AUTHORITY_RANK: "[Title.GetTierAsName] Tier"
   STA_AUTHORITY_COURT_GRANDEUR: "Court Grandeur"
   STA_AUTHORITY_AVERAGE_SUBMISSION: "Submission impact"
+  STA_AUTHORITY_REALM_COVERAGE: "Partial control"
 
   STA_AUTHORITY_SPENT: "@authority_icon! [authority_spent|E]: [Title.MakeScope.ScriptValue('StA_title_realm_authority')|0]"
 

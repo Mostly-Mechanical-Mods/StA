@@ -158,3 +158,66 @@ StA_calculate_average_submission_ruler = {
 	}
 	if = { limit = { debug_only = yes } var:average_submission = { debug_log_scopes = no }}
 }
+
+StA_reset_title_realm_coverage = {
+	save_scope_as = title_temp
+	if = {
+		limit = { has_variable = StA_title_realm_law }
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "RESET TITLE REALM COVERAGE"
+			debug_log_scopes = no
+		}
+		set_variable = {
+			name = StA_title_realm_coverage
+			value = 0
+		}
+		every_in_de_jure_hierarchy = {
+			limit = {
+				tier = tier_county
+				holder = {
+					OR = {
+						is_vassal_or_below_of = scope:title_temp.holder
+						THIS = scope:title_temp.holder
+					}
+				}
+			}
+			if = {
+				limit = { debug_only = yes }
+				debug_log = "DE JURE COUNTY"
+				save_scope_as = county_temp
+				debug_log_scopes = no
+			}
+			ordered_this_title_or_de_jure_above = {
+				limit = {
+					exists = holder
+					holder = scope:title_temp.holder
+					has_variable = StA_title_realm_law
+				}
+				order_by = reverse_tier
+				if = {
+					limit = { debug_only = yes }
+					debug_log = "DE JURE TITLE REALM LAW"
+					debug_log_scopes = no
+				}
+				scope:title_temp = {
+					if = {
+						limit = { var:StA_title_realm_law = scope:title_temp.var:StA_title_realm_law }
+						if = {
+							limit = { debug_only = yes }
+							debug_log = "COUNT IN"
+						}
+						change_variable = {
+							name = StA_title_realm_coverage
+							add = 1
+						}
+					}
+					else_if = {
+						limit = { debug_only = yes }
+						debug_log = "COUNT OUT"
+					}
+				}
+			}
+		}
+	}
+}

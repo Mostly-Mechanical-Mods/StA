@@ -150,6 +150,11 @@
 			limit = { exists = var:title }
 			var:title = {
 				remove_variable = StA_title_realm_law
+				remove_variable = StA_holder
+				remove_variable = StA_title_realm_coverage
+				remove_variable = StA_title_realm_size
+				clear_variable_list = StA_pledge_allegiance
+				clear_variable_list = StA_title_window_allegiance
 			}
 		}
 	}

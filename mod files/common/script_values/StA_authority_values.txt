@@ -105,6 +105,21 @@ StA_title_realm_authority_capacity = {
 		}
 	}
 	if = {
+		limit = { has_variable = StA_title_realm_size }
+		multiply = {
+			value = {
+				value = 0
+				if = {
+					limit = { has_variable = StA_title_realm_coverage }
+					add = var:StA_title_realm_coverage
+				}
+				divide = var:StA_title_realm_size
+			}
+			desc = "STA_AUTHORITY_REALM_COVERAGE"
+			format = "BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
 		limit = { has_variable = StA_title_realm_law }
 		multiply = {
 			value = {
