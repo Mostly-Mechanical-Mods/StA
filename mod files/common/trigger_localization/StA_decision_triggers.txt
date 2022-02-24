@@ -8,6 +8,6 @@ title_has_medium_authority_capacity = {
 	global_not = NOT_GLOBAL_TITLE_HAS_MEDIUM_AUTHORITY_CAPACITY	
 }
 
-held_duchy_has_law_authority_capacity = {
+no_held_duchy_in_HRE_has_low_authority_capacity = {
 	first = FIRST_HELD_DUCHY_HAS_LOW_AUTHORITY_CAPACITY
 }
