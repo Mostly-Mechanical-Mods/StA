@@ -162,55 +162,57 @@
 	}
 	effect_group = {
 		months = 1
-
-		trigger = {
-			has_variable = StA_cooldown_law_change
-		}
-
 		triggered_effect = {
 			trigger = {
-				var:StA_cooldown_law_change > 1
+				has_variable = StA_cooldown_law_change
 			}
 			effect = {
-				change_variable = {
-					name = StA_cooldown_law_change
-					subtract = 1
+				if = {
+					limit = { var:StA_cooldown_law_change > 1 }
+					change_variable = {
+						name = StA_cooldown_law_change
+						subtract = 1
+					}
 				}
+				else = { remove_variable = StA_cooldown_law_change }
 			}
 		}
 		triggered_effect = {
 			trigger = {
-				var:StA_cooldown_law_change <= 1
+				has_variable = StA_cooldown_title_holder_change
 			}
 			effect = {
-				remove_variable = StA_cooldown_law_change
-			}
-		}
-	}
-	effect_group = {
-		months = 1
-
-		trigger = {
-			has_variable = StA_cooldown_title_holder_change
-		}
-
-		triggered_effect = {
-			trigger = {
-				var:StA_cooldown_title_holder_change > 1
-			}
-			effect = {
-				change_variable = {
-					name = StA_cooldown_title_holder_change
-					subtract = 1
+				if = {
+					limit = { var:StA_cooldown_title_holder_change > 1 }
+					change_variable = {
+						name = StA_cooldown_title_holder_change
+						subtract = 1
+					}
 				}
+				else = { remove_variable = StA_cooldown_title_holder_change }
 			}
 		}
 		triggered_effect = {
 			trigger = {
-				var:StA_cooldown_title_holder_change <= 1
+				NOT = { var:ruler = var:title.holder }
 			}
 			effect = {
-				remove_variable = StA_cooldown_title_holder_change
+				debug_log = "STORY FALLBACK EFFECT - VAR:TITLE.HOLDER != VAR:RULER"
+				var:title = { debug_log_scopes = no }
+				var:title.holder = { debug_log_scopes = no }
+				var:ruler = { debug_log_scopes = no }
+				if = {
+					limit = { var:title.holder = { has_government = feudal_government }}
+					make_story_owner = var:title.holder
+					set_variable = {
+						name = ruler
+						value = var:title.holder
+					}
+				}
+				else = {
+					debug_log = "STORY FALLBACK EFFECT - VAR:TITLE.HOLDER IS NOT FEUDAL"
+					end_story = yes
+				}
 			}
 		}
 	}
