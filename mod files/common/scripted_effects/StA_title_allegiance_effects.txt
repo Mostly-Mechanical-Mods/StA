@@ -145,7 +145,10 @@ StA_calculate_average_submission_ruler = {
 			name = average_submission
 			value = {
 				add = var:total_weighted_submission
-				divide = var:total_strength
+				divide = {
+					value = var:total_strength
+					min = 1
+				}
 			}
 		}
 	}

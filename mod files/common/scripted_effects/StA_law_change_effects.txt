@@ -109,7 +109,7 @@ set_succession_law_on_dependent_titles_global = {
 }
 
 set_succession_law_on_dependent_titles = {
-	hidden_effect = {
+	# hidden_effect = {
 		if = {
 			limit = { debug_only = yes }
 			debug_log = "PASS SINGLE HEIR LAW"
@@ -117,38 +117,48 @@ set_succession_law_on_dependent_titles = {
 		}
 		if = {
 			limit = { exists = scope:title }
+			set_variable = StA_inherit_succession_law
 			scope:title = {
 				if = {
 					limit = { debug_only = yes }
 					debug_log_scopes = no
 				}
+				# set_variable = {
+				# 	name = StA_succession_law
+				# 	value = scope:title
+				# }
 				every_in_de_jure_hierarchy = {
 					limit = {
-						holder = PREV.holder
-						is_leased_out = no
 						NOR = {
+							THIS = scope:title
 							has_variable = StA_title_realm_law
-							any_this_title_or_de_jure_above = {
-								NOR = {
-									THIS = PREV
-									THIS = scope:title
-									target_is_de_jure_liege_or_above = scope:title
-								}
-								holder = PREV.holder
-								has_variable = StA_title_realm_law
-							}
+						}
+						is_title_created = yes
+						is_leased_out = no
+						holder = scope:title.holder
+					}
+					continue = {
+						OR = {
+							THIS = scope:title
+							NOT = { has_variable = StA_title_realm_law }
 						}
 					}
 					if = {
 						limit = { debug_only = yes }
 						debug_log = "INHERITS LAW"
 						debug_log_scopes = no
+						holder = { debug_log_scopes = no }
 					}
-					add_title_law = $LAW$
+					set_variable = {
+						name = StA_succession_law
+						value = scope:title
+					}
+					add_title_law = StA_$LAW$
 				}
 			}
+			remove_variable = StA_inherit_succession_law
 		}
-	}
+	# }
 }
 
 update_vassal_contract_obligation = {

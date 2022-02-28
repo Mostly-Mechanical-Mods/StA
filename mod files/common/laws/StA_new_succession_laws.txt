@@ -1,0 +1,145 @@
+﻿StA_succession_order_laws = {
+	# flag = realm_law
+	StA_single_heir_succession_law = {
+		can_title_have = {
+			title_can_have_StA_succession_law = { LAW = single_heir_succession_law }
+		}
+		should_show_for_title = { # Never show this in the UI, just apply it through script
+			always = no
+		}
+		on_pass = {
+		}
+		can_keep = {
+			can_keep_single_heir_succession_law_trigger = yes
+			# Vassal Contract allows it
+			custom_description = {
+				text = succession_laws_must_not_be_forced_partition
+				NAND = {
+					is_independent_ruler = no
+					vassal_contract_has_flag = locked_to_partition
+				}
+			}
+		}
+		can_have = {
+			can_have_single_heir_succession_law_trigger = yes
+			has_variable = StA_inherit_succession_law
+		}
+		can_pass = {
+			OR = {
+				can_change_succession_law_trigger = yes
+			}
+		}
+		should_start_with = {
+			historical_succession_access_single_heir_succession_law_trigger = yes
+		}
+		succession = {
+			order_of_succession = inheritance
+			traversal_order = children
+			rank = oldest
+			title_division = single_heir
+		}
+		pass_cost = {
+			# prestige = change_succession_law_prestige_cost
+		}
+		revoke_cost = {
+			# prestige = change_succession_law_prestige_cost
+		}
+
+		ai_will_do = {
+			value = 0
+		}
+	}
+	
+	StA_single_heir_succession_law_youngest = {
+		can_title_have = {
+			title_can_have_StA_succession_law = { LAW = single_heir_succession_law_youngest }
+		}
+		should_show_for_title = { # Never show this in the UI, just apply it through script
+			always = no
+		}
+		on_pass = {
+		}
+		can_keep = {
+			can_keep_single_heir_youngest_succession_law_trigger = yes
+			# Vassal Contract allows it
+			custom_description = {
+				text = succession_laws_must_not_be_forced_partition
+				NAND = {
+					is_independent_ruler = no
+					vassal_contract_has_flag = locked_to_partition
+				}
+			}
+		}
+		can_have = {
+			can_have_single_heir_youngest_succession_law_trigger = yes
+		}
+		can_pass = {
+			can_change_succession_law_trigger = yes
+		}
+		succession = {
+			order_of_succession = inheritance
+			traversal_order = children
+			rank = youngest
+			title_division = single_heir
+		}
+
+		pass_cost = {
+			# prestige = change_succession_law_prestige_cost
+		}
+		revoke_cost = {
+			# prestige = change_succession_law_prestige_cost
+		}
+
+		ai_will_do = {
+			value = 0
+		}
+	}
+	
+	StA_single_heir_dynasty_house = {
+		can_title_have = {
+			title_can_have_StA_succession_law = { LAW = single_heir_dynasty_house }
+		}
+		should_show_for_title = { # Never show this in the UI, just apply it through script
+			always = no
+		}
+		on_pass = {
+		}
+		can_keep = {
+			can_keep_single_heir_dynasty_house_trigger = yes
+			# Vassal Contract allows it
+			custom_description = {
+				text = succession_laws_must_not_be_forced_partition
+				NAND = {
+					is_independent_ruler = no
+					vassal_contract_has_flag = locked_to_partition
+				}
+			}
+		}
+		can_have = {
+			can_have_single_heir_dynasty_house_trigger = yes
+		}
+		can_pass = {
+			can_change_single_heir_dynasty_house_succession_law_trigger = yes
+		}
+		should_start_with = {
+			historical_succession_access_single_heir_dynasty_house_trigger = yes
+		}
+		succession = {
+			order_of_succession = inheritance
+			traversal_order = dynasty_house
+			rank = oldest
+			title_division = single_heir
+		}
+
+		pass_cost = {
+			# prestige = change_succession_law_prestige_cost
+		}
+		revoke_cost = {
+			# prestige = change_succession_law_prestige_cost
+		}
+
+		ai_will_do = {
+			value = 0
+		}
+	}
+}

@@ -14,8 +14,10 @@
 StA_savegame_compat_2100 = {
 	scope = character
 	is_valid = {
-		exists = global_var:StA_savegame_compat_2004
-		NOT = { exists = global_var:StA_savegame_compat_2100 }
+		OR = {
+			global_var:StA_is_loaded = yes
+			global_var:StA_is_loaded < 2.100
+		}
 	}
 	effect = {
 		debug_log = "StA_savegame_compat_2100"

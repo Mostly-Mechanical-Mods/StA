@@ -1,0 +1,129 @@
+﻿# The entry should be named in the same way that the elective succession law is named to define it's voter's logic.
+# Root scope - Elector, the character voting in the election.
+# scope:candidate scope - Candidate, Character considered for the title.
+# scope:title scope - Title, The title the nomination is for.
+# scope:holder scope - Ruler, The ruler currently holding the title.
+# scope:holder_candidate scope - Favored Candidate, The title owner's candidate.
+# The voter will vote for the top score candidate calculated from this script.
+
+StA_single_heir_succession_law_elective = {
+	
+	elector_vote_strength = {
+		base = 1
+	}
+	
+	electors = { 
+		add = {
+			type = holder_dynasty
+			limit = { is_ai = yes }
+		}
+		add = {
+			type = holder_direct_vassals
+			limit = { is_ai = yes }
+		}
+		add = {
+			type = holder
+			limit = {
+				dynasty = {
+					any_dynasty_member = {
+						highest_held_title_tier >= tier_county
+						count = 0
+					}
+				}
+				any_vassal = {
+					highest_held_title_tier >= tier_county
+					count = 0
+				}
+			}
+		}
+	}
+
+	candidate_score = {
+		base = 1
+		modifier = {
+			add = 5
+			scope:title = {
+				any_title_heir = {
+					THIS = scope:candidate
+					position = 1
+				}
+			}
+		}
+	}
+	
+	#scope:candidate = Candidate, scope:title = Title, scope:holder_candidate = Candidate currently selected by ruler.
+	candidates = {
+		add = {
+			type = holder_dynasty
+			limit = {
+				save_temporary_scope_as = potential_candidate
+				always = yes
+				scope:title = {
+					trigger_if = {
+						limit = {
+							exists = county
+							NOT = { THIS = county }
+							county = { is_title_created = yes }
+							county.holder = holder
+							county = { has_variable = StA_title_realm_law }
+							county = { has_title_law_flag = advanced_succession_law }
+						}
+						county = {
+							any_title_heir = {
+								THIS = scope:potential_candidate
+							}
+						}
+					}
+					trigger_else_if = {
+						limit = {
+							exists = duchy
+							NOT = { THIS = duchy }
+							duchy = { is_title_created = yes }
+							duchy.holder = holder
+							duchy = { has_variable = StA_title_realm_law }
+							duchy = { has_title_law_flag = advanced_succession_law }
+						}
+						duchy = {
+							any_title_heir = {
+								THIS = scope:potential_candidate
+							}
+						}
+					}
+					trigger_else_if = {
+						limit = {
+							exists = kingdom
+							NOT = { THIS = kingdom }
+							kingdom = { is_title_created = yes }
+							kingdom.holder = holder
+							kingdom = { has_variable = StA_title_realm_law }
+							kingdom = { has_title_law_flag = advanced_succession_law }
+						}
+						kingdom = {
+							any_title_heir = {
+								THIS = scope:potential_candidate
+							}
+						}
+					}
+					trigger_else_if = {
+						limit = {
+							exists = empire
+							NOT = { THIS = empire }
+							empire = { is_title_created = yes }
+							empire.holder = holder
+							empire = { has_variable = StA_title_realm_law }
+							empire = { has_title_law_flag = advanced_succession_law }
+						}
+						empire = {
+							any_title_heir = {
+								THIS = scope:potential_candidate
+							}
+						}
+					}
+					trigger_else = {
+						always = no
+					}
+				}
+			}
+		}
+	}
+}

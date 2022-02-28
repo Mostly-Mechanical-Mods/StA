@@ -26,17 +26,52 @@ StA_title_can_merge_authority_to = {
 	StA_title_has_identical_law_as_target = { TITLE = $TITLE$ }
 }
 
-title_can_have_succession_law = {
+title_can_have_StA_succession_law = {
 	holder = { has_government = feudal_government }
+	NOT = { has_variable = StA_title_realm_law }
 	save_temporary_scope_as = title
-	OR = {
-		has_variable = StA_title_realm_law
-		any_this_title_or_de_jure_above = {
-			NOT = { THIS = PREV }
-			holder = PREV.holder
-			has_variable = StA_title_realm_law
-			has_title_law = $LAW$
+	trigger_if = {
+		limit = {
+			exists = county
+			NOT = { THIS = county }
+			county = { is_title_created = yes }
+			county.holder = holder
+			county = { has_variable = StA_title_realm_law }
 		}
+		county = { has_title_law = $LAW$ }
+	}
+	trigger_else_if = {
+		limit = {
+			exists = duchy
+			NOT = { THIS = duchy }
+			duchy = { is_title_created = yes }
+			duchy.holder = holder
+			duchy = { has_variable = StA_title_realm_law }
+		}
+		duchy = { has_title_law = $LAW$ }
+	}
+	trigger_else_if = {
+		limit = {
+			exists = kingdom
+			NOT = { THIS = kingdom }
+			kingdom = { is_title_created = yes }
+			kingdom.holder = holder
+			kingdom = { has_variable = StA_title_realm_law }
+		}
+		kingdom = { has_title_law = $LAW$ }
+	}
+	trigger_else_if = {
+		limit = {
+			exists = empire
+			NOT = { THIS = empire }
+			empire = { is_title_created = yes }
+			empire.holder = holder
+			empire = { has_variable = StA_title_realm_law }
+		}
+		empire = { has_title_law = $LAW$ }
+	}
+	trigger_else = {
+		always = no
 	}
 }
 

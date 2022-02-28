@@ -856,7 +856,7 @@ form_austria_kingdom_decision = {
 				has_government = feudal_government
 			}
 			custom_description = {
-				text = "held_duchy_has_law_authority_capacity"
+				text = "no_held_duchy_in_HRE_has_low_authority_capacity"
 				subject = THIS
 				any_held_title = {
 					trigger_if = {

@@ -341,3 +341,14 @@ StA_title_window_create_title = {
 	# 	}
 	}
 }
+
+StA_inherits_succession_law = {
+	scope = title
+	is_shown = {
+		OR = {
+			has_title_law = StA_single_heir_succession_law
+			has_title_law = StA_single_heir_succession_law_youngest
+			has_title_law = StA_single_heir_dynasty_house
+		}
+	}
+}

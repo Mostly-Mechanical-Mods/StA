@@ -10,7 +10,10 @@ StA_max_mil_strength = {
 
 StA_relative_mil_strength = {
 	add = max_military_strength
-	divide = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:total_strength
+	divide = {
+		value = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:total_strength
+		min = 1
+	}
 }
 
 StA_contract_score = {
@@ -62,17 +65,9 @@ StA_title_realm_law_score = {
 }
 
 StA_title_realm_authority_capacity = {
-	add = {
-		value = {
-			add = StA_title_tier
-			subtract = 1
-			multiply = 10
-		}
-		desc = "STA_AUTHORITY_RANK"
-		format = "BASE_VALUE_FORMAT"
-	}
+	# add = 25
 	if = {
-		limit = { has_dlc_feature = royal_court }
+		limit = { holder = { has_royal_court = yes }}
 		add = {
 			value = {
 				add = holder.court_grandeur_current_level
@@ -83,6 +78,15 @@ StA_title_realm_authority_capacity = {
 		}
 	}
 	else = {
+		add = {
+			value = {
+				add = StA_title_tier
+				subtract = 1
+				multiply = 10
+			}
+			desc = "STA_AUTHORITY_RANK"
+			format = "BASE_VALUE_FORMAT"
+		}
 		add = {
 			value = {
 				holder.culture = {
@@ -113,7 +117,10 @@ StA_title_realm_authority_capacity = {
 					limit = { has_variable = StA_title_realm_coverage }
 					add = var:StA_title_realm_coverage
 				}
-				divide = var:StA_title_realm_size
+				divide = {
+					value = var:StA_title_realm_size
+					min = 1
+				}
 			}
 			desc = "STA_AUTHORITY_REALM_COVERAGE"
 			format = "BASE_VALUE_FORMAT"

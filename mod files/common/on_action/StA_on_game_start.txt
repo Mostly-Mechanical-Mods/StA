@@ -86,6 +86,10 @@ StA_title_realm_law_init = {
 								name = StA_holder
 								value = holder
 							}
+							set_variable = {
+								name = StA_succession_law
+								value = THIS
+							}
 							if = {
 								limit = { is_landless_type_title = no }
 								set_variable = {

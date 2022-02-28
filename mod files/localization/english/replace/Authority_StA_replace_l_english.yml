@@ -90,3 +90,12 @@
   scandinavian_elective_succession_law_effects_other:0 "The [ruler|E] and all [de_jure|E] [vassals|E] (except Barons) can nominate a [title_heir|E] amongst the ruler's [extended_family|E] and any available [claimants|E]. [voting_power|E] in this [succession_law|E] is influenced by the [elector|E]'s total [domain|E] [county_development|E] and [capital|E] [county_opinion|E]."
 
   scandinavian_elective_succession_law_cost: "#V This will cost you [GetPlayer.MakeScope.ScriptValue('scandinavian_elective_succession_law_cost')] @authority_icon! Authority #!"
+
+
+
+  # TITLE_VIEW_SUCCESSION_DESCRIPTION_TITLE:0 "[title_succession|E]: Will be inherited according to [TITLE.GetNamePossessive] $LAWS$ law"
+  TITLE_VIEW_SUCCESSION_DESCRIPTION_TITLE:0 "[title_succession|E]: Will be inherited according to [Select_CString(GetScriptedGui('StA_inherits_succession_law').IsShown(GuiScope.SetRoot(TITLE.MakeScope).End),TITLE.MakeScope.Var('StA_succession_law').Title.GetNamePossessive,TITLE.GetNamePossessive)] $LAWS$ law"
+
+  StA_single_heir_succession_law: "$single_heir_succession_law$"
+  StA_single_heir_succession_law_subname: "$single_heir_succession_law_subname$"
+  StA_single_heir_succession_law_effects: "$single_heir_succession_law_effects$"
