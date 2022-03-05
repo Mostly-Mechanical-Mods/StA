@@ -1,0 +1,65 @@
+﻿StA_set_vassal_desire = {
+	save_scope_value_as = {
+		name = desire
+		value = flag:feudal_government_taxes_
+	}
+	save_scope_value_as = {
+		name = desire_value
+		value = StA_desire_feudal_government_taxes
+	}
+	if = {
+		limit = { StA_desire_feudal_government_levies.compare_value > scope:desire_value.compare_value }
+		save_scope_value_as = {
+			name = desire
+			value = flag:feudal_government_levies_
+		}
+		save_scope_value_as = {
+			name = desire_value
+			value = StA_desire_feudal_government_levies
+		}
+	}
+	if = {
+		limit = { StA_desire_war_declaration_rights.compare_value > scope:desire_value.compare_value }
+		save_scope_value_as = {
+			name = desire
+			value = flag:war_declaration_rights_
+		}
+		save_scope_value_as = {
+			name = desire_value
+			value = StA_desire_war_declaration_rights
+		}
+	}
+	if = {
+		limit = { StA_desire_title_revocation_rights.compare_value > scope:desire_value.compare_value }
+		save_scope_value_as = {
+			name = desire
+			value = flag:title_revocation_rights_
+		}
+		save_scope_value_as = {
+			name = desire_value
+			value = StA_desire_title_revocation_rights
+		}
+	}
+	if = {
+		limit = { StA_desire_succession_rights.compare_value > scope:desire_value.compare_value }
+		save_scope_value_as = {
+			name = desire
+			value = flag:succession_rights_
+		}
+		save_scope_value_as = {
+			name = desire_value
+			value = StA_desire_succession_rights
+		}
+	}
+	if = {
+		limit = { scope:desire_value.compare_value > 0 }
+		set_variable = {
+			name = desire
+			value = scope:desire
+		}
+		set_variable = {
+			name = desire_value
+			value = scope:desire_value
+		}
+	}
+}

@@ -7,6 +7,10 @@
   game_concept_authority_capacity_desc: "Authority Capacity represents a ruler's capacity to enact laws in a given Realm.\n\nIt depends, amongst other things, on their rank, their Court Grandeur, and their average Vassal [submission|E]."
   game_concept_authority_spent: "Authority Used"
   game_concept_authority_spent_desc: "Authority Used represents the cost of enforcing currently enacted laws over a given Realm.\n\nA ruler that uses more Authority than he has cannot enact more Realm Laws, and vassals of the Realm are likely to be angered by over-exertion."
+  game_concept_authority: "Authority"
+  game_concept_authority_desc: "$game_concept_authority$ is a feudal ruler's capacity to exert power over the vassals pledging allegiance to that title.\n\nAuthority capacity depends, amongst other things, on their rank, their Court Grandeur, and their average vassal [submission|E].\n\nEach law enacted costs some $game_concept_authority$ to enact and maintain, and rulers that use more $game_concept_authority$ than they are allowed cannot enact more Title Realm Laws, and vassals are likely to be angered by over-exertion."
+  game_concept_partial_control: "Partial Control"
+  game_concept_partial_control_desc: "Some counties that belong de jure to this title are not controlled either by you, or a vassal pledging allegiance to this title."
 
 #GUI
   MY_REALM_WINDOW_VASSAL_SUBMISSION: "$submission$: [GuiScope.SetRoot(Character.MakeScope ).ScriptValue('submission')|0]\n$land_share$: [GuiScope.SetRoot(Character.MakeScope ).ScriptValue('land_share')|0]%"
@@ -73,11 +77,14 @@
   STA_LAW_CHANGE_LAW: "[Localize(GetVariableSystem.Get('StA_confirm_title_law'))]"
   STA_LAW_CHANGE_LEVEL: "[Localize(Concatenate(GetVariableSystem.Get('StA_confirm_title_law'),GetVariableSystem.Get('StA_confirm_title_law_level')))]"
 
-  STA_AUTHORITY_CAPACITY: "[authority_capacity|E]: [Title.MakeScope.ScriptValue('StA_title_realm_authority_capacity')|0]"
+  # STA_AUTHORITY_CAPACITY: "[authority_capacity|E]: [Title.MakeScope.ScriptValue('StA_title_realm_authority_capacity')|0]"
+  STA_AUTHORITY_CAPACITY: "@authority_icon! [authority|E]: [Title.MakeScope.ScriptValue('StA_title_realm_authority')|0] / [Title.MakeScope.ScriptValue('StA_title_realm_authority_capacity')|0]"
+  # STA_TITLE_AUTHORITY: "[Title.MakeScope.ScriptValue('StA_title_realm_authority')|0] / [Title.MakeScope.ScriptValue('StA_title_realm_authority_capacity')|0]"
+  STA_TITLE_AUTHORITY: "[Title.MakeScope.ScriptValue('StA_title_realm_authority_unused')|+=1]"
   STA_AUTHORITY_RANK: "[Title.GetTierAsName] Tier"
-  STA_AUTHORITY_COURT_GRANDEUR: "Court Grandeur"
-  STA_AUTHORITY_AVERAGE_SUBMISSION: "Submission impact"
-  STA_AUTHORITY_REALM_COVERAGE: "Partial control"
+  STA_AUTHORITY_COURT_GRANDEUR: "@grandeur_icon! [court_grandeur|E]"
+  STA_AUTHORITY_AVERAGE_SUBMISSION: "@submission_icon! [submission|E]"
+  STA_AUTHORITY_REALM_COVERAGE: "@partial_control_icon! [partial_control|E]"
 
   STA_AUTHORITY_SPENT: "@authority_icon! [authority_spent|E]: [Title.MakeScope.ScriptValue('StA_title_realm_authority')|0]"
 
@@ -132,7 +139,7 @@
   war_declaration_rights_icon: "$war_declaration_rights$ @war_declaration_rights_icon!"
   succession_rights_icon: "$succession_rights$ @succession_rights_icon!"
 
-   feudal_government_taxes_icon_first: "@gold_icon! [tax]"
+  feudal_government_taxes_icon_first: "@gold_icon! [tax]"
   feudal_government_levies_icon_first: "@soldier_icon! [levies]"
   title_revocation_rights_icon_first: "@title_revocation_rights_icon! $title_revocation_rights$"
   war_declaration_rights_icon_first: "@war_declaration_rights_icon! $war_declaration_rights$"
@@ -184,8 +191,6 @@
   game_concept_StA_submission_zeal: "Bowing to a higher power"
   game_concept_StA_submission_zeal_desc: "Not everyone will be humbled by that pilgrimage of yours. Some will highly respect your display of zealousness - but unpious vassals might not respect your bowing down to a higher authority.\n\nUnless the liege themselves are unpious, in which case it goes the other way around."
 
-
-
 # TRIGGER LOCALIZATION
 
 GLOBAL_TITLE_HAS_HIGH_AUTHORITY_CAPACITY: "@authority_icon! Authority Capacity in [TITLE.GetName] is higher than [GetPlayer.MakeScope.ScriptValue('high_authority_capacity')]"
@@ -202,3 +207,55 @@ NOT_FIRST_HELD_DUCHY_HAS_LOW_AUTHORITY_CAPACITY: "At least one held Duchy in the
 NOT_FIRST_HELD_DUCHY_HAS_LOW_AUTHORITY_CAPACITY: "At least one held Duchy" has lower than 25 @authority_icon! [authority_capacity|E]"
 
 StA_title_law_cooldown: "@time_icon! [Title.MakeScope.ScriptValue('StA_cooldown_year')|0]y [Title.MakeScope.ScriptValue('StA_cooldown_month')|0]mo"
+
+  FIRST_TITLE_HAS_REALM_LAW: "TEST 1"
+  THIRD_TITLE_HAS_REALM_LAW: "TEST 2"
+  FIRST_TITLE_HAS_ENOUGH_AUTHORITY_FOR_ELECTIVE_LAW: "TEST 3"
+  THIRD_TITLE_HAS_ENOUGH_AUTHORITY_FOR_ELECTIVE_LAW: "TEST 4"
+
+STA_TITLE_SUCCESSION_LAW_COST: "[TitleAddLawWindow.GetSelectedLaw.GetEnactCostForPlayer] @authority_icon! [TitleAddLawWindow.GetTitle.MakeScope.ScriptValue(Scope.Var('law_cost').GetFlagName)]"
+
+
+# TOOLTIP
+
+  STA_AUTHORITY_BALANCE: "@authority_icon! [authority|E]\nBalance: [Title.MakeScope.ScriptValue('StA_title_realm_authority_unused')|+=1]"
+  STA_AUTHORITY_GENERATION: "Your total generation of [Title.MakeScope.ScriptValue('StA_title_realm_authority_capacity')|+=1] @authority_icon! [authority|E] is due to:"
+  STA_AUTHORITY_GENERATION_DETAIL: "[ValueBreakdown.GetFixedPointValue] from [ValueBreakdown.GetName]"
+  STA_AUTHORITY_USAGE: "Your total usage of [Subtract_CFixedPoint('(CFixedPoint)0',Title.MakeScope.ScriptValue('StA_title_realm_authority'))|+=1] @authority_icon! [authority|E] is due to:"
+
+
+
+STA_BASE_VALUE_FORMAT: "$KEY$: $VALUE|V+=1$"
+STA_BASE_VALUE_FORMAT_PERCENTAGE: "$KEY$: $VALUE|V+=1%$"
+male_only_law_icon_first: "@gender_law_icon! $male_only_law$"
+
+feudal_government_taxes_icon_only: "@gold_icon!"
+feudal_government_levies_icon_only: "@soldier_icon!"
+title_revocation_rights_icon_only: "@title_revocation_rights_icon!"
+war_declaration_rights_icon_only: "@war_declaration_rights_icon!"
+succession_rights_icon_only: "@succession_rights_icon!"
+
+feudal_government_taxes_desc: "This vassal desires lower $feudal_government_taxes_icon$"
+feudal_government_levies_desc: "This vassal desires lower $feudal_government_levies_icon$"
+title_revocation_rights_desc: "This vassal wants to enact $title_revocation_rights_1$ $title_revocation_rights_icon_only$"
+war_declaration_rights_desc: "This vassal wants to enact $war_declaration_rights_1$ $war_declaration_rights_icon_only$"
+succession_rights_desc: "This vassal wants to enact $succession_rights_0$ $succession_rights_icon_only$"
+
+TEST_FACTION_LOC: "TEST_FACTION_LOC"
+
+
+feudal_government_taxes_faction: "Lower Taxes"
+feudal_government_taxes_faction_short_effect_desc: "Vassals want lower taxes in the [Faction.MakeScope.Var('StA_title_allegiance').Title.GetBaseName]"
+feudal_government_levies_faction: "Lower Levies"
+feudal_government_levies_faction_short_effect_desc: "Vassals want lower levies in the [Faction.MakeScope.Var('StA_title_allegiance').Title.GetBaseName]"
+war_declaration_rights_faction: "War Declaration Rights"
+war_declaration_rights_faction_short_effect_desc: "Vassals want lower taxes in the [Faction.MakeScope.Var('StA_title_allegiance').Title.GetBaseName]"
+title_revocation_rights_faction: "Title Revocation Rights"
+title_revocation_rights_faction_short_effect_desc: "Vassals want lower taxes in the [Faction.MakeScope.Var('StA_title_allegiance').Title.GetBaseName]"
+succession_rights_faction: "Succession Rights"
+succession_rights_faction_short_effect_desc: "Vassals want lower taxes in the [Faction.MakeScope.Var('StA_title_allegiance').Title.GetBaseName]"
+
+STA_FACTION_MEMBER_COUNT: "#V [Title.MakeScope.ScriptValue('StA_title_faction_number')]#! Members"
+TITLE_IS_OVER_AUTHORITY_CAPACITY: "The title is over its @authority_icon! [authority|E] capacity: #V $VALUE|0=-$#!"
+
+FACTION_DISCONTENT_PROGRESS: "[Faction.GetName]"

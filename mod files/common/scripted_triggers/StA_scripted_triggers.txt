@@ -85,3 +85,9 @@ has_contract_obligation_opt_out = {
 		flag:title_revocation_rights_ = { has_variable = title_revocation_rights_opt_out }
 	}
 }
+
+can_join_StA_faction = {
+	primary_title = { has_variable = StA_title_allegiance }
+	$FACTION_LEADER$.primary_title = { has_variable = StA_title_allegiance }
+	primary_title.var:StA_title_allegiance = $FACTION_LEADER$.primary_title.var:StA_title_allegiance
+}

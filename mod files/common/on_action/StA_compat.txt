@@ -19,9 +19,9 @@ StA_compat = {
 			name = StA_savegame_compat_2004
 			value = yes
 		}
-		set_global_variable = {
-			name = StA_savegame_compat_2100
-			value = yes
-		}
+		# set_global_variable = {
+		# 	name = StA_savegame_compat_2100
+		# 	value = yes
+		# }
 	}
 }

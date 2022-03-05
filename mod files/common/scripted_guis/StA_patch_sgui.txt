@@ -1,15 +1,15 @@
-﻿StA_savegame_compat_2004 = {
-	scope = character
-	is_valid = {
-		NOT = { exists = global_var:StA_savegame_compat_2004 }
-		global_var:StA_is_loaded < 2.100
-	}
-	effect = {
-		debug_log = "StA_savegame_compat_2004"
-		StA_patch_2004 = yes
-		StA_patch_2100 = yes
-	}
-}
+﻿# StA_savegame_compat_2004 = {
+# 	scope = character
+# 	is_valid = {
+# 		NOT = { exists = global_var:StA_savegame_compat_2004 }
+# 		global_var:StA_is_loaded < 2.100
+# 	}
+# 	effect = {
+# 		debug_log = "StA_savegame_compat_2004"
+# 		StA_patch_2004 = yes
+# 		StA_patch_2100 = yes
+# 	}
+# }
 
 StA_savegame_compat_2100 = {
 	scope = character

@@ -5,13 +5,19 @@ StA_cooldown = {
 		limit = { has_variable = StA_title_realm_law }
 		var:StA_title_realm_law = {
 			if = {
-				limit = { has_variable = StA_cooldown_law_change }
+				limit = {
+					has_variable = StA_cooldown_law_change
+					trigger_if = {
+						limit = { has_variable = StA_cooldown_title_holder_change }
+						var:StA_cooldown_law_change.compare_value > var:StA_cooldown_title_holder_change.compare_value
+					}
+				}
 				add = {
 					value = var:StA_cooldown_law_change
 					desc = "StA_cooldown_law_change"
 				}
 			}
-			if = {
+			else_if = {
 				limit = { has_variable = StA_cooldown_title_holder_change }
 				add = {
 					value = var:StA_cooldown_title_holder_change
@@ -25,13 +31,17 @@ StA_cooldown = {
 # used title scope
 StA_cooldown_title_holder_change = {
 	value = holder.StA_short_reign_modifier
+	value = 0
 }
 
 # used title scope
 StA_cooldown_law_change = {
-	add = 100
-	subtract = StA_title_realm_authority_capacity
 	add = StA_title_realm_authority
+	divide = StA_title_realm_authority_capacity
+	max = 1
+	multiply = 100
+	round = yes
+	value = 0
 }
 
 StA_cooldown_law_change_year = {

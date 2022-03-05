@@ -65,7 +65,7 @@ StA_title_realm_law_score = {
 }
 
 StA_title_realm_authority_capacity = {
-	# add = 25
+	# add = 150
 	if = {
 		limit = { holder = { has_royal_court = yes }}
 		add = {
@@ -74,7 +74,7 @@ StA_title_realm_authority_capacity = {
 				multiply = 10
 			}
 			desc = "STA_AUTHORITY_COURT_GRANDEUR"
-			format = "BASE_VALUE_FORMAT"
+			format = "STA_BASE_VALUE_FORMAT"
 		}
 	}
 	else = {
@@ -111,34 +111,46 @@ StA_title_realm_authority_capacity = {
 	if = {
 		limit = { has_variable = StA_title_realm_size }
 		multiply = {
-			value = {
-				value = 0
-				if = {
-					limit = { has_variable = StA_title_realm_coverage }
-					add = var:StA_title_realm_coverage
-				}
-				divide = {
-					value = var:StA_title_realm_size
-					min = 1
-				}
+			value = 1
+			add = {
+				value = StA_authority_capacity_coverage_impact
+				desc = "STA_AUTHORITY_REALM_COVERAGE"
+				format = "STA_BASE_VALUE_FORMAT_PERCENTAGE"
 			}
-			desc = "STA_AUTHORITY_REALM_COVERAGE"
-			format = "BASE_VALUE_FORMAT"
+			subtract = {
+				value = StA_authority_capacity_submission_impact
+				desc = "STA_AUTHORITY_AVERAGE_SUBMISSION"
+				format = "STA_BASE_VALUE_FORMAT_PERCENTAGE"
+			}
 		}
 	}
-	if = {
-		limit = { has_variable = StA_title_realm_law }
-		multiply = {
-			value = {
-				add = 100
-				add = var:StA_title_realm_law.var:average_submission
-				divide = 100
-			}
-			desc = "STA_AUTHORITY_AVERAGE_SUBMISSION"
-			format = "BASE_VALUE_FORMAT"
-		}
-	}
+	# if = {
+	# 	limit = { has_variable = StA_title_realm_law }
+	# 	multiply = {
+	# 		value = 1
+	# 		subtract = {
+	# 			value = StA_authority_capacity_submission_impact
+	# 			desc = "STA_AUTHORITY_AVERAGE_SUBMISSION"
+	# 			format = "STA_BASE_VALUE_FORMAT_PERCENTAGE"
+	# 		}
+	# 	}
+	# }
 }
+
+# StA_authority_capacity_submission_impact
+
+# value = 1
+# 	subtract = {
+# 		if = {
+# 			limit = { has_variable = StA_title_realm_coverage }
+# 			add = var:StA_title_realm_coverage
+# 		}
+# 		divide = {
+# 			value = var:StA_title_realm_size
+# 			min = 1
+# 		}
+# 	}
+# 	multiply = 100
 
 StA_title_realm_authority = {
 	if = {
@@ -243,7 +255,7 @@ StA_title_realm_authority = {
 		}
 		add = {
 			value = male_only_law_cost
-			desc = "male_only_law"
+			desc = "male_only_law_icon_first"
 			format = "BASE_VALUE_FORMAT"
 		}
 	}
@@ -479,6 +491,9 @@ scandinavian_elective_succession_law_cost = {
 	value = 30
 }
 
+StA_elective_law_cost = {
+	value = 30
+}
 
 
 high_authority_capacity = {
@@ -489,3 +504,23 @@ medium_authority_capacity = {
 	value = 25
 }
 
+
+
+StA_authority_capacity_coverage_impact = {
+	add = {
+		if = {
+			limit = { has_variable = StA_title_realm_coverage }
+			add = var:StA_title_realm_coverage
+		}
+		divide = {
+			value = var:StA_title_realm_size
+			min = 1
+		}
+	}
+	# subtract = 1
+}
+
+StA_authority_capacity_submission_impact = {
+	subtract = var:StA_title_realm_law.var:average_submission
+	divide = 100
+}

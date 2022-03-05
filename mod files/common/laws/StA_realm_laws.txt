@@ -16,7 +16,10 @@ crown_authority = {
 			realm_law_use_crown_authority = yes
 			# [StA]
 			trigger_if = {
-				limit = { exists = global_var:StA_is_loaded }
+				limit = {
+					exists = global_var:StA_is_loaded
+					is_ai = no
+				}
 				NOT = { has_government = feudal_government }
 			}
 			# [/StA]
@@ -37,7 +40,10 @@ crown_authority = {
 			realm_law_use_crown_authority = yes
 			# [StA]
 			trigger_if = {
-				limit = { exists = global_var:StA_is_loaded }
+				limit = {
+					exists = global_var:StA_is_loaded
+					is_ai = no
+				}
 				NOT = { has_government = feudal_government }
 			}
 			# [/StA]
@@ -107,7 +113,10 @@ crown_authority = {
 			realm_law_use_crown_authority = yes
 			# [StA]
 			trigger_if = {
-				limit = { exists = global_var:StA_is_loaded }
+				limit = {
+					exists = global_var:StA_is_loaded
+					is_ai = no
+				}
 				NOT = { has_government = feudal_government }
 			}
 			# [/StA]
@@ -175,7 +184,10 @@ crown_authority = {
 			realm_law_use_crown_authority = yes
 			# [StA]
 			trigger_if = {
-				limit = { exists = global_var:StA_is_loaded }
+				limit = {
+					exists = global_var:StA_is_loaded
+					is_ai = no
+				}
 				NOT = { has_government = feudal_government }
 			}
 			# [/StA]
@@ -234,10 +246,9 @@ StA_feudal_crown_authority = {
 		flag = can_designate_heirs
 		can_keep = {
 			# [StA]
-			trigger_if = {
-				limit = { exists = global_var:StA_is_loaded }
-				has_government = feudal_government
-			}
+			exists = global_var:StA_is_loaded
+			is_ai = no
+			has_government = feudal_government
 			# [/StA]
 		}
 	}

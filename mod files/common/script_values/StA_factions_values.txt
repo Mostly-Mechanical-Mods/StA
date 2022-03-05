@@ -1,0 +1,154 @@
+﻿StA_desire_feudal_government_taxes = {
+	add = ai_greed
+	if = {
+		limit = { vassal_contract_obligation_level:feudal_government_taxes.compare_value >= primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_taxes_.compare_value }
+		add = {
+			add = vassal_contract_obligation_level:feudal_government_taxes
+			multiply = 10
+		}
+	}
+}
+
+StA_desire_feudal_government_levies = {
+	add = ai_boldness
+	if = {
+		limit = { vassal_contract_obligation_level:feudal_government_levies.compare_value >= primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_levies_.compare_value }
+		add = {
+			add = vassal_contract_obligation_level:feudal_government_levies
+			multiply = 10
+		}
+	}
+}
+
+StA_desire_war_declaration_rights = {
+	if = {
+		limit = { primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights_ = 0 }
+		add = ai_boldness
+		add = {
+			every_claim = {
+				limit = { NOT = { holder = PREV.liege }}
+				add = {
+					add = tier
+					multiply = 10
+				}
+			}
+		}
+	}
+}
+
+StA_desire_title_revocation_rights = {
+	if = {
+		limit = { primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:title_revocation_rights_ = 0 }
+		add = {
+			add = liege.ai_vengefulness
+			min = 0
+		}
+		add = {
+			subtract = liege.ai_honor
+			min = 0
+		}
+		add = {
+			min = liege.tyranny
+			min = liege.dread
+		}
+		add = {
+			if = { limit = { dynasty = { save_temporary_scope_as = vassal_dynasty }}}
+			every_held_title = {
+				every_any_past_holder_reversed = {
+					limit = { dynasty = scope:vassal_dynasty }
+					add = PREV.tier
+				}
+			}
+		}
+	}
+}
+
+StA_desire_succession_rights = {
+	if = {
+		limit = { primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:succession_rights_ = 1 }
+		if = {
+			limit = { is_visibly_fertile = yes }
+			every_consort = {
+				limit = { is_visibly_fertile = yes }
+				add = 10
+			}
+		}
+		every_child = {
+			add = 10
+		}
+	}
+}
+
+StA_title_faction_power = {
+	holder = {
+		every_targeting_faction = {
+			limit = {
+				has_variable = StA_title_allegiance
+				var:StA_title_allegiance = ROOT
+			}
+			add = faction_power
+		}
+	}
+}
+
+StA_title_faction_number = {
+	holder = {
+		every_targeting_faction = {
+			limit = {
+				has_variable = StA_title_allegiance
+				var:StA_title_allegiance = ROOT
+			}
+			every_faction_member = {
+				add = 1
+			}
+		}
+	}
+}
+
+StA_faction_discontent_progress = {
+	if = {
+		limit = { faction_power > faction_power_threshold }
+		add = base_discontent_progress
+	}
+	if = {
+		limit = { var:StA_title_allegiance.StA_title_realm_authority_unused < 0 }
+		add = 10
+	}
+	if = {
+		limit = { faction_power < faction_power_threshold }
+		add = {
+			add = base_discontent_progress
+			multiply = -2
+		}
+	}
+}
+
+StA_title_faction_discontent_progress = {
+	holder = {
+		every_targeting_faction = {
+			limit = {
+				has_variable = StA_title_allegiance
+				var:StA_title_allegiance = ROOT
+			}
+			add = {
+				value = StA_faction_common_discontent_progress
+				desc = "FACTION_DISCONTENT_PROGRESS"
+			}
+		}
+	}
+}
+
+StA_title_faction_discontent = {
+	holder = {
+		every_targeting_faction = {
+			limit = {
+				has_variable = StA_title_allegiance
+				var:StA_title_allegiance = ROOT
+			}
+			add = {
+				value = faction_discontent
+				desc = "FACTION_DISCONTENT_PROGRESS"
+			}
+		}
+	}
+}

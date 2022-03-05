@@ -55,7 +55,7 @@ types UniUI_StA_title_window {
 		}
 
 		button_tab = {
-			visible = "[TitleViewWindow.GetTitle.GetHolder.GetGovernment.IsType('feudal_government')]"
+			visible = "[And(TitleViewWindow.GetTitle.GetHolder.GetGovernment.IsType('feudal_government'),TitleViewWindow.GetTitle.GetHolder.IsLocalPlayer)]"
 			layoutpolicy_horizontal = expanding
 			name = "realm_laws"
 			text = "TITLE_REALM_LAWS"
@@ -156,11 +156,23 @@ types UniUI_StA_title_window {
 									
 									# visible = "[Not(Character.GetPrimaryTitle.IsBarony)]"
 									margin = { 5 0 }
-									icon = {
-										size = { 25 25 }
-										texture = "gfx/interface/icons/icon_soldier.dds"
-										alpha = "[Min_CFixedPoint(Multiply_CFixedPoint(Character.MakeScope.ScriptValue('StA_relative_mil_strength'),'(CFixedPoint)2'),'(CFixedPoint)1')]"
+
+									text_single = {
+										visible = "[Character.MakeScope.Var('desire').IsSet]"
+										text = "[Character.MakeScope.Var('desire_value').GetValue]"
 									}
+
+									text_single = {
+										visible = "[Character.MakeScope.Var('desire').IsSet]"
+										text = "[Localize(Concatenate(Character.MakeScope.Var('desire').GetFlagName,'icon_only'))]"
+										tooltip = "[Localize(Concatenate(Character.MakeScope.Var('desire').GetFlagName,'desc'))]"
+									}
+
+									# icon = {
+									# 	size = { 25 25 }
+									# 	texture = "gfx/interface/icons/icon_soldier.dds"
+									# 	alpha = "[Min_CFixedPoint(Multiply_CFixedPoint(Character.MakeScope.ScriptValue('StA_relative_mil_strength'),'(CFixedPoint)2'),'(CFixedPoint)1')]"
+									# }
 									
 									button = {
 										tooltip = "[Character.MakeScope.GetScriptValueDesc('StA_submission')]"
@@ -190,7 +202,7 @@ types UniUI_StA_title_window {
 	}
 
 	type UniUI_StA_title_window_realm_law_tab = vbox {
-		visible = "[And(GetVariableSystem.HasValue( 'title_view_tab', 'StA_realm_law_tab' ), Title.MakeScope.Var('StA_title_realm_law').IsSet)]"
+		visible = "[And(GetVariableSystem.HasValue( 'title_view_tab', 'StA_realm_law_tab' ),And( Title.MakeScope.Var('StA_title_realm_law').IsSet,TitleViewWindow.GetTitle.GetHolder.IsLocalPlayer))]"
 		layoutpolicy_vertical = expanding
 		layoutpolicy_horizontal = expanding
 		margin_top = 10
@@ -202,10 +214,10 @@ types UniUI_StA_title_window {
 
 		vbox = {
 			layoutpolicy_horizontal = fixed
-			text_label_center = {
-				tooltip = "[Title.MakeScope.GetScriptValueDesc('StA_title_realm_authority_capacity')]"
-				text = "STA_AUTHORITY_CAPACITY"
-			}
+			# text_label_center = {
+			# 	tooltip = "[Title.MakeScope.GetScriptValueDesc('StA_title_realm_authority_capacity')]"
+			# 	text = "STA_AUTHORITY_CAPACITY"
+			# }
 			container = {
 				widget = {
 					size = { 240 30 }
@@ -228,6 +240,23 @@ types UniUI_StA_title_window {
 						max = "[FixedPointToProgressbarValue(Title.MakeScope.ScriptValue('StA_title_realm_authority_capacity'))]"
 						value = "[FixedPointToProgressbarValue(Title.MakeScope.ScriptValue('StA_title_realm_authority'))]"
 					}
+
+					hbox = {
+						position = { 0 -2 }
+						layoutpolicy_horizontal = expanding
+						expand = {}
+						text_single = {
+							raw_text = "@authority_icon! [authority|E]:"
+						}
+						spacer = { size = { 10 0 }}
+						text_single = {
+							tooltipwidget = {
+								StA_widget_authority_breakdown_tooltip = {}
+							}
+							text = "STA_TITLE_AUTHORITY"
+						}
+						expand = {}
+					}
 					
 					text_single = {
 						# tooltip = "[Title.MakeScope.GetScriptValueDesc('StA_title_realm_authority')]"
@@ -240,13 +269,13 @@ types UniUI_StA_title_window {
 				}
 			}
 			
-			text_label_center = {
-				tooltip = "[Title.MakeScope.GetScriptValueDesc('StA_title_realm_authority')]"
-				text = "STA_AUTHORITY_SPENT"
-			}
+			# text_label_center = {
+			# 	tooltip = "[Title.MakeScope.GetScriptValueDesc('StA_title_realm_authority')]"
+			# 	text = "STA_AUTHORITY_SPENT"
+			# }
 		}
 
-		spacer = { size = { 0 5 }}
+		# spacer = { size = { 0 5 }}
 
 		hbox = {
 			margin = { 0 10 }
@@ -270,6 +299,37 @@ types UniUI_StA_title_window {
 							text = "[Localize(Concatenate(Story.MakeScope.Var('law_').GetFlagName,'icon'))]"
 							using = Font_Size_Small
 							default_format = "#light_background"
+						}
+						button_group = {
+							visible = "[Title.MakeScope.Var(Concatenate(Story.MakeScope.Var('law_').GetFlagName,'faction_check')).IsSet]"
+							icon_flat_standard = {
+								size = { 25 25 }
+								texture = "gfx/interface/icons/faction_type/independence_faction.dds"
+								using = tooltip_ne
+							}
+							icon = {
+								visible = "[GreaterThan_CFixedPoint(Title.MakeScope.ScriptValue('StA_title_faction_discontent_progress'),'(CFixedPoint)0')]"
+								position = { 10 10 }
+								size = { 15 15 }
+								texture = "gfx/interface/icons/symbols/icon_arrow_red_up.dds"
+							}
+							icon = {
+								visible = "[LessThan_CFixedPoint(Title.MakeScope.ScriptValue('StA_title_faction_discontent_progress'),'(CFixedPoint)0')]"
+								position = { 10 10 }
+								size = { 15 15 }
+								texture = "gfx/interface/icons/symbols/icon_arrow_green_down.dds"
+							}
+							onclick = "[ToggleGameView('factions_window')]"
+							onclick = "[GetVariableSystem.Clear(Concatenate('factions_',Title.GetKey))]"
+							onclick = "[GetVariableSystem.Toggle(Concatenate('factions_',Title.GetKey))]"
+							onclick = "[GetVariableSystem.Clear(Concatenate(Concatenate('factions_',Title.GetKey),Story.MakeScope.Var('law_').GetFlagName))]"
+							onclick = "[GetVariableSystem.Toggle(Concatenate(Concatenate('factions_',Title.GetKey),Story.MakeScope.Var('law_').GetFlagName))]"
+						}
+						container = {
+							visible = "[Not(Title.MakeScope.Var(Concatenate(Story.MakeScope.Var('law_').GetFlagName,'faction_check')).IsSet)]"
+							icon_flat_standard = {
+								size = { 25 25 }
+							}
 						}
 						item = {
 							hbox = {
@@ -605,6 +665,191 @@ types UniUI_StA_title_window {
 		size = { 180 40 }
 		background = {
 			using = Background_Area_Dark
+		}
+	}
+}
+
+types StA_tooltips {
+	type StA_widget_authority_breakdown_tooltip = widget {
+		alwaystransparent = no
+
+		block "background" { #### needed to solve the hack for tooltip in Realm View
+			using = DefaultTooltipBackground
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			set_parent_size_to_minimum = yes
+			margin = { 14 8 }
+			margin_bottom = 18
+			spacing = 14
+
+			# block "my_gold" {}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				text = "STA_AUTHORITY_BALANCE"
+			}
+
+			divider_light = {
+				layoutpolicy_horizontal = expanding
+			}
+
+			text_single = {
+				# name = "name"
+				layoutpolicy_horizontal = expanding
+				text = "STA_AUTHORITY_GENERATION"
+			}
+
+			# vbox = {
+			# 	layoutpolicy_horizontal = expanding
+			# 	datacontext = "[GuiScope.SetRoot(Title.MakeScope).GetScriptValueBreakdown('StA_title_realm_authority_capacity')]"
+			# 	datamodel = "[ValueBreakdown.GetSubValues]"
+			# 	item = {
+			# 		text_single = {
+			# 			name = "name"
+			# 			layoutpolicy_horizontal = expanding
+			# 			text = "STA_AUTHORITY_GENERATION_DETAIL"
+			# 		}
+			# 	}
+			# 	expand = {}
+			# }
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				text = "[Title.MakeScope.GetScriptValueDesc('StA_title_realm_authority_capacity')]"
+			}
+
+			divider_light = {
+				layoutpolicy_horizontal = expanding
+			}
+
+			text_single = {
+				# name = "name"
+				layoutpolicy_horizontal = expanding
+				text = "STA_AUTHORITY_USAGE"
+			}
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[GuiScope.SetRoot(Title.MakeScope).GetScriptValueBreakdown('StA_title_realm_authority')]"
+				datamodel = "[ValueBreakdown.GetSubValues]"
+				item = {
+					text_single = {
+						name = "name"
+						layoutpolicy_horizontal = expanding
+						raw_text = "[ValueBreakdown.GetName]: [Subtract_CFixedPoint('(CFixedPoint)0',ValueBreakdown.GetFixedPointValue)|+=0]"
+					}
+				}
+				expand = {}
+			}
+
+			expand = {}
+
+			# vbox = {
+			# 	spacing = 6
+			# 	alwaystransparent = no
+
+			# 	vbox = {
+			# 		layoutpolicy_horizontal = expanding
+
+			# 		text_single = {
+			# 			layoutpolicy_horizontal = expanding
+			# 			text = "[ValueBreakdown.GetName]"
+			# 			default_format = "#T"
+
+			# 			background = {
+			# 				using = Background_Area
+			# 				margin = { 10 0 }
+			# 				margin_bottom = 8
+			# 			}
+			# 		}
+
+			# 		vbox = {
+			# 			name = "values_grid"
+			# 			datamodel = "[ValueBreakdown.GetSubValues]"
+			# 			layoutpolicy_horizontal = expanding
+			# 			margin_top = 2
+
+			# 			item = {
+			# 				hbox = {
+			# 					name = "value_breakdown"
+			# 					layoutpolicy_horizontal = expanding
+			# 					spacing = 10
+
+			# 					text_single = {
+			# 						name = "name"
+			# 						layoutpolicy_horizontal = expanding
+			# 						text = "[ValueBreakdown.GetName]"
+			# 					}
+
+			# 					text_single = {
+			# 						name = "value_with_tooltip"
+			# 						visible = "[And(ValueBreakdown.HasTooltip, ValueBreakdown.ShouldShowValue)]"
+			# 						text = "[ValueBreakdown.GetValue|L]"
+			# 						align = right
+			# 						default_format = "#high"
+
+			# 						using = tooltip_se
+
+			# 						tooltipwidget = {
+			# 							widget_value_breakdown_tooltip = {}
+			# 						}
+			# 					}
+
+			# 					text_single = {
+			# 						name = "value_with_no_tooltip"
+			# 						visible = "[And( Not(ValueBreakdown.HasTooltip), ValueBreakdown.ShouldShowValue )]"
+			# 						text = "[ValueBreakdown.GetValue]"
+			# 						align = right
+			# 					}
+			# 				}
+			# 			}
+			# 		}
+
+			# 		text_single = {
+			# 			visible = "[Not(DataModelHasItems( ValueBreakdown.GetSubValues ))]"
+			# 			layoutpolicy_horizontal = expanding
+			# 			block "no_values" {
+			# 				text = "VALUE_BREAKDOWN_NO_VALUES"
+			# 			}
+			# 			default_format = "#weak"
+			# 		}
+
+			# 		vbox = {
+			# 			layoutpolicy_horizontal = expanding
+			# 			margin_top = 10
+
+			# 			divider_light = {
+			# 				layoutpolicy_horizontal = expanding
+			# 			}
+
+			# 			hbox = {
+			# 				visible = "[DataModelHasItems( ValueBreakdown.GetSubValues )]"
+			# 				layoutpolicy_horizontal = expanding
+
+			# 				text_single = {
+			# 					visible = "[ValueBreakdown.ShouldShowValue]"
+			# 					layoutpolicy_horizontal = expanding
+			# 					text = "VALUE_BREAKDOWN_TOTAL"
+			# 				}
+
+			# 				text_single = {
+			# 					text = "[ValueBreakdown.GetValue|+]"
+			# 					default_format = "#high"
+			# 				}
+			# 			}
+			# 		}
+			# 	}
+			# }
+
+			# vbox_gold_breakdown = {
+			# 	name = "expenses"
+			# 	layoutpolicy_horizontal = expanding
+			# 	block "expenses" {}
+			# }
+
+			block "gold_income" {}
 		}
 	}
 }

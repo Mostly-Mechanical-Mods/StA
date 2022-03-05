@@ -1,0 +1,24 @@
+﻿StA_faction_common_discontent_progress_modifier = {
+	# The higher above the power threshold the faction is, the faster discontent increases.
+	modifier = {
+		faction_power > faction_power_threshold
+		add = base_discontent_progress
+		desc = "FACTION_DISCONTENT_POWER_ABOVE_THRESHOLD"
+	}
+
+	modifier = {
+		var:StA_title_allegiance.StA_title_realm_authority_unused < 0
+		add = 10
+		desc = "TITLE_IS_OVER_AUTHORITY_CAPACITY"
+	}
+
+	# Discontent slowly decays if power is under the threshold.
+	modifier = {
+		faction_power < faction_power_threshold
+		add = {
+			add = base_discontent_progress
+			multiply = -2
+		}
+		desc = "FACTION_DISCONTENT_POWER_BELOW_THRESHOLD"
+	}
+}

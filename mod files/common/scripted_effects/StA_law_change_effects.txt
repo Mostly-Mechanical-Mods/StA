@@ -93,7 +93,10 @@ StA_reset_authority = {
 		every_in_list = {
 			variable = StA_pledge_allegiance
 			limit = { holder = { has_government = feudal_government }}
-			holder = { update_vassal_contract = yes }
+			holder = {
+				update_vassal_contract = yes
+				StA_set_vassal_desire = yes
+			}
 		}
 		StA_reset_title_realm_coverage = yes
 	}

@@ -45,7 +45,6 @@ StA_single_heir_succession_law_elective = {
 			scope:title = {
 				any_title_heir = {
 					THIS = scope:candidate
-					position = 1
 				}
 			}
 		}

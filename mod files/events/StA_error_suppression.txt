@@ -66,5 +66,28 @@ StA_error_suppression.0001 = {
 		fix_variable_error = { X = special_contract_ }
 		fix_variable_error = { X = council_rights_ }
 		fix_variable_error = { X = fortification_rights_ }
+		fix_variable_error = { X = feudal_elective_succession_law_cost }
+		fix_variable_error = { X = gaelic_elective_succession_law_cost }
+		fix_variable_error = { X = male_only_law_cost }
+		fix_variable_error = { X = female_only_law_cost }
+		fix_variable_error = { X = equal_law_cost }
+		fix_variable_error = { X = princely_elective_succession_law_cost }
+		fix_variable_error = { X = male_preference_law_cost }
+		fix_variable_error = { X = scandinavian_elective_succession_law_cost }
+		fix_variable_error = { X = female_preference_law_cost }
+		fix_variable_error = { X = saxon_elective_succession_law_cost }
+		fix_variable_error = { X = law_cost }
+		fix_variable_error = { X = desire }
+		fix_variable_error = { X = desire_value }
+		fix_variable_error = { X = desire_feudal_government_taxes }
+		fix_variable_error = { X = desire_feudal_government_levies }
+		fix_variable_error = { X = desire_war_declaration_rights }
+		fix_variable_error = { X = desire_title_revocation_rights }
+		fix_variable_error = { X = desire_succession_rights }
+		fix_variable_error = { X = feudal_government_taxes_icon_only }		
+		fix_variable_error = { X = feudal_government_levies_icon_only }
+		fix_variable_error = { X = title_revocation_rights_icon_only }
+		fix_variable_error = { X = war_declaration_rights_icon_only }
+		fix_variable_error = { X = succession_rights_icon_only }
 	}
 }

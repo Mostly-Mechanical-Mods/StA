@@ -194,6 +194,7 @@
 		}
 		triggered_effect = {
 			trigger = {
+				exists = var:title.holder
 				NOT = { var:ruler = var:title.holder }
 			}
 			effect = {
@@ -215,26 +216,15 @@
 				}
 			}
 		}
-	}
-}
-
-StA_title_law = {
-	on_setup = {
-		debug_log = "StA_title_law"
-	}
-	on_end = {
-	}
-	on_owner_death = {
-	}
-}
-
-StA_title_law = {
-	on_setup = {
-		debug_log = "StA_title_law"
-	}
-	on_end = {
-	}
-	on_owner_death = {
+		triggered_effect = {
+			trigger = {
+				NOT = { exists = var:title }
+			}
+			effect = {
+				debug_log = "STORY FALLBACK EFFECT - NO VAR:TITLE.HOLDER"
+				end_story = yes
+			}
+		}
 	}
 }
 

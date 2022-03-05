@@ -583,7 +583,7 @@ StA_on_title_destroyed = {
 			scope:landed_title = { debug_log_scopes = no }
 		}
 		if = {
-			limit = { has_variable = StA_title_realm_law }
+			limit = { scope:landed_title = { has_variable = StA_title_realm_law }}
 			if = {
 				limit = {
 					scope:landed_title = ROOT.primary_title
@@ -611,7 +611,14 @@ StA_on_title_destroyed = {
 					}
 				}
 			}
-			scope:landed_title.var:StA_title_realm_law = { end_story = yes }
+			scope:landed_title = {
+				every_in_list = {
+					variable = StA_pledge_allegiance
+					StA_remove_current_title_allegiance = yes
+					StA_set_title_allegiance_to_liege = yes
+				}
+				var:StA_title_realm_law = { end_story = yes }
+			}
 			every_held_title = {
 				limit = {
 					NOT = { THIS = scope:landed_title }
@@ -620,7 +627,10 @@ StA_on_title_destroyed = {
 				var:StA_title_realm_law = { StA_reset_authority = yes }
 			}
 		}
-		remove_variable = StA_holder
-		remove_variable = StA_title_realm_size
+		scope:landed_title = {
+			remove_variable = StA_holder
+			remove_variable = StA_primary_title_of
+			remove_variable = StA_title_realm_size
+		}
 	}
 }

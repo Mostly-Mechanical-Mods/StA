@@ -16,6 +16,9 @@ authority_capacity = {
 authority_spent = {
 }
 
+partial_control = {
+}
+
 StA_submission_de_jure = {}
 StA_submission_powerful_vassal = {}
 StA_submission_culture = {}
