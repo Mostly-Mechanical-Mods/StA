@@ -173,7 +173,10 @@ StA_submission_zeal = {
 
 StA_submission_vengefulness = {
 	value = 0
-	add = var:opinion_liege
+	if = {
+		limit = { has_variable = opinion_liege }
+		add = var:opinion_liege
+	}
 	min = neg_ai_vengefulness
 }
 

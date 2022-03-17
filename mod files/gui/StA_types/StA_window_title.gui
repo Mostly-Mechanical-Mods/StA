@@ -98,23 +98,15 @@ types UniUI_StA_title_window {
 
 			spacer = { size = { 50 0 }}
 
-			icon = {
-				visible = "[GreaterThanOrEqualTo_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('average_submission').GetValue,'(CFixedPoint)0')]"
-				name = "submission_icon_up"
+			icon_flat_standard = {
+				name = "title_resentment_icon"
 				size = { 30 30 }
-				texture = "gfx/interface/icons/message_feed/tier_up.dds"
-			}
-
-			icon = {
-				visible = "[LessThan_CFixedPoint(Title.MakeScope.Var('StA_title_realm_law').Var('average_submission').GetValue,'(CFixedPoint)0')]"
-				name = "submission_icon_down"
-				size = { 30 30 }
-				texture = "gfx/interface/icons/message_feed/tier_down.dds"
+				texture = "gfx/interface/icons/faction_type/independence_faction.dds"
 			}
 
 			text_single = {
 				min_width = 50
-				text = "STA_TITLE_SUBMISSION"
+				text = "STA_TITLE_RESENTMENT"
 			}
 		}
 
@@ -154,43 +146,79 @@ types UniUI_StA_title_window {
 
 								hbox = {
 									
-									# visible = "[Not(Character.GetPrimaryTitle.IsBarony)]"
 									margin = { 5 0 }
 
-									text_single = {
-										visible = "[Character.MakeScope.Var('desire').IsSet]"
-										text = "[Character.MakeScope.Var('desire_value').GetValue]"
+									# icon = {
+									# 	visible = "[GetScriptedGui('StA_vassal_in_faction').IsShown(GuiScope.SetRoot(Character.MakeScope).End)]"
+									# 	size = { 25 25 }
+									# 	texture = "gfx/interface/icons/faction_type/independence_faction.dds"
+									# 	using = tooltip_ne
+									# 	modify_texture = {
+									# 		texture = "gfx/interface/colors/red.dds"
+									# 		blend_mode = add
+									# 		framesize = { 96 96 }
+
+									# 		block "master_color_frame" {
+									# 			frame = 1
+									# 		}
+									# 	}
+									# }
+									container = {
+
+										icon = {
+											visible = "[GreaterThan_CFixedPoint(Character.MakeScope.ScriptValue('StA_vassal_resentment'),'(CFixedPoint)0')]"
+											size = { 25 25 }
+											texture = "gfx/interface/icons/faction_type/independence_faction.dds"
+											using = tooltip_ne
+											modify_texture = {
+												visible = "[Not(GetScriptedGui('StA_vassal_in_faction').IsShown(GuiScope.SetRoot(Character.MakeScope).End))]"
+												texture = "gfx/interface/colors/colors_textured.dds"
+												blend_mode = add
+												framesize = { 96 96 }
+	
+												block "master_color_frame" {
+													frame = 7
+												}
+											}
+											modify_texture = {
+												visible = "[GetScriptedGui('StA_vassal_in_faction').IsShown(GuiScope.SetRoot(Character.MakeScope).End)]"
+												texture = "gfx/interface/colors/red.dds"
+												blend_mode = add
+												framesize = { 96 96 }
+	
+												block "master_color_frame" {
+													frame = 1
+												}
+											}
+											tooltipwidget = {
+												StA_widget_resentment_breakdown_tooltip = {}
+											}
+										}
+										icon = {
+											visible = "[GetScriptedGui('faction_window_cant_join_faction').IsShown(GuiScope.SetRoot(Character.MakeScope).End)]"
+											texture = "gfx/interface/icons/symbols/icon_cross.dds"
+											size = { 20 20 }
+											position = { 2.5 2.5 }
+										}
 									}
 
 									text_single = {
 										visible = "[Character.MakeScope.Var('desire').IsSet]"
 										text = "[Localize(Concatenate(Character.MakeScope.Var('desire').GetFlagName,'icon_only'))]"
-										tooltip = "[Localize(Concatenate(Character.MakeScope.Var('desire').GetFlagName,'desc'))]"
+										align = top|hcenter
+										tooltipwidget = {
+											StA_widget_desire_breakdown_tooltip = {}
+										}
 									}
 
-									# icon = {
-									# 	size = { 25 25 }
-									# 	texture = "gfx/interface/icons/icon_soldier.dds"
-									# 	alpha = "[Min_CFixedPoint(Multiply_CFixedPoint(Character.MakeScope.ScriptValue('StA_relative_mil_strength'),'(CFixedPoint)2'),'(CFixedPoint)1')]"
-									# }
-									
-									button = {
-										tooltip = "[Character.MakeScope.GetScriptValueDesc('StA_submission')]"
-										min_width = 30
-										visible = "[GreaterThanOrEqualTo_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0')]"
-										name = "submission_icon_up"
-										size = { 30 30 }
-										texture = "gfx/interface/icons/message_feed/tier_up.dds"
-										alpha = "[Multiply_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0.01')]"
-									}
-									button = {
-										tooltip = "[Character.MakeScope.GetScriptValueDesc('StA_submission')]"
-										min_width = 30
-										visible = "[LessThan_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0')]"
-										name = "submission_icon_down"
-										size = { 30 30 }
-										texture = "gfx/interface/icons/message_feed/tier_down.dds"
-										alpha = "[Abs_CFixedPoint(Multiply_CFixedPoint(Character.MakeScope.ScriptValue('StA_submission'),'(CFixedPoint)0.01'))]"
+									spacer = { size = { 5 0 }}
+									vbox = {
+										layoutpolicy_vertical = expanding
+										expand = {}
+										UniUI_LTAF_loyalty = {
+											# align = bottom|hcenter
+										}
+										expand = {}
 									}
 								}
 							}
@@ -848,6 +876,74 @@ types StA_tooltips {
 			# 	layoutpolicy_horizontal = expanding
 			# 	block "expenses" {}
 			# }
+
+			block "gold_income" {}
+		}
+	}
+	type StA_widget_resentment_breakdown_tooltip = widget {
+		alwaystransparent = no
+
+		block "background" { #### needed to solve the hack for tooltip in Realm View
+			using = DefaultTooltipBackground
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			set_parent_size_to_minimum = yes
+			margin = { 14 8 }
+			margin_bottom = 18
+			spacing = 14
+
+			# block "my_gold" {}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				text = "StA_resentment"
+			}
+
+			divider_light = {
+				layoutpolicy_horizontal = expanding
+			}
+
+			text_single = {
+				# name = "name"
+				layoutpolicy_horizontal = expanding
+				text = "[Character.MakeScope.GetScriptValueDesc('StA_vassal_resentment')]"
+			}
+
+			block "gold_income" {}
+		}
+	}
+	type StA_widget_desire_breakdown_tooltip = widget {
+		alwaystransparent = no
+
+		block "background" { #### needed to solve the hack for tooltip in Realm View
+			using = DefaultTooltipBackground
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			set_parent_size_to_minimum = yes
+			margin = { 14 8 }
+			margin_bottom = 18
+			spacing = 14
+
+			# block "my_gold" {}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				raw_text = "[Localize(Concatenate(Character.MakeScope.Var('desire').GetFlagName,'desire'))]"
+			}
+
+			divider_light = {
+				layoutpolicy_horizontal = expanding
+			}
+
+			text_single = {
+				# name = "name"
+				layoutpolicy_horizontal = expanding
+				text = "[Character.MakeScope.GetScriptValueDesc(Concatenate('StA_desire_',Character.MakeScope.Var('desire').GetFlagName))]"
+			}
 
 			block "gold_income" {}
 		}

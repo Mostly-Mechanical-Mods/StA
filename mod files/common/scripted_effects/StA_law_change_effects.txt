@@ -80,15 +80,6 @@ StA_reset_authority = {
 		var:ruler = { debug_log_scopes = no }
 		var:title = { debug_log_scopes = no }
 	}
-	StA_calculate_average_submission_ruler = yes
-	set_variable = {
-		name = StA_title_realm_authority
-		value = var:title.StA_title_realm_authority
-	}
-	set_variable = {
-		name = StA_title_realm_authority_capacity
-		value = var:title.StA_title_realm_authority_capacity
-	}
 	var:title = {
 		every_in_list = {
 			variable = StA_pledge_allegiance
@@ -99,6 +90,15 @@ StA_reset_authority = {
 			}
 		}
 		StA_reset_title_realm_coverage = yes
+	}
+	StA_calculate_average_submission_ruler = yes
+	set_variable = {
+		name = StA_title_realm_authority
+		value = var:title.StA_title_realm_authority
+	}
+	set_variable = {
+		name = StA_title_realm_authority_capacity
+		value = var:title.StA_title_realm_authority_capacity
 	}
 }
 
@@ -186,4 +186,22 @@ update_vassal_contract = {
 	update_vassal_contract_obligation = { OBLIGATION = title_revocation_rights }
 	update_vassal_contract_obligation = { OBLIGATION = war_declaration_rights }
 	update_vassal_contract_obligation = { OBLIGATION = succession_rights }
+}
+
+title_realm_law_change = {
+	var:StA_title_realm_law = {
+		switch = {
+			trigger = $LAW$
+			flag:feudal_government_taxes_ = { set_variable = { name = feudal_government_taxes_ value = $LEVEL$ }}
+			flag:feudal_government_levies_ = { set_variable = { name = feudal_government_levies_ value = $LEVEL$ }}
+			flag:succession_rights_ = { set_variable = { name = succession_rights_ value = $LEVEL$ }}
+			flag:war_declaration_rights_ = { set_variable = { name = war_declaration_rights_ value = $LEVEL$ }}
+			flag:title_revocation_rights_ = { set_variable = { name = title_revocation_rights_ value = $LEVEL$ }}
+		}
+	}
+	every_in_list = {
+		variable = StA_pledge_allegiance
+		limit = { holder = { has_government = feudal_government }}
+		holder = { update_vassal_contract = yes }
+	}
 }

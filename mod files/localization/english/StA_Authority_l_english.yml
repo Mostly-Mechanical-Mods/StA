@@ -61,6 +61,7 @@
   STA_VASSAL_SUBMISSION: "[submission|E]: [Character.MakeScope.ScriptValue('StA_submission')]"
   StA_submission_dread: "Reaction to Dread"
   STA_TITLE_SUBMISSION: "Average [submission|E]: #V [Title.MakeScope.Var('StA_title_realm_law').Var('average_submission').GetValue|0]#!"
+  STA_TITLE_RESENTMENT: "Average Resentment: #V [Title.MakeScope.Var('StA_title_realm_law').Var('average_resentment').GetValue|0]#!"
   STA_TITLE_MIL_STRENGTH: "Total vassal militay: #V [Title.MakeScope.Var('StA_title_realm_law').Var('total_strength').GetValue|0]#!"
 
   TITLE_SWEARS_ALLEGIANCE_TO: "Swears [title_allegiance|E] to [Title.MakeScope.Var('StA_title_allegiance').Title.GetBaseName]"
@@ -84,6 +85,7 @@
   STA_AUTHORITY_RANK: "[Title.GetTierAsName] Tier"
   STA_AUTHORITY_COURT_GRANDEUR: "@grandeur_icon! [court_grandeur|E]"
   STA_AUTHORITY_AVERAGE_SUBMISSION: "@submission_icon! [submission|E]"
+  STA_AUTHORITY_AVERAGE_LOYALTY: "@loyalty_icon! [loyalty|E]"
   STA_AUTHORITY_REALM_COVERAGE: "@partial_control_icon! [partial_control|E]"
 
   STA_AUTHORITY_SPENT: "@authority_icon! [authority_spent|E]: [Title.MakeScope.ScriptValue('StA_title_realm_authority')|0]"
@@ -144,6 +146,17 @@
   title_revocation_rights_icon_first: "@title_revocation_rights_icon! $title_revocation_rights$"
   war_declaration_rights_icon_first: "@war_declaration_rights_icon! $war_declaration_rights$"
   succession_rights_icon_first: "@succession_rights_icon! $succession_rights$"
+
+  feudal_government_taxes_desire: "Wants lower $feudal_government_taxes_icon$: [Character.MakeScope.Var('desire_value').GetValue|-=0]"
+  feudal_government_levies_desire: "Wants lower $feudal_government_levies_icon$: [Character.MakeScope.Var('desire_value').GetValue|-=0]"
+  title_revocation_rights_desire: "Wants $title_revocation_rights_1$: [Character.MakeScope.Var('desire_value').GetValue|-=0]"
+  war_declaration_rights_desire: "Wants $war_declaration_rights_1$: [Character.MakeScope.Var('desire_value').GetValue|-=0]"
+  succession_rights_desire: "Wants $succession_rights_0$: [Character.MakeScope.Var('desire_value').GetValue|-=0]"
+
+  StA_desire_feudal_government_taxes_title_realm_law: "From current Title Realm Law"
+  StA_desire_personality_boldness: "Personality (Boldness)"
+
+  StA_resentment: "Resentment: [Character.MakeScope.ScriptValue('StA_vassal_resentment')|-=0]"
 
   # title_revocation_rights_0_cost: "$title_revocation_rights_default$"
   # title_revocation_rights_1_cost: "$title_revocation_rights_protected$"
@@ -226,7 +239,9 @@ STA_TITLE_SUCCESSION_LAW_COST: "[TitleAddLawWindow.GetSelectedLaw.GetEnactCostFo
 
 
 STA_BASE_VALUE_FORMAT: "$KEY$: $VALUE|V+=1$"
-STA_BASE_VALUE_FORMAT_PERCENTAGE: "$KEY$: $VALUE|V+=1%$"
+STA_BASE_VALUE_FORMAT_NEGATIVE_GOOD: "$KEY$: $VALUE|V-=1$"
+STA_BASE_VALUE_FORMAT_PERCENTAGE: "$KEY$: $VALUE|+=0%$"
+STA_BASE_VALUE_FORMAT_PERCENTAGE_NEGATIVE_GOOD: "$KEY$: $VALUE|-=0%$"
 male_only_law_icon_first: "@gender_law_icon! $male_only_law$"
 
 feudal_government_taxes_icon_only: "@gold_icon!"
@@ -256,6 +271,30 @@ succession_rights_faction: "Succession Rights"
 succession_rights_faction_short_effect_desc: "Vassals want lower taxes in the [Faction.MakeScope.Var('StA_title_allegiance').Title.GetBaseName]"
 
 STA_FACTION_MEMBER_COUNT: "#V [Title.MakeScope.ScriptValue('StA_title_faction_number')]#! Members"
-TITLE_IS_OVER_AUTHORITY_CAPACITY: "The title is over its @authority_icon! [authority|E] capacity: #V $VALUE|0=-$#!"
+TITLE_IS_OVER_AUTHORITY_CAPACITY: "The title is over its @authority_icon! [authority|E] capacity: #V $VALUE|1=-$#!"
+TITLE_IS_UNDER_AUTHORITY_CAPACITY: "The title is under its @authority_icon! [authority|E] capacity: #V $VALUE|1=-$#!"
+FACTION_DISCONTENT_FACTION_POWER: "Faction Power: #V $VALUE|1=-$#!"
+FACTION_DISCONTENT_POWERFUL_VASSAL: "Powerful Vassals in faction: #V $VALUE|1=-$#!"
+FACTION_DISCONTENT_DISGRUNTLED_VASSAL: "Disgruntled Powerful Vassals in faction: #V $VALUE|1=-$#!"
+FACTION_DISCONTENT_TYRANNY: "Liege Tyranny: #V $VALUE|1=-$#!"
+FACTION_DISCONTENT_AVERAGE_SUBMISSION: "Average Submission of faction members: #V $VALUE|1=-$#!"
+FACTION_DISCONTENT_AVERAGE_RESENTMENT: "Average Resentment of faction members: #V $VALUE|1=-$#!"
+
 
 FACTION_DISCONTENT_PROGRESS: "[Faction.GetName]"
+
+STA_AUTHORITY_KARLING_HERITAGE: "Karling Heritage"
+culture_parameter_natural_authority: "Rulers have higher @authority_icon! [authority|E]"
+STA_AUTHORITY_NATURAL_AUTHORITY: "@culture_icon! $tradition_hereditary_hierarchy_name$"
+
+I_ACCEPT_TITLE_LAW_CHANGE: "You accept the requested law change."
+# DEPOSE_FACTION_TITLE_NAME:0 "[claimed_title.GetBaseNameNoTierNoTooltip] Claimant Faction"
+# DEPOSE_FACTION_DYNAMIC_NAME: "[Scope.Var('claimant_faction').Title.GetBaseName]"
+depose_faction_short_effect_desc: "This faction wants to install their claimant on the throne"
+feudal_claimant_elective_law: "Claimant Faction"
+feudal_claimant_elective_electors: "Faction members"
+feudal_claimant_elective_candidates: "Title claimants"
+
+DEFENSE_OF_THE_REALM: "Defense of the Realm"
+defense_of_the_realm_faction_short_effect_desc: "Will defend the realm against domestic threats"
+DEFENSE_OF_THE_REALM_FACTION_POWER: "Defense of the Realm: #V $VALUE|1=-$#!"

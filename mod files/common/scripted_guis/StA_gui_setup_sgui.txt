@@ -1,0 +1,88 @@
+﻿StA_gui_setup_sgui = {
+	scope = character
+	effect = {
+		every_in_global_list = {
+			variable = StA_levels_4
+			end_story = yes
+		}
+		every_in_global_list = {
+			variable = StA_levels_2
+			end_story = yes
+		}
+		every_in_global_list = {
+			variable = StA_levels_1
+			end_story = yes
+		}
+		every_in_global_list = {
+			variable = StA_title_laws
+			end_story = yes
+		}
+		every_in_global_list = {
+			variable = StA_title_succession_laws
+			end_story = yes
+		}
+		clear_global_variable_list = StA_levels_4
+		clear_global_variable_list = StA_levels_2
+		clear_global_variable_list = StA_levels_1
+		clear_global_variable_list = StA_title_laws
+		clear_global_variable_list = StA_title_succession_laws
+		random_player = {
+			create_story = { type = StA_obligation_levels save_scope_as = zero }
+			create_story = { type = StA_obligation_levels save_scope_as = one }
+			create_story = { type = StA_obligation_levels save_scope_as = two }
+			create_story = { type = StA_obligation_levels save_scope_as = three }
+			create_story = { type = StA_obligation_levels save_scope_as = four }
+			scope:zero = {	set_variable = { name = flag value = flag:0 } set_variable = { name = value value = 0 }}
+			scope:one = {	set_variable = { name = flag value = flag:1 } set_variable = { name = value value = 1 }}
+			scope:two = {	set_variable = { name = flag value = flag:2 } set_variable = { name = value value = 2 }}
+			scope:three = {	set_variable = { name = flag value = flag:3 } set_variable = { name = value value = 3 }}
+			scope:four = {	set_variable = { name = flag value = flag:4 } set_variable = { name = value value = 4 }}
+			add_to_global_variable_list = { name = StA_levels_4 target = scope:zero }
+			add_to_global_variable_list = { name = StA_levels_4 target = scope:one }
+			add_to_global_variable_list = { name = StA_levels_4 target = scope:two }
+			add_to_global_variable_list = { name = StA_levels_4 target = scope:three }
+			add_to_global_variable_list = { name = StA_levels_4 target = scope:four }
+			add_to_global_variable_list = { name = StA_levels_2 target = scope:zero }
+			add_to_global_variable_list = { name = StA_levels_2 target = scope:one }
+			add_to_global_variable_list = { name = StA_levels_2 target = scope:two }
+			add_to_global_variable_list = { name = StA_levels_1 target = scope:zero }
+			add_to_global_variable_list = { name = StA_levels_1 target = scope:one }
+			StA_setup_title_law_story = { LAW = feudal_government_taxes		LEVELS = 4 }
+			StA_setup_title_law_story = { LAW = feudal_government_levies	LEVELS = 4 }
+			StA_setup_title_law_story = { LAW = war_declaration_rights		LEVELS = 1 }
+			StA_setup_title_law_story = { LAW = title_revocation_rights		LEVELS = 1 }
+			StA_setup_title_law_story = { LAW = succession_rights			LEVELS = 1 }
+			StA_setup_title_succession_law_story = { LAW = male_only_law }
+			StA_setup_title_succession_law_story = { LAW = male_preference_law }
+			StA_setup_title_succession_law_story = { LAW = equal_law }
+			StA_setup_title_succession_law_story = { LAW = female_preference_law }
+			StA_setup_title_succession_law_story = { LAW = female_only_law }
+			StA_setup_title_succession_law_story = { LAW = feudal_elective_succession_law }
+			StA_setup_title_succession_law_story = { LAW = princely_elective_succession_law }
+			StA_setup_title_succession_law_story = { LAW = gaelic_elective_succession_law }
+			StA_setup_title_succession_law_story = { LAW = saxon_elective_succession_law }
+			StA_setup_title_succession_law_story = { LAW = scandinavian_elective_succession_law }
+		}
+		set_global_variable = {
+			name = 0
+			value = 0
+		}
+		set_global_variable = {
+			name = 1
+			value = 1
+		}
+		set_global_variable = {
+			name = 2
+			value = 2
+		}
+		set_global_variable = {
+			name = 3
+			value = 3
+		}
+		set_global_variable = {
+			name = 4
+			value = 4
+		}
+	}
+}
+

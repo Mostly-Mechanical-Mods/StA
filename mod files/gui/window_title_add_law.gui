@@ -167,8 +167,9 @@ window = {
 					using = Mask_Rough_Edges
 
 					modify_texture = {
-						texture = "gfx/interface/component_masks/mask_fade_vertical_up.dds"
+						texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
 						blend_mode = alphamultiply
+						mirror = vertical
 					}
 				}
 

@@ -414,3 +414,36 @@ convert_whole_realm_to_feudalism_effect = {
 		on_action = StA_title_and_vassal_change
 	}
 }
+
+imprisonment_retribution_start_faction_war_if_valid = {
+	scope:recipient = {
+		custom_tooltip = FACTION_IMPRISONMENT_RETALIATION_WARNING
+	}
+	hidden_effect = {
+		if = {
+			limit = {
+				faction_power > faction_power_threshold
+				NOT = { faction_is_type = populist_faction }
+				StA_faction_is_title_realm_law_type = no
+			}
+
+			if = {
+				limit = {
+					faction_is_type = claimant_faction
+				}
+				special_title = {
+					save_scope_as = target_title
+				}
+				faction_start_war = {
+					title = scope:target_title
+				}
+			}
+			else = {
+				faction_start_war = {}
+			}
+			every_faction_member = {
+				trigger_event = faction_demand.9001
+			}
+		}
+	}
+}

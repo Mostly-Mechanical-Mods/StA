@@ -102,16 +102,6 @@ types CoATypes
 						frame = "[Character.GetPrimaryTitle.GetTierFrame]"
 					}
 				}
-
-				# icon = {
-				# 	visible = "[Character.MakeScope.Var('StA_custom_contract').IsSet]"
-				# 	parentanchor = bottom|right
-				# 	texture = "gfx/interface/icons/icon_contract_modification.dds"
-				# 	framesize = { 60 60 }
-				# 	frame = 1
-				# 	size = { 20 20 }
-				# 	position = { 10 0 }
-				# }
 			}
 		}
 	}

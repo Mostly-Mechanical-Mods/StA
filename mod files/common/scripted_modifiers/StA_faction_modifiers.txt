@@ -1,24 +1,95 @@
 ﻿StA_faction_common_discontent_progress_modifier = {
 	# The higher above the power threshold the faction is, the faster discontent increases.
 	modifier = {
-		faction_power > faction_power_threshold
-		add = base_discontent_progress
-		desc = "FACTION_DISCONTENT_POWER_ABOVE_THRESHOLD"
+		var:StA_title_allegiance.StA_title_realm_authority_unused > 0
+		add = {
+			subtract = var:StA_title_allegiance.StA_title_realm_authority_unused
+			divide = 10
+		}
+		desc = "TITLE_IS_UNDER_AUTHORITY_CAPACITY"
+	}
+	
+	modifier = {
+		add = {
+			every_faction_member = {
+				add = {
+					add = StA_vassal_resentment
+					multiply = max_military_strength
+				}
+			}
+			divide = {
+				every_faction_member = {
+					add = max_military_strength
+				}
+			}
+			divide = 10
+		}
+		desc = "FACTION_DISCONTENT_AVERAGE_RESENTMENT"
 	}
 
 	modifier = {
 		var:StA_title_allegiance.StA_title_realm_authority_unused < 0
-		add = 10
+		add = {
+			subtract = var:StA_title_allegiance.StA_title_realm_authority_unused
+		}
 		desc = "TITLE_IS_OVER_AUTHORITY_CAPACITY"
 	}
 
-	# Discontent slowly decays if power is under the threshold.
 	modifier = {
-		faction_power < faction_power_threshold
+		faction_target.tyranny > 0
 		add = {
-			add = base_discontent_progress
-			multiply = -2
+			add = faction_target.tyranny
+			divide = 100
 		}
-		desc = "FACTION_DISCONTENT_POWER_BELOW_THRESHOLD"
+		desc = "FACTION_DISCONTENT_TYRANNY"
+	}
+}
+
+StA_faction_common_join_modifier = {
+	modifier = {
+		has_variable = desire
+		var:desire = flag:$LAW$_
+		add = StA_vassal_resentment
+		# add = 1000
+	}
+	modifier = {
+		NAND = {
+			has_variable = desire
+			var:desire = flag:$LAW$_
+		}
+		add = -1000
+	}
+	modifier = {
+		liege.tyranny > 0
+		add = liege.tyranny
+	}
+	# modifier = {
+	# 	add = { subtract = StA_submission }
+	# }
+	modifier = {
+		trigger_if = {
+			limit = { $TITLE$ = { has_variable = StA_title_realm_law }}
+			$TITLE$.StA_title_realm_authority_unused < 0
+		}
+		trigger_else = {
+			always = no
+		}
+		add = { subtract = $TITLE$.StA_title_realm_authority_unused }
+	}
+	modifier = {
+		add = ai_energy
+	}
+}
+
+StA_faction_common_create_modifier = {
+	modifier = {
+		$FACTION_TARGET$ = {
+			any_targeting_faction = {
+				faction_is_type = $LAW$_faction
+				var:StA_title_allegiance = ROOT.primary_title.var:StA_title_allegiance
+				NOT = { faction_leader = ROOT }
+			}
+		}
+		add = -1000
 	}
 }

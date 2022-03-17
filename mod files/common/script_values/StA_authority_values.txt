@@ -65,7 +65,6 @@ StA_title_realm_law_score = {
 }
 
 StA_title_realm_authority_capacity = {
-	# add = 150
 	if = {
 		limit = { holder = { has_royal_court = yes }}
 		add = {
@@ -109,6 +108,14 @@ StA_title_realm_authority_capacity = {
 		}
 	}
 	if = {
+		limit = { holder.culture = { has_cultural_parameter = natural_authority }}
+		add = {
+			value = 20
+			desc = "STA_AUTHORITY_NATURAL_AUTHORITY"
+			format = "STA_BASE_VALUE_FORMAT"
+		}
+	}
+	if = {
 		limit = { has_variable = StA_title_realm_size }
 		multiply = {
 			value = 1
@@ -117,9 +124,26 @@ StA_title_realm_authority_capacity = {
 				desc = "STA_AUTHORITY_REALM_COVERAGE"
 				format = "STA_BASE_VALUE_FORMAT_PERCENTAGE"
 			}
-			subtract = {
-				value = StA_authority_capacity_submission_impact
-				desc = "STA_AUTHORITY_AVERAGE_SUBMISSION"
+			# subtract = {
+			# 	value = StA_authority_capacity_submission_impact
+			# 	desc = "STA_AUTHORITY_AVERAGE_SUBMISSION"
+			# 	format = "STA_BASE_VALUE_FORMAT_PERCENTAGE"
+			# }
+		}
+	}
+	if = {
+		limit = {
+			exists = global_var:LTAF_is_loaded
+			has_variable = StA_title_realm_law
+		}
+		multiply = {
+			value = 1
+			add = {
+				value = {
+					add = var:StA_title_realm_law.var:average_loyalty
+					divide = 100
+				}
+				desc = "STA_AUTHORITY_AVERAGE_LOYALTY"
 				format = "STA_BASE_VALUE_FORMAT_PERCENTAGE"
 			}
 		}
@@ -136,21 +160,6 @@ StA_title_realm_authority_capacity = {
 	# 	}
 	# }
 }
-
-# StA_authority_capacity_submission_impact
-
-# value = 1
-# 	subtract = {
-# 		if = {
-# 			limit = { has_variable = StA_title_realm_coverage }
-# 			add = var:StA_title_realm_coverage
-# 		}
-# 		divide = {
-# 			value = var:StA_title_realm_size
-# 			min = 1
-# 		}
-# 	}
-# 	multiply = 100
 
 StA_title_realm_authority = {
 	if = {
@@ -521,6 +530,9 @@ StA_authority_capacity_coverage_impact = {
 }
 
 StA_authority_capacity_submission_impact = {
-	subtract = var:StA_title_realm_law.var:average_submission
+	if = {
+		limit = { has_variable = StA_title_realm_law }
+		# subtract = var:StA_title_realm_law.var:average_submission
+	}
 	divide = 100
 }

@@ -17,6 +17,9 @@ window = {
 		using = Window_Position_MainTab
 
 		on_start = "[GetVariableSystem.Set( 'factions_view_tabs', 'against_you' )]"
+		# [UniUI] [LTAF]
+		using = UniUI_LTAF_show
+		# [/LTAF] [/UniUI]
 	}
 
 	state = {
@@ -31,7 +34,7 @@ window = {
 	margin_widget = {
 		size = { 100% 100% }
 		margin = { 0 26 }
-		margin_right = 20
+		margin_right = 13
 
 		widget = {
 			size = { 100% 100% }
@@ -87,14 +90,16 @@ window = {
 
 					background = {
 						texture = "gfx/interface/skinned/illustrations/faction_bg.dds"
-						margin = { -5 0 }
 						fittype = end
 						alpha = 0.7
 						framesize = { 1200 848 }
 
+						using = Mask_Rough_Edges
+
 						modify_texture = {
-							texture = "gfx/interface/component_masks/mask_fade_vertical_up.dds"
+							texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
 							blend_mode = alphamultiply
+							mirror = vertical
 						}
 					}
 
@@ -110,7 +115,6 @@ window = {
 						{
 							vbox = {
 								layoutpolicy_horizontal = expanding
-								margin = { 10 5 }
 								margin_bottom = 15
 								spacing = 10
 
@@ -125,12 +129,6 @@ window = {
 									layoutpolicy_horizontal = expanding
 									spacing = 5
 
-									# text_label_center = {
-									# 	visible = "[GetPlayer.IsIndependentRuler]"
-									# 	text = "FACTIONS_WINDOW_TARGETING_ME"
-									# 	default_format = "#low"
-									# }
-
 									vbox = {
 										name = "targeting_factions_grid"
 										datamodel = "[FactionsWindow.GetTargetingFactions]"
@@ -141,7 +139,7 @@ window = {
 										item = {
 											vbox_faction_item = {
 												# [StA]
-												visible = "[Not(FactionItem.GetFaction.MakeScope.Var('StA_title_allegiance').IsSet)]"
+												visible = "[Or(Not(FactionItem.GetFaction.MakeScope.Var('StA_title_allegiance').IsSet),FactionItem.GetFaction.MakeScope.Var('claimant_faction').IsSet)]"
 												# [/StA]
 												layoutpolicy_horizontal = expanding
 											}
@@ -158,9 +156,6 @@ window = {
 												layoutpolicy_horizontal = expanding
 												datacontext = "[Scope.Title]"
 												margin_top = 3
-												# background = {
-												# 	using = Background_Area
-												# }
 
 												button_group = {
 													onclick = "[GetVariableSystem.Toggle(Concatenate('factions_',Scope.Title.GetKey))]"
@@ -226,7 +221,7 @@ window = {
 															}
 															hbox = {
 																text_single = {
-																	text = "#V [Title.MakeScope.ScriptValue('StA_title_faction_discontent')]#!"
+																	raw_text = "#V [Title.MakeScope.ScriptValue('StA_title_faction_discontent')|0]#!"
 																	default_format = "#low"
 																	align = nobaseline
 																}
@@ -260,7 +255,7 @@ window = {
 													item = {
 														vbox = {
 															datacontext = "[FactionItem.GetFaction]"
-															visible = "[ObjectsEqual(Faction.MakeScope.Var('StA_title_allegiance').Title,Title.Self)]"
+															visible = "[And(ObjectsEqual(Faction.MakeScope.Var('StA_title_allegiance').Title,Title.Self),Not(Faction.MakeScope.Var('claimant_faction').IsSet))]"
 															# [/StA]
 															layoutpolicy_horizontal = expanding
 															layoutpolicy_vertical = expanding
@@ -341,7 +336,7 @@ window = {
 																				}
 																				hbox = {
 																					text_single = {
-																						text = "[FixedPointToProgressbarValue(FactionItem.GetDiscontent)]"
+																						text = "[FixedPointToProgressbarValue(FactionItem.GetDiscontent)|0]"
 																						default_format = "#low"
 																						align = nobaseline
 																					}
@@ -374,7 +369,7 @@ window = {
 																				container = {
 																					datacontext = "[FactionCharacterMember.GetMember]"
 
-																					portrait_head_small_cached = {
+																					portrait_head_small = {
 																						position = { 0 -0 }
 																						parentanchor = top|left
 
@@ -474,8 +469,13 @@ window = {
 										text_single = {
 											text = "FACTIONS_WINDOW_CASSALC_CANT_CREATE_JOIN"
 										}
-
+										# [UniUI] [LTAF]
+										UniUI_LTAF_faction_window_cant_join_creater_members = {}
+										# [/LTAF]
 										dynamicgridbox = {
+											# [Vanilla] Not LTAF
+											visible = "[Not(GetGlobalVariable('LTAF_is_loaded').IsSet)]"
+											# [/Vanilla] [/UniUI]
 											name = "cant_join_creater_members_grid"
 											datamodel = "[FactionsWindow.GetCantCreateOrJoinFactionVassals]"
 											datamodel_wrap = 4
@@ -485,7 +485,7 @@ window = {
 												container = {
 													datacontext = "[CantCreateOrJoinFactionVassal.GetVassal]"
 
-													portrait_head_cached = {
+													portrait_head = {
 														blockoverride "portrait_button_template_tooltip" {
 															tooltip = "[CantCreateOrJoinFactionVassal.GetTooltip]"
 														}
@@ -521,6 +521,7 @@ window = {
 										}
 									}
 								}
+
 							}
 						}
 					}
@@ -706,24 +707,18 @@ types  FactionWindow
 				}
 
 				icon_flat_standard = {
-					visible = "[And(Not( Faction.HasSpecialCharacter ),Not(Faction.MakeScope.Var('StA_title_allegiance').IsSet))]"
+					# [UniUI] [Vanilla]
+					visible = "[And(Not( Faction.HasSpecialCharacter ),Not(Faction.MakeScope.Var('icon_override').IsSet))]"
+					# [/Vanilla] [/UniUI]
 					size = { 120 120 }
 					texture = "[Faction.GetIcon]"
 				}
 
-				coa_title_medium_crown = {
-					position = { 25 0 }
-					visible = "[Faction.MakeScope.Var('StA_title_allegiance').IsSet]"
-					datacontext = "[Faction.MakeScope.Var('StA_title_allegiance').Title]"
-				}
-
-				text_label_center = {
-					visible = "[Faction.MakeScope.Var('StA_title_allegiance').IsSet]"
-					position = { 50 50 }
-					text = "[Faction.MakeScope.Var('faction_type').GetFlagName]"
-				}
-
-				portrait_head_cached = {
+				# [UniUI] [LTAF]
+				UniUI_LTAF_loyalist_icon = {}
+				# [/LTAF] [/UniUI]
+				
+				portrait_head = {
 					datacontext = "[Faction.GetSpecialCharacter]"
 					visible = "[Faction.HasSpecialCharacter]"
 					parentanchor = center
@@ -823,6 +818,9 @@ types  FactionWindow
 
 					# Discontent
 					vbox = {
+						# [UniUI] [LTAF]
+						using = UniUI_LTAF_hide
+						# [/LTAF] [/UniUI]
 						margin_left = 3
 						layoutpolicy_horizontal = expanding
 
@@ -1007,7 +1005,7 @@ types  FactionWindow
 					container = {
 						datacontext = "[FactionCharacterMember.GetMember]"
 
-						portrait_head_small_cached = {
+						portrait_head_small = {
 							position = { 0 -0 }
 							parentanchor = top|left
 

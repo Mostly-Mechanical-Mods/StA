@@ -84,10 +84,11 @@ StA_title_and_vassal_change = {
 		}
 		every_held_title = {
 			limit = {
-				NAND = {
-					has_variable = StA_holder
-					var:StA_holder = PREV
+				trigger_if = {
+					limit = { has_variable = StA_holder }
+					NOT = { var:StA_holder = PREV }
 				}
+				NOT = { has_variable = claimed_title }
 			}
 			if = {
 				limit = { debug_only = yes }

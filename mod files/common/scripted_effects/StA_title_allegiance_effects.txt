@@ -102,8 +102,15 @@ StA_calculate_average_submission_ruler = {
 		value = 0
 	}
 	set_variable = {
-		name = total_weighted_submission
+		name = total_weighted_resentment
 		value = 0
+	}
+	if = {
+		limit = { exists = global_var:LTAF_is_loaded }
+		set_variable = {
+			name = total_weighted_loyalty
+			value = 0
+		}
 	}
 	var:title = {
 		if = { limit = { debug_only = yes } debug_log_scopes = no }
@@ -126,14 +133,27 @@ StA_calculate_average_submission_ruler = {
 						add = PREV.max_military_strength
 					}
 					if = { limit = { debug_only = yes } var:total_strength = { debug_log_scopes = no }}
-					change_variable = {
-						name = total_weighted_submission
-						add = {
-							add = PREV.StA_submission
-							multiply = PREV.max_military_strength
+					if = {
+						limit = { PREV = { has_government = feudal_government }}
+						change_variable = {
+							name = total_weighted_resentment
+							add = {
+								add = PREV.StA_vassal_resentment
+								multiply = PREV.max_military_strength
+							}
 						}
 					}
-					if = { limit = { debug_only = yes } var:total_weighted_submission = { debug_log_scopes = no }}
+					if = {
+						limit = { exists = global_var:LTAF_is_loaded }
+						change_variable = {
+							name = total_weighted_loyalty
+							add = {
+								add = PREV.LTAF_loyalty
+								multiply = PREV.max_military_strength
+							}
+						}
+					}
+					if = { limit = { debug_only = yes } var:total_weighted_resentment = { debug_log_scopes = no }}
 				}
 			}
 		}
@@ -142,12 +162,25 @@ StA_calculate_average_submission_ruler = {
 		limit = { var:total_strength > 0 }
 		debug_log = "total strength > 0"
 		set_variable = {
-			name = average_submission
+			name = average_resentment
 			value = {
-				add = var:total_weighted_submission
+				add = var:total_weighted_resentment
 				divide = {
 					value = var:total_strength
 					min = 1
+				}
+			}
+		}
+		if = {
+			limit = { exists = global_var:LTAF_is_loaded }
+			set_variable = {
+				name = average_loyalty
+				value = {
+					add = var:total_weighted_loyalty
+					divide = {
+						value = var:total_strength
+						min = 1
+					}
 				}
 			}
 		}
@@ -155,11 +188,18 @@ StA_calculate_average_submission_ruler = {
 	else = {
 		debug_log = "total strength = 0"
 		set_variable = {
-			name = average_submission
+			name = average_resentment
 			value = 0
 		}
+		if = {
+			limit = { exists = global_var:LTAF_is_loaded }
+			set_variable = {
+				name = average_loyalty
+				value = 0
+			}
+		}
 	}
-	if = { limit = { debug_only = yes } var:average_submission = { debug_log_scopes = no }}
+	# if = { limit = { debug_only = yes } var:average_submission = { debug_log_scopes = no }}
 }
 
 StA_reset_title_realm_coverage = {

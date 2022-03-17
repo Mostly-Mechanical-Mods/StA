@@ -5,7 +5,7 @@ StA_error_suppression.0001 = {
 	orphan = yes
 
 	trigger = {
-		has_variable = average_submission
+		# has_variable = average_submission
 		has_variable = StA_title_window_allegiance
 		has_variable = mods_loaded
 		has_variable = StA_obligation_levels
@@ -89,5 +89,20 @@ StA_error_suppression.0001 = {
 		fix_variable_error = { X = title_revocation_rights_icon_only }
 		fix_variable_error = { X = war_declaration_rights_icon_only }
 		fix_variable_error = { X = succession_rights_icon_only }
+		fix_variable_error = { X = faction_type }
+		fix_variable_error = { X = feudal_government_taxes_faction_check }
+		fix_variable_error = { X = feudal_government_levies_faction_check }
+		fix_variable_error = { X = title_revocation_rights_faction_check }
+		fix_variable_error = { X = war_declaration_rights_faction_check }
+		fix_variable_error = { X = succession_rights_faction_check }
+		fix_variable_error = { X = recently_caved_to_faction }
+		fix_variable_error = { X = feudal_government_taxes_faction_cooldown }
+		fix_variable_error = { X = feudal_government_levies_faction_cooldown }
+		fix_variable_error = { X = war_declaration_rights_faction_cooldown }
+		fix_variable_error = { X = title_revocation_rights_faction_cooldown }
+		fix_variable_error = { X = succession_rights_faction_cooldown }
+		fix_variable_error = { X = faction_demand_refused_by }
+		fix_variable_error = { X = average_resentment }
+		fix_variable_error = { X = claimed_title }
 	}
 }

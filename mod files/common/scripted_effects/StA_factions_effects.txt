@@ -5,61 +5,103 @@
 	}
 	save_scope_value_as = {
 		name = desire_value
-		value = StA_desire_feudal_government_taxes
+		value = StA_desire_feudal_government_taxes_
 	}
 	if = {
-		limit = { StA_desire_feudal_government_levies.compare_value > scope:desire_value.compare_value }
+		limit = { StA_desire_feudal_government_levies_.compare_value > scope:desire_value.compare_value }
 		save_scope_value_as = {
 			name = desire
 			value = flag:feudal_government_levies_
 		}
 		save_scope_value_as = {
 			name = desire_value
-			value = StA_desire_feudal_government_levies
+			value = StA_desire_feudal_government_levies_
 		}
 	}
 	if = {
-		limit = { StA_desire_war_declaration_rights.compare_value > scope:desire_value.compare_value }
+		limit = { StA_desire_war_declaration_rights_.compare_value > scope:desire_value.compare_value }
 		save_scope_value_as = {
 			name = desire
 			value = flag:war_declaration_rights_
 		}
 		save_scope_value_as = {
 			name = desire_value
-			value = StA_desire_war_declaration_rights
+			value = StA_desire_war_declaration_rights_
 		}
 	}
 	if = {
-		limit = { StA_desire_title_revocation_rights.compare_value > scope:desire_value.compare_value }
+		limit = { StA_desire_title_revocation_rights_.compare_value > scope:desire_value.compare_value }
 		save_scope_value_as = {
 			name = desire
 			value = flag:title_revocation_rights_
 		}
 		save_scope_value_as = {
 			name = desire_value
-			value = StA_desire_title_revocation_rights
+			value = StA_desire_title_revocation_rights_
 		}
 	}
 	if = {
-		limit = { StA_desire_succession_rights.compare_value > scope:desire_value.compare_value }
+		limit = { StA_desire_succession_rights_.compare_value > scope:desire_value.compare_value }
 		save_scope_value_as = {
 			name = desire
 			value = flag:succession_rights_
 		}
 		save_scope_value_as = {
 			name = desire_value
-			value = StA_desire_succession_rights
+			value = StA_desire_succession_rights_
 		}
 	}
 	if = {
-		limit = { scope:desire_value.compare_value > 0 }
+		limit = {
+			OR = {
+				scope:desire_value <= 0
+				has_variable = faction_demand_accepted_by
+			}
+		}
+		set_variable = {
+			name = desire
+			value = flag:no_desire
+		}
+		set_variable = {
+			name = desire_value
+			value = 0
+		}
+	}
+	else = {
 		set_variable = {
 			name = desire
 			value = scope:desire
 		}
 		set_variable = {
 			name = desire_value
-			value = scope:desire_value
+			value = {
+				add = scope:desire_value
+				min = 0
+			}
 		}
+	}
+}
+
+# StA_calculate_average_vassal_resentment = {
+# 	set_variable = {
+# 		name = StA_average_resentment
+# 		value = {
+# 			every_in_list = {
+# 				varialbe = StA_plege_allegiance
+# 				add = 
+# 			}
+# 		}
+# 	}
+# }
+
+StA_faction_leader_leaves = {
+	if = {
+		limit = {
+			any_faction_member = {
+				NOT = { THIS = scope:faction_member }
+				count = 0
+			}
+		}
+		var:StA_title_allegiance = { remove_variable = $FACTION_TYPE$_check }
 	}
 }

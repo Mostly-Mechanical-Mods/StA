@@ -1,69 +1,150 @@
-﻿StA_desire_feudal_government_taxes = {
-	add = ai_greed
-	if = {
-		limit = { vassal_contract_obligation_level:feudal_government_taxes.compare_value >= primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_taxes_.compare_value }
-		add = {
+﻿StA_desire_feudal_government_taxes_ = {
+	value = 0
+	add = {
+		value = {
+			add = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_taxes_
+			multiply = 10
+		}
+		desc = "StA_desire_feudal_government_taxes_title_realm_law"
+		format = "STA_BASE_VALUE_FORMAT_NEGATIVE_GOOD"
+	}
+	add = {
+		value = {
 			add = vassal_contract_obligation_level:feudal_government_taxes
+			subtract = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_taxes_
 			multiply = 10
 		}
+		desc = "StA_desire_feudal_government_taxes_title_realm_law"
+		format = "STA_BASE_VALUE_FORMAT_NEGATIVE_GOOD"
 	}
-}
-
-StA_desire_feudal_government_levies = {
-	add = ai_boldness
-	if = {
-		limit = { vassal_contract_obligation_level:feudal_government_levies.compare_value >= primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_levies_.compare_value }
+	multiply = {
+		value = 1
 		add = {
-			add = vassal_contract_obligation_level:feudal_government_levies
-			multiply = 10
+			value = {
+				add = ai_greed
+				divide = 100
+			}
+			desc = "StA_desire_personality_greed"
+			format = "STA_BASE_VALUE_FORMAT_PERCENTAGE_NEGATIVE_GOOD"
 		}
 	}
 }
 
-StA_desire_war_declaration_rights = {
+StA_desire_feudal_government_levies_ = {
+	value = 0
+	add = {
+		value = {
+			add = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_levies_
+			multiply = 10
+		}
+		desc = "StA_desire_feudal_government_taxes_title_realm_law"
+		format = "STA_BASE_VALUE_FORMAT_NEGATIVE_GOOD"
+	}
+	add = {
+		value = {
+			add = vassal_contract_obligation_level:feudal_government_levies
+			subtract = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_levies_
+			multiply = 10
+		}
+		desc = "StA_desire_feudal_government_taxes_title_realm_law"
+		format = "STA_BASE_VALUE_FORMAT_NEGATIVE_GOOD"
+	}
+	multiply = {
+		value = 1
+		add = {
+			value = {
+				add = ai_boldness
+				divide = 100
+			}
+			desc = "StA_desire_personality_boldness"
+			format = "STA_BASE_VALUE_FORMAT_PERCENTAGE_NEGATIVE_GOOD"
+		}
+	}
+}
+
+StA_desire_war_declaration_rights_ = {
 	if = {
 		limit = { primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights_ = 0 }
-		add = ai_boldness
 		add = {
-			every_claim = {
-				limit = { NOT = { holder = PREV.liege }}
-				add = {
-					add = tier
-					multiply = 10
+			value = {
+				every_claim = {
+					limit = { NOT = { holder = PREV.liege }}
+					add = {
+						add = tier
+						multiply = 10
+					}
 				}
+			}
+			desc = "StA_desire_war_declaration_rights_claims"
+			format = "STA_BASE_VALUE_FORMAT_NEGATIVE_GOOD"
+		}
+		multiply = {
+			value = 1
+			add = {
+				value = {
+					add = ai_boldness
+					divide = 100
+				}
+				desc = "StA_desire_personality_boldness"
+				format = "STA_BASE_VALUE_FORMAT_PERCENTAGE_NEGATIVE_GOOD"
 			}
 		}
 	}
 }
 
-StA_desire_title_revocation_rights = {
+StA_desire_title_revocation_rights_ = {
 	if = {
 		limit = { primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:title_revocation_rights_ = 0 }
-		add = {
-			add = liege.ai_vengefulness
-			min = 0
-		}
-		add = {
-			subtract = liege.ai_honor
-			min = 0
-		}
-		add = {
-			min = liege.tyranny
-			min = liege.dread
-		}
-		add = {
-			if = { limit = { dynasty = { save_temporary_scope_as = vassal_dynasty }}}
-			every_held_title = {
-				every_any_past_holder_reversed = {
-					limit = { dynasty = scope:vassal_dynasty }
-					add = PREV.tier
+		if = {
+			limit = { liege = { is_ai = no }}
+			add = {
+				value = {
+					min = liege.tyranny
+					min = liege.dread
 				}
+				desc = "StA_desire_title_revocation_protection_rights_liege_tyranny_dread"
+				format = "STA_BASE_VALUE_FORMAT_NEGATIVE_GOOD"
+			}
+		}
+		if = {
+			limit = { liege = { is_ai = yes }}
+			add = {
+				subtract = liege.ai_honor
+				min = 0
+			}
+			add = {
+				add = liege.ai_vengefulness
+				min = 0
+			}
+		}
+		add = {
+			value = {
+				if = { limit = { dynasty = { save_temporary_scope_as = vassal_dynasty }}}
+				every_held_title = {
+					every_past_holder_reversed = {
+						limit = { dynasty = scope:vassal_dynasty }
+						add = PREV.tier
+					}
+				}
+			}
+			desc = "StA_desire_title_revocation_protection_rights_history"
+			format = "STA_BASE_VALUE_FORMAT_NEGATIVE_GOOD"
+		}
+		multiply = {
+			value = 1
+			add = {
+				value = {
+					subtract = ai_boldness
+					divide = 100
+				}
+				desc = "StA_desire_personality_boldness"
+				format = "STA_BASE_VALUE_FORMAT_PERCENTAGE_NEGATIVE_GOOD"
 			}
 		}
 	}
 }
 
-StA_desire_succession_rights = {
+StA_desire_succession_rights_ = {
 	if = {
 		limit = { primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:succession_rights_ = 1 }
 		if = {
@@ -77,6 +158,37 @@ StA_desire_succession_rights = {
 			add = 10
 		}
 	}
+}
+
+StA_vassal_resentment = {
+	value = 0
+	if = {
+		limit = { has_variable = desire_value }
+		add = {
+			value = var:desire_value
+			desc = "StA_resentment_desire_value"
+			format = "STA_BASE_VALUE_FORMAT_NEGATIVE_GOOD"
+		}
+	}
+	add = {
+		value = {
+			value = 0
+			if = {
+				limit = {
+					NOT = { exists = global_var:LTAF_is_loaded }
+					ai_honor > 0
+				}
+				subtract = ai_honor
+			}
+			else_if = {
+				limit = { LTAF_loyalty > 0 }
+				subtract = LTAF_loyalty
+			}
+		}
+		desc = "StA_resentment_loyalty"
+		format = "STA_BASE_VALUE_FORMAT_NEGATIVE_GOOD"
+	}
+	min = 0
 }
 
 StA_title_faction_power = {
@@ -107,8 +219,9 @@ StA_title_faction_number = {
 
 StA_faction_discontent_progress = {
 	if = {
-		limit = { faction_power > faction_power_threshold }
-		add = base_discontent_progress
+		limit = { var:StA_title_allegiance.StA_title_realm_authority_unused > 0 }
+		subtract = var:StA_title_allegiance.StA_title_realm_authority_unused
+		divide = 10
 	}
 	if = {
 		limit = { var:StA_title_allegiance.StA_title_realm_authority_unused < 0 }
@@ -124,16 +237,42 @@ StA_faction_discontent_progress = {
 }
 
 StA_title_faction_discontent_progress = {
+	if = {
+		limit = { StA_title_realm_authority_unused > 0 }
+		subtract = StA_title_realm_authority_unused
+		divide = 10
+	}
+	else = { subtract = StA_title_realm_authority_unused }
 	holder = {
-		every_targeting_faction = {
-			limit = {
-				has_variable = StA_title_allegiance
-				var:StA_title_allegiance = ROOT
+		add = {
+			every_targeting_faction = {
+				limit = {
+					has_variable = StA_title_allegiance
+					var:StA_title_allegiance = ROOT
+				}
+				every_faction_member = {
+					add = {
+						add = StA_vassal_resentment
+						multiply = max_military_strength
+					}
+				}
 			}
-			add = {
-				value = StA_faction_common_discontent_progress
-				desc = "FACTION_DISCONTENT_PROGRESS"
+			divide = {
+				every_targeting_faction = {
+					limit = {
+						has_variable = StA_title_allegiance
+						var:StA_title_allegiance = ROOT
+					}
+					every_faction_member = {
+						add = max_military_strength
+					}
+				}
 			}
+			divide = 10
+		}
+		add = {
+			add = tyranny
+			divide = 100
 		}
 	}
 }
@@ -150,5 +289,253 @@ StA_title_faction_discontent = {
 				desc = "FACTION_DISCONTENT_PROGRESS"
 			}
 		}
+	}
+}
+
+faction_effect_interval = define:NFaction|UPDATE_INTERVAL_DAYS
+
+
+StA_claimant_faction_create_score = {
+	value = -25
+
+}
+
+StA_common_create_faction_blockers = {
+	if = {
+		limit = { is_at_war = yes }
+		subtract = 1000
+	}
+	if = {
+		limit = {
+			save_temporary_opinion_value_as = { name = target_opinion target = scope:target }
+			scope:target_opinion >= 80
+		}
+		subtract = 1000
+	}
+}
+
+# scope:title.holder = FACTION_TARGET
+
+StA_claimant_score = {
+	if = {
+		limit = {
+			save_temporary_scope_as = FACTION_CLAIMANT
+			ROOT.primary_title.var:StA_title_allegiance.holder = { save_temporary_scope_as = FACTION_TARGET }
+			ROOT = {
+				save_temporary_opinion_value_as = {
+					name = FACTION_CLAIMANT_opinion
+					target = scope:FACTION_CLAIMANT
+				}
+				save_temporary_opinion_value_as = {
+					name = FACTION_TARGET_opinion
+					target = scope:FACTION_TARGET
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				has_trait = incapable
+				has_government = theocracy_government
+			}
+		}
+		add = -1000
+	}
+	if = {
+		limit = {
+			OR = {
+				AND = {
+					faith = { has_doctrine = doctrine_gender_female_dominated }
+					scope:FACTION_CLAIMANT = {
+						is_male = yes
+						faith = ROOT.faith
+					}
+				}
+				AND = {
+					faith = { has_doctrine = doctrine_gender_male_dominated }
+					scope:FACTION_CLAIMANT = {
+						is_female = yes
+						faith = ROOT.faith
+					}
+				}
+			}
+		}
+		add = -50
+	}
+	# Gender concerns (target of wrong gender)
+	if = {
+		limit = {
+			OR = {
+				AND = {
+					faith = { has_doctrine = doctrine_gender_female_dominated }
+					scope:FACTION_TARGET = { is_male = yes }
+					scope:FACTION_CLAIMANT = {
+						is_female = yes
+						faith = ROOT.faith
+					}
+				}
+				AND = {
+					faith = { has_doctrine = doctrine_gender_male_dominated }
+					scope:FACTION_TARGET = { is_female = yes }
+					scope:FACTION_CLAIMANT = {
+						is_male = yes
+						faith = ROOT.faith
+					}
+				}
+			}
+		}
+		add = 25
+	}
+	# Powerful vassals will be even more motivated to create claimant if unhappy with liege, if they like the claimant more than their liege
+	if = {
+		limit = {
+			ROOT = {
+				is_powerful_vassal_of = scope:FACTION_TARGET
+				scope:FACTION_CLAIMANT_opinion.compare_value > scope:FACTION_TARGET_opinion.compare_value
+			}
+		}
+		add = scope:FACTION_TARGET_opinion
+		multiply = -1.5
+		min = 0
+	}
+	# They do not like the claimant more than their liege, unless its a claimant of their own culture
+	if = {
+		limit = {
+			NAND = {
+				culture = scope:FACTION_CLAIMANT.culture
+				NOT = { CULTURE = scope:FACTION_TARGET.culture }
+			}
+			ROOT = {
+				has_variable = opinion_liege
+				scope:FACTION_CLAIMANT_opinion.compare_value < scope:FACTION_TARGET_opinion.compare_value
+			}
+		}
+		add = -25
+	}
+	# Opinion of the potential Claimant (not self)
+	add = scope:FACTION_CLAIMANT_opinion
+	multiply = 1.5
+	# Claimant is too old
+	if = {
+		limit = { scope:FACTION_CLAIMANT.age > 45 }
+		add = {
+			value = scope:FACTION_CLAIMANT.age
+			subtract = 45
+			multiply = -2
+		}
+	}
+	# Claimant is too young
+	if = {
+		limit = { scope:FACTION_CLAIMANT = { is_adult = no }}
+		add = -25
+	}
+	# Claimant is dying
+	if = {
+		limit = { scope:FACTION_CLAIMANT.health < 1.5 }
+		add = {
+			value = 1.5
+			subtract = scope:FACTION_CLAIMANT.health
+			multiply = -20
+		}
+	}
+	if = {
+		limit = {
+			scope:FACTION_CLAIMANT = {
+				fertility <= 0.1
+				any_child = { count = 0 }
+			}
+		}
+		add = -50
+	}
+	# Infirmity of claimant
+	if = {
+		limit = { has_trait = infirm }
+		add = -50
+	}
+	if = {
+		limit = {
+			ROOT = {
+				OR = {
+					has_secret_relation_lover = scope:FACTION_CLAIMANT
+					has_relation_lover = scope:FACTION_CLAIMANT
+					has_relation_soulmate = scope:FACTION_CLAIMANT
+					has_relation_friend = scope:FACTION_CLAIMANT
+					has_relation_best_friend = scope:FACTION_CLAIMANT
+				}
+			}
+		}
+		add = 50
+	}
+	if = {
+		limit = {
+			ROOT = {
+				OR = {
+					has_relation_soulmate = scope:FACTION_CLAIMANT
+					has_relation_best_friend = scope:FACTION_CLAIMANT
+				}
+			}
+		}
+		add = 100
+	}
+	if = {
+		limit = {
+			ROOT.culture = {
+				NOR = {
+					THIS = scope:FACTION_TARGET.culture
+					cultural_acceptance = { target = scope:FACTION_TARGET.culture value >= 90 }
+					has_cultural_parameter = doesnt_care_about_culture_faith_in_factions
+				}
+				OR = {
+					THIS = scope:FACTION_CLAIMANT.culture
+					cultural_acceptance = { target = scope:FACTION_CLAIMANT.culture value >= 90 }
+				}
+			}
+		}
+		add = 50
+		ROOT.culture = {
+			if = {
+				limit = { THIS = scope:FACTION_CLAIMANT.culture }
+				add = 50
+			}
+			if = {
+				limit = { cultural_acceptance = { target = scope:FACTION_TARGET value <= 20 }}
+				add = 25
+			}
+			if = {
+				limit = { cultural_acceptance = { target = scope:FACTION_TARGET value <= 35 }}
+				add = 15
+			}
+			if = {
+				limit = { cultural_acceptance = { target = scope:FACTION_TARGET value <= 50 }}
+				add = 10
+			}
+			if = {
+				limit = { cultural_acceptance = { target = scope:FACTION_TARGET value <= 70 }}
+				add = 5
+			}
+			if = {
+				limit = { cultural_acceptance = { target = scope:FACTION_TARGET.culture value <= 80 }}
+				add = 5
+			}
+		}
+		if = {
+			limit = { scope:FACTION_TARGET = { knows_language_of_culture = ROOT.culture }}
+			multiply = 0.5
+		}
+		if = {
+			limit = { ROOT.primary_title.var:StA_title_allegiance = { has_title_law = princely_elective_succession_law }}
+			multiply = 0.25
+		}
+	}
+	if = {
+		limit = {
+			ROOT = {
+				NOT = { faith = scope:FACTION_TARGET.faith }
+				faith = scope:FACTION_CLAIMANT.faith
+				NOT = { culture = { has_cultural_parameter = doesnt_care_about_culture_faith_in_factions }}
+			}
+		}
+		add = 100
 	}
 }

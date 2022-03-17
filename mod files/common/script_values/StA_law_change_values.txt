@@ -31,7 +31,6 @@ StA_cooldown = {
 # used title scope
 StA_cooldown_title_holder_change = {
 	value = holder.StA_short_reign_modifier
-	value = 0
 }
 
 # used title scope
@@ -41,7 +40,6 @@ StA_cooldown_law_change = {
 	max = 1
 	multiply = 100
 	round = yes
-	value = 0
 }
 
 StA_cooldown_law_change_year = {

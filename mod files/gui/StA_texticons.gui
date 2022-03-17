@@ -108,3 +108,12 @@ texticon = {
 # 	}
 # }
 
+texticon = {
+	icon = culture_icon
+	iconsize = {
+		texture = "gfx/interface/icons/icon_culture.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}

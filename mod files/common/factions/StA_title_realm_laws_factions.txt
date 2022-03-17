@@ -31,6 +31,10 @@
 		}
 	}
 
+	leader_leaves = {
+		StA_faction_leader_leaves = { FACTION_TYPE = feudal_government_taxes_faction }
+	}
+
 	demand = {
 		save_scope_as = faction
 
@@ -42,6 +46,22 @@
 			save_scope_as = faction_target
 		}
 
+		# Let the human players in the faction know that the demand will be sent
+		# every_faction_member = {
+		# 	limit = {
+		# 		is_ai = no
+		# 		NOT = { this = scope:faction.faction_leader }
+		# 	}
+		# 	trigger_event = faction_demand.0105
+		# }
+
+		# Send the actual demand in 5 days
+		faction_target = {
+			trigger_event = {
+				id = StA_faction_demand.0101
+				days = 5
+			}
+		}
 	}
 
 	on_creation = {
@@ -71,32 +91,32 @@
 	}
 
 	ai_demand_chance = {
-		base = 0
+		base = 100
 
-		# 30% base chance at minimum power (80%), increasing linearly
-		compare_modifier = {
-			value = faction_power
-			multiplier = 0.375
-		}
+		# # 30% base chance at minimum power (80%), increasing linearly
+		# compare_modifier = {
+		# 	value = faction_power
+		# 	multiplier = 0.375
+		# }
 
-		# Once the faction has a good chance to win (10% stronger than liege) demand chance increases much more rapidly.
-		compare_modifier = {
-			trigger = {	faction_power > 110 }
-			value = faction_power
-			multiplier = 0.75
-		}
+		# # Once the faction has a good chance to win (10% stronger than liege) demand chance increases much more rapidly.
+		# compare_modifier = {
+		# 	trigger = {	faction_power > 110 }
+		# 	value = faction_power
+		# 	multiplier = 0.75
+		# }
 
-		# Less likely if already in a war with an external ruler - the Liberty Faction is pretty sporting
-		modifier = {
-			add = -75
-			faction_target = {
-				any_war_enemy = {
-					NOT = {
-						target_is_liege_or_above = root.faction_target
-					}
-				}
-			}
-		}
+		# # Less likely if already in a war with an external ruler - the Liberty Faction is pretty sporting
+		# modifier = {
+		# 	add = -75
+		# 	faction_target = {
+		# 		any_war_enemy = {
+		# 			NOT = {
+		# 				target_is_liege_or_above = root.faction_target
+		# 			}
+		# 		}
+		# 	}
+		# }
 	}
 
 	is_character_valid = {
@@ -108,15 +128,7 @@
 	}
 
 	can_character_create = {
-		scope:target = {
-			any_targeting_faction = {
-				faction_is_type = feudal_government_taxes_faction
-				var:StA_title_allegiance = ROOT.primary_title.var:StA_title_allegiance
-				# var:faction_type = flag:feudal_government_taxes_
-				NOT = { faction_leader = ROOT }
-				count = 0
-			}
-		}
+		
 		common_character_validity_trigger = {
 			FACTION_TARGET = scope:target
 		}
@@ -128,6 +140,11 @@
 		common_can_character_create_trigger = {
 			FACTION_TARGET = scope:target
 		}
+
+		StA_faction_can_character_create_trigger = {
+			FACTION_TARGET = scope:target
+			LAW = feudal_government_taxes
+		}
 	}
 
 	can_character_join = {
@@ -135,6 +152,7 @@
 			limit = { exists = scope:faction.faction_leader }
 			can_join_StA_faction = {
 				FACTION_LEADER = scope:faction.faction_leader
+				FACTION_TARGET = scope:faction.faction_target
 			}
 		}
 
@@ -146,10 +164,14 @@
 	ai_create_score = {
 		base = 0 # Join Weight is set primarily based on what Crown Laws a realm has.
 
-		modifier = {
-			has_variable = desire
-			var:desire = flag:feudal_government_taxes_
-			add = 1000
+		# StA_faction_common_create_modifier = {
+		# 	FACTION_TARGET = scope:target
+		# 	LAW = feudal_government_taxes
+		# }
+
+		StA_faction_common_join_modifier = {
+			TITLE = primary_title.var:StA_title_allegiance
+			LAW = feudal_government_taxes
 		}
 		############
 		# BLOCKERS #
@@ -181,10 +203,9 @@
 	ai_join_score = {
 		base = 0 # Join Weight is set primarily based on what Crown Laws a realm has.
 		
-		modifier = {
-			has_variable = desire
-			var:desire = flag:feudal_government_taxes_
-			add = var:desire_value
+		StA_faction_common_join_modifier = {
+			TITLE = primary_title.var:StA_title_allegiance
+			LAW = feudal_government_taxes
 		}
 
 		############
@@ -248,6 +269,10 @@ feudal_government_levies_faction = {
 		}
 	}
 
+	leader_leaves = {
+		StA_faction_leader_leaves = { FACTION_TYPE = feudal_government_levies_faction }
+	}
+
 	demand = {
 		save_scope_as = faction
 
@@ -259,6 +284,22 @@ feudal_government_levies_faction = {
 			save_scope_as = faction_target
 		}
 
+		# Let the human players in the faction know that the demand will be sent
+		# every_faction_member = {
+		# 	limit = {
+		# 		is_ai = no
+		# 		NOT = { this = scope:faction.faction_leader }
+		# 	}
+		# 	trigger_event = faction_demand.0105
+		# }
+
+		# Send the actual demand in 5 days
+		faction_target = {
+			trigger_event = {
+				id = StA_faction_demand.0101
+				days = 5
+			}
+		}
 	}
 
 	on_creation = {
@@ -288,32 +329,32 @@ feudal_government_levies_faction = {
 	}
 
 	ai_demand_chance = {
-		base = 0
+		base = 100
 
-		# 30% base chance at minimum power (80%), increasing linearly
-		compare_modifier = {
-			value = faction_power
-			multiplier = 0.375
-		}
+		# # 30% base chance at minimum power (80%), increasing linearly
+		# compare_modifier = {
+		# 	value = faction_power
+		# 	multiplier = 0.375
+		# }
 
-		# Once the faction has a good chance to win (10% stronger than liege) demand chance increases much more rapidly.
-		compare_modifier = {
-			trigger = {	faction_power > 110 }
-			value = faction_power
-			multiplier = 0.75
-		}
+		# # Once the faction has a good chance to win (10% stronger than liege) demand chance increases much more rapidly.
+		# compare_modifier = {
+		# 	trigger = {	faction_power > 110 }
+		# 	value = faction_power
+		# 	multiplier = 0.75
+		# }
 
-		# Less likely if already in a war with an external ruler - the Liberty Faction is pretty sporting
-		modifier = {
-			add = -75
-			faction_target = {
-				any_war_enemy = {
-					NOT = {
-						target_is_liege_or_above = root.faction_target
-					}
-				}
-			}
-		}
+		# # Less likely if already in a war with an external ruler - the Liberty Faction is pretty sporting
+		# modifier = {
+		# 	add = -75
+		# 	faction_target = {
+		# 		any_war_enemy = {
+		# 			NOT = {
+		# 				target_is_liege_or_above = root.faction_target
+		# 			}
+		# 		}
+		# 	}
+		# }
 	}
 
 	is_character_valid = {
@@ -325,14 +366,7 @@ feudal_government_levies_faction = {
 	}
 
 	can_character_create = {
-		scope:target = {
-			any_targeting_faction = {
-				faction_is_type = feudal_government_levies_faction
-				var:StA_title_allegiance = ROOT.primary_title.var:StA_title_allegiance
-				NOT = { faction_leader = ROOT }
-				count = 0
-			}
-		}
+		
 		common_character_validity_trigger = {
 			FACTION_TARGET = scope:target
 		}
@@ -344,6 +378,11 @@ feudal_government_levies_faction = {
 		common_can_character_create_trigger = {
 			FACTION_TARGET = scope:target
 		}
+
+		StA_faction_can_character_create_trigger = {
+			FACTION_TARGET = scope:target
+			LAW = feudal_government_levies
+		}
 	}
 
 	can_character_join = {
@@ -351,6 +390,7 @@ feudal_government_levies_faction = {
 			limit = { exists = scope:faction.faction_leader }
 			can_join_StA_faction = {
 				FACTION_LEADER = scope:faction.faction_leader
+				FACTION_TARGET = scope:faction.faction_target
 			}
 		}
 
@@ -362,10 +402,14 @@ feudal_government_levies_faction = {
 	ai_create_score = {
 		base = 0 # Join Weight is set primarily based on what Crown Laws a realm has.
 
-		modifier = {
-			has_variable = desire
-			var:desire = flag:feudal_government_levies_
-			add = 1000
+		# StA_faction_common_create_modifier = {
+		# 	FACTION_TARGET = scope:target
+		# 	LAW = feudal_government_levies
+		# }
+
+		StA_faction_common_join_modifier = {
+			TITLE = primary_title.var:StA_title_allegiance
+			LAW = feudal_government_levies
 		}
 		############
 		# BLOCKERS #
@@ -397,10 +441,11 @@ feudal_government_levies_faction = {
 	ai_join_score = {
 		base = 0 # Join Weight is set primarily based on what Crown Laws a realm has.
 		
-		modifier = {
-			has_variable = desire
-			var:desire = flag:feudal_government_levies_
-			add = var:desire_value
+
+
+		StA_faction_common_join_modifier = {
+			TITLE = primary_title.var:StA_title_allegiance
+			LAW = feudal_government_levies
 		}
 
 		############
@@ -462,6 +507,10 @@ title_revocation_rights_faction = {
 			FACTION_TYPE2 = independence_faction
 			FACTION_TYPE3 = populist_faction
 		}
+	}
+
+	leader_leaves = {
+		StA_faction_leader_leaves = { FACTION_TYPE = title_revocation_rights_faction }
 	}
 
 	demand = {
@@ -541,14 +590,7 @@ title_revocation_rights_faction = {
 	}
 
 	can_character_create = {
-		scope:target = {
-			any_targeting_faction = {
-				faction_is_type = title_revocation_rights_faction
-				var:StA_title_allegiance = ROOT.primary_title.var:StA_title_allegiance
-				NOT = { faction_leader = ROOT }
-				count = 0
-			}
-		}
+
 		common_character_validity_trigger = {
 			FACTION_TARGET = scope:target
 		}
@@ -560,6 +602,11 @@ title_revocation_rights_faction = {
 		common_can_character_create_trigger = {
 			FACTION_TARGET = scope:target
 		}
+
+		StA_faction_can_character_create_trigger = {
+			FACTION_TARGET = scope:target
+			LAW = title_revocation_rights
+		}
 	}
 
 	can_character_join = {
@@ -567,6 +614,7 @@ title_revocation_rights_faction = {
 			limit = { exists = scope:faction.faction_leader }
 			can_join_StA_faction = {
 				FACTION_LEADER = scope:faction.faction_leader
+				FACTION_TARGET = scope:faction.faction_target
 			}
 		}
 
@@ -578,10 +626,14 @@ title_revocation_rights_faction = {
 	ai_create_score = {
 		base = 0 # Join Weight is set primarily based on what Crown Laws a realm has.
 
-		modifier = {
-			has_variable = desire
-			var:desire = flag:title_revocation_rights_
-			add = 1000
+		# StA_faction_common_create_modifier = {
+		# 	FACTION_TARGET = scope:target
+		# 	LAW = title_revocation_rights
+		# }
+		
+		StA_faction_common_join_modifier = {
+			TITLE = primary_title.var:StA_title_allegiance
+			LAW = title_revocation_rights
 		}
 		############
 		# BLOCKERS #
@@ -613,10 +665,9 @@ title_revocation_rights_faction = {
 	ai_join_score = {
 		base = 0 # Join Weight is set primarily based on what Crown Laws a realm has.
 		
-		modifier = {
-			has_variable = desire
-			var:desire = flag:title_revocation_rights_
-			add = var:desire_value
+		StA_faction_common_join_modifier = {
+			TITLE = primary_title.var:StA_title_allegiance
+			LAW = title_revocation_rights
 		}
 
 		############
@@ -678,6 +729,10 @@ war_declaration_rights_faction = {
 			FACTION_TYPE2 = independence_faction
 			FACTION_TYPE3 = populist_faction
 		}
+	}
+
+	leader_leaves = {
+		StA_faction_leader_leaves = { FACTION_TYPE = war_declaration_rights_faction }
 	}
 
 	demand = {
@@ -757,14 +812,7 @@ war_declaration_rights_faction = {
 	}
 
 	can_character_create = {
-		scope:target = {
-			any_targeting_faction = {
-				faction_is_type = war_declaration_rights_faction
-				var:StA_title_allegiance = ROOT.primary_title.var:StA_title_allegiance
-				NOT = { faction_leader = ROOT }
-				count = 0
-			}
-		}
+
 		common_character_validity_trigger = {
 			FACTION_TARGET = scope:target
 		}
@@ -776,6 +824,11 @@ war_declaration_rights_faction = {
 		common_can_character_create_trigger = {
 			FACTION_TARGET = scope:target
 		}
+
+		StA_faction_can_character_create_trigger = {
+			FACTION_TARGET = scope:target
+			LAW = war_declaration_rights
+		}
 	}
 
 	can_character_join = {
@@ -783,6 +836,7 @@ war_declaration_rights_faction = {
 			limit = { exists = scope:faction.faction_leader }
 			can_join_StA_faction = {
 				FACTION_LEADER = scope:faction.faction_leader
+				FACTION_TARGET = scope:faction.faction_target
 			}
 		}
 
@@ -794,10 +848,14 @@ war_declaration_rights_faction = {
 	ai_create_score = {
 		base = 0 # Join Weight is set primarily based on what Crown Laws a realm has.
 
-		modifier = {
-			has_variable = desire
-			var:desire = flag:war_declaration_rights_
-			add = 1000
+		# StA_faction_common_create_modifier = {
+		# 	FACTION_TARGET = scope:target
+		# 	LAW = war_declaration_rights
+		# }
+
+		StA_faction_common_join_modifier = {
+			TITLE = primary_title.var:StA_title_allegiance
+			LAW = war_declaration_rights
 		}
 		############
 		# BLOCKERS #
@@ -829,10 +887,9 @@ war_declaration_rights_faction = {
 	ai_join_score = {
 		base = 0 # Join Weight is set primarily based on what Crown Laws a realm has.
 		
-		modifier = {
-			has_variable = desire
-			var:desire = flag:war_declaration_rights_
-			add = var:desire_value
+		StA_faction_common_join_modifier = {
+			TITLE = primary_title.var:StA_title_allegiance
+			LAW = war_declaration_rights
 		}
 
 		############
@@ -874,7 +931,7 @@ succession_rights_faction = {
 	discontent_progress = {
 		base = 0
 
-		common_discontent_progress_modifier = yes
+		StA_faction_common_discontent_progress_modifier = yes
 	}
 
 	power_threshold = {
@@ -894,6 +951,10 @@ succession_rights_faction = {
 			FACTION_TYPE2 = independence_faction
 			FACTION_TYPE3 = populist_faction
 		}
+	}
+
+	leader_leaves = {
+		StA_faction_leader_leaves = { FACTION_TYPE = succession_rights_faction }
 	}
 
 	demand = {
@@ -973,14 +1034,7 @@ succession_rights_faction = {
 	}
 
 	can_character_create = {
-		scope:target = {
-			any_targeting_faction = {
-				faction_is_type = succession_rights_faction
-				var:StA_title_allegiance = ROOT.primary_title.var:StA_title_allegiance
-				NOT = { faction_leader = ROOT }
-				count = 0
-			}
-		}
+
 		common_character_validity_trigger = {
 			FACTION_TARGET = scope:target
 		}
@@ -989,8 +1043,9 @@ succession_rights_faction = {
 			FACTION_TARGET = scope:target
 		}
 
-		common_can_character_create_trigger = {
+		StA_faction_can_character_create_trigger = {
 			FACTION_TARGET = scope:target
+			LAW = succession_rights
 		}
 	}
 
@@ -999,6 +1054,7 @@ succession_rights_faction = {
 			limit = { exists = scope:faction.faction_leader }
 			can_join_StA_faction = {
 				FACTION_LEADER = scope:faction.faction_leader
+				FACTION_TARGET = scope:faction.faction_target
 			}
 		}
 
@@ -1010,10 +1066,14 @@ succession_rights_faction = {
 	ai_create_score = {
 		base = 0 # Join Weight is set primarily based on what Crown Laws a realm has.
 
-		modifier = {
-			has_variable = desire
-			var:desire = flag:succession_rights_
-			add = 1000
+		# StA_faction_common_create_modifier = {
+		# 	FACTION_TARGET = scope:target
+		# 	LAW = succession_rights
+		# }
+
+		StA_faction_common_join_modifier = {
+			TITLE = primary_title.var:StA_title_allegiance
+			LAW = succession_rights
 		}
 		############
 		# BLOCKERS #
@@ -1045,10 +1105,9 @@ succession_rights_faction = {
 	ai_join_score = {
 		base = 0 # Join Weight is set primarily based on what Crown Laws a realm has.
 		
-		modifier = {
-			has_variable = desire
-			var:desire = flag:succession_rights_
-			add = var:desire_value
+		StA_faction_common_join_modifier = {
+			TITLE = primary_title.var:StA_title_allegiance
+			LAW = succession_rights
 		}
 
 		############
