@@ -35,19 +35,88 @@ window = {
 
 		# spacer = { size = { 0 10 }}
 
-		text_multi = {
-			name = "description"
-			autoresize = yes
-			min_width = 800
-			margin = {15 10}
-
-			text = "STA_LAW_CHANGE_DESC"
-			using = "Font_Size_Small"
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			margin = { 15 0 }
 
 			background = {
 				using = Background_Area
 			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				text_single = {
+					name = "description"
+					autoresize = yes
+					# min_width = 800
+		
+					text = "STA_LAW_CHANGE_DESC"
+					using = "Font_Size_Small"
+				}
+				expand = {}
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				text_single = {
+					name = "cost_authority"
+					autoresize = yes
+					# min_width = 800
+		
+					text = "STA_LAW_CHANGE_AUTHORITY"
+					using = "Font_Size_Small"
+		
+				}
+				expand = {}
+			}
+
+			hbox = {
+				visible = "[GreaterThan_CFixedPoint(GetPlayer.MakeScope.ScriptValue('StA_change_title_realm_law_prestige_cost'),'(CFixedPoint)')]"
+				layoutpolicy_horizontal = expanding
+				text_single = {
+					name = "cost_prestige_desc"
+					autoresize = yes
+					# min_width = 800
+		
+					text = "STA_LAW_CHANGE_PRESTIGE"
+					using = "Font_Size_Small"
+				}
+				expand = {}
+			}
+
+			hbox = {
+				visible = "[And(GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('StA_change_law_cost').GetValue,'(CFixedPoint)0'),GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_cooldown'),'(CFixedPoint)0'))]"
+				layoutpolicy_horizontal = expanding
+				text_single = {
+					name = "cost_tyranny_desc"
+					autoresize = yes
+					# min_width = 800
+		
+					text = "STA_LAW_CHANGE_TYRANNY"
+					using = "Font_Size_Small"
+				}
+				expand = {}
+			}
+
+			hbox = {
+				visible = "[GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_cooldown_increase'),'(CFixedPoint)0')]"
+				layoutpolicy_horizontal = expanding
+				text_single = {
+					name = "cost_cooldown"
+					autoresize = yes
+					# min_width = 800
+		
+					text = "STA_LAW_CHANGE_COOLDOWN"
+					using = "Font_Size_Small"
+		
+				}
+				expand = {}
+			}
+			expand = {}
 		}
+		
+		expand = {}
 
 		hbox = {
 			layoutpolicy_horizontal = expanding

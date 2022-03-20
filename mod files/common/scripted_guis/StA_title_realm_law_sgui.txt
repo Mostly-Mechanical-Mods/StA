@@ -137,11 +137,7 @@ StA_law_change_cooldown_alert = {
 StA_confirm_title_law = {
 	scope = character
 	is_valid = {
-		trigger_if = {
-			limit = { var:StA_change_law_cost > 0 }
-			var:StA_change_law_cost_check > 0
-			var:StA_change_law_title.StA_cooldown = 0
-		}
+		prestige >= StA_change_title_realm_law_prestige_cost
 	}
 	effect = {
 		var:StA_change_law_title = {
@@ -150,6 +146,14 @@ StA_confirm_title_law = {
 				LAW = ROOT.var:StA_change_law_obligation
 				LEVEL = ROOT.var:StA_change_law_level
 			}
+		}
+		add_prestige = {
+			subtract = StA_change_title_realm_law_prestige_cost
+			max = 0
+		}
+		add_tyranny = {
+			add = var:StA_change_law_title.StA_cooldown
+			min = 0
 		}
 		remove_variable = StA_confirm_title_window_on
 		remove_variable = StA_change_law_title

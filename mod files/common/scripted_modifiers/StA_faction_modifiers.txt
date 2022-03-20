@@ -46,12 +46,13 @@
 }
 
 StA_faction_common_join_modifier = {
+	
 	modifier = {
 		has_variable = desire
 		var:desire = flag:$LAW$_
 		add = StA_vassal_resentment
-		# add = 1000
 	}
+
 	modifier = {
 		NAND = {
 			has_variable = desire
@@ -59,13 +60,17 @@ StA_faction_common_join_modifier = {
 		}
 		add = -1000
 	}
+
+	modifier = {
+		LTAF_loyalty >= 0
+		add = { subtract = LTAF_loyalty }
+	}
+
 	modifier = {
 		liege.tyranny > 0
 		add = liege.tyranny
 	}
-	# modifier = {
-	# 	add = { subtract = StA_submission }
-	# }
+
 	modifier = {
 		trigger_if = {
 			limit = { $TITLE$ = { has_variable = StA_title_realm_law }}

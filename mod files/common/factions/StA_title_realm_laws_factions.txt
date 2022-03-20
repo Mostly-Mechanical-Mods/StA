@@ -195,9 +195,9 @@
 			THRESHOLD = 80
 		}
 
-		liberty_faction_modifiers = {
-			FACTION_TARGET = scope:target
-		}		
+		# liberty_faction_modifiers = {
+		# 	FACTION_TARGET = scope:target
+		# }		
 	}
 
 	ai_join_score = {
@@ -227,9 +227,9 @@
 			THRESHOLD = scope:faction.faction_power_threshold
 		}
 
-		liberty_faction_modifiers = {
-			FACTION_TARGET = scope:faction.faction_target
-		}
+		# liberty_faction_modifiers = {
+		# 	FACTION_TARGET = scope:faction.faction_target
+		# }
 	}
 	
 	county_allow_join = no
@@ -433,9 +433,9 @@ feudal_government_levies_faction = {
 			THRESHOLD = 80
 		}
 
-		liberty_faction_modifiers = {
-			FACTION_TARGET = scope:target
-		}		
+		# liberty_faction_modifiers = {
+		# 	FACTION_TARGET = scope:target
+		# }		
 	}
 
 	ai_join_score = {
@@ -467,9 +467,9 @@ feudal_government_levies_faction = {
 			THRESHOLD = scope:faction.faction_power_threshold
 		}
 
-		liberty_faction_modifiers = {
-			FACTION_TARGET = scope:faction.faction_target
-		}
+		# liberty_faction_modifiers = {
+		# 	FACTION_TARGET = scope:faction.faction_target
+		# }
 	}
 	
 	county_allow_join = no
@@ -657,9 +657,9 @@ title_revocation_rights_faction = {
 			THRESHOLD = 80
 		}
 
-		liberty_faction_modifiers = {
-			FACTION_TARGET = scope:target
-		}		
+		# liberty_faction_modifiers = {
+		# 	FACTION_TARGET = scope:target
+		# }		
 	}
 
 	ai_join_score = {
@@ -689,9 +689,9 @@ title_revocation_rights_faction = {
 			THRESHOLD = scope:faction.faction_power_threshold
 		}
 
-		liberty_faction_modifiers = {
-			FACTION_TARGET = scope:faction.faction_target
-		}
+		# liberty_faction_modifiers = {
+		# 	FACTION_TARGET = scope:faction.faction_target
+		# }
 	}
 	
 	county_allow_join = no
@@ -879,9 +879,9 @@ war_declaration_rights_faction = {
 			THRESHOLD = 80
 		}
 
-		liberty_faction_modifiers = {
-			FACTION_TARGET = scope:target
-		}		
+		# liberty_faction_modifiers = {
+		# 	FACTION_TARGET = scope:target
+		# }		
 	}
 
 	ai_join_score = {
@@ -911,9 +911,9 @@ war_declaration_rights_faction = {
 			THRESHOLD = scope:faction.faction_power_threshold
 		}
 
-		liberty_faction_modifiers = {
-			FACTION_TARGET = scope:faction.faction_target
-		}
+		# liberty_faction_modifiers = {
+		# 	FACTION_TARGET = scope:faction.faction_target
+		# }
 	}
 	
 	county_allow_join = no
@@ -1097,9 +1097,9 @@ succession_rights_faction = {
 			THRESHOLD = 80
 		}
 
-		liberty_faction_modifiers = {
-			FACTION_TARGET = scope:target
-		}		
+		# liberty_faction_modifiers = {
+		# 	FACTION_TARGET = scope:target
+		# }		
 	}
 
 	ai_join_score = {
@@ -1129,9 +1129,9 @@ succession_rights_faction = {
 			THRESHOLD = scope:faction.faction_power_threshold
 		}
 
-		liberty_faction_modifiers = {
-			FACTION_TARGET = scope:faction.faction_target
-		}
+		# liberty_faction_modifiers = {
+		# 	FACTION_TARGET = scope:faction.faction_target
+		# }
 	}
 	
 	county_allow_join = no

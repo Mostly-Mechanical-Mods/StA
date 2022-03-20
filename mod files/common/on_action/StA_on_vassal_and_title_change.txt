@@ -587,36 +587,38 @@ StA_on_title_destroyed = {
 			limit = { scope:landed_title = { has_variable = StA_title_realm_law }}
 			if = {
 				limit = {
-					scope:landed_title = ROOT.primary_title
-					has_government = feudal_government
+					ROOT = {
+						is_landed = yes
+						has_government = feudal_government
+						primary_title = { NOT = { has_variable = StA_title_realm_law }}
+					}
 				}
-				if = {
-					limit = {
-						any_held_title = {
-							NOT = { THIS = scope:landed_title }
-							has_variable = StA_title_realm_law
-							count = 0
+				primary_title = {
+					# StA_set_laws_to_inherit = { TRANSFER_FROM = scope:landed_title }
+					ROOT = {
+						set_variable = {
+							name = StA_title
+							value = PREV
 						}
+						create_story = StA_title_realm_law
 					}
-					ordered_held_title = {
-						limit = { NOT = { THIS = scope:landed_title }}
-						order_by = tier
-						StA_set_laws_to_inherit = { TRANSFER_FROM = scope:landed_title }
-						ROOT = {
-							set_variable = {
-								name = StA_title
-								value = PREV
-							}
-							create_story = StA_title_realm_law
-						}
-					}
+					StA_set_title_allegiance_to_liege = yes
 				}
 			}
 			scope:landed_title = {
 				every_in_list = {
 					variable = StA_pledge_allegiance
-					StA_remove_current_title_allegiance = yes
-					StA_set_title_allegiance_to_liege = yes
+					if = {
+						limit = {
+							has_variable = StA_title_allegiance
+							var:StA_title_allegiance = scope:landed_title
+						}
+						StA_remove_current_title_allegiance = yes
+					}
+					if = {
+						limit = { holder = { is_independent_ruler = no }}
+						StA_set_title_allegiance_to_liege = yes
+					}
 				}
 				var:StA_title_realm_law = { end_story = yes }
 			}

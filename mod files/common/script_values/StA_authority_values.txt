@@ -378,8 +378,8 @@ StA_title_realm_authority_unused = {
 StA_change_law_cost_check = {
 	add = var:StA_change_law_cost
 	var:StA_change_law_title = {
-		subtract = StA_title_realm_authority_capacity
 		add = StA_title_realm_authority
+		subtract = StA_title_realm_authority_capacity
 	}
 }
 

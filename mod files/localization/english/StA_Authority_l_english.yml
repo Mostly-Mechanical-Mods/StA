@@ -66,13 +66,20 @@
 
   TITLE_SWEARS_ALLEGIANCE_TO: "Swears [title_allegiance|E] to [Title.MakeScope.Var('StA_title_allegiance').Title.GetBaseName]"
   STA_CONFIRM_TITLE_LAW: "Title Realm Law Change"
-  STA_LAW_CHANGE_DESC: "You wish to change the [Localize(Concatenate(GetVariableSystem.Get('StA_confirm_title_law'),'icon_first'))] law in the [GetPlayer.MakeScope.Var('StA_change_law_title').Title.GetBaseName] and set it to [Localize(Concatenate(GetVariableSystem.Get('StA_confirm_title_law'),GetVariableSystem.Get('StA_confirm_title_law_level')))]\n\nThis will cost you [GetPlayer.MakeScope.Var('StA_change_law_cost').GetValue] @authority_icon! Authority and increase the cooldown by @time_icon! [GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_cooldown_law_change_year')|0] years and [GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_cooldown_law_change_month')|0] months."
+  STA_LAW_CHANGE_DESC: "You wish to change the [Localize(Concatenate(GetVariableSystem.Get('StA_confirm_title_law'),'icon_first'))] law in the [GetPlayer.MakeScope.Var('StA_change_law_title').Title.GetBaseName] and set it to [Localize(Concatenate(GetVariableSystem.Get('StA_confirm_title_law'),GetVariableSystem.Get('StA_confirm_title_law_level')))]."
+  STA_LAW_CHANGE_AUTHORITY: "@authority_icon! [authority|E] usage: [GetPlayer.MakeScope.Var('StA_change_law_cost').GetValue|-=0]"
+  STA_LAW_CHANGE_PRESTIGE: "@prestige_icon! [prestige|E] cost: [GetPlayer.MakeScope.ScriptValue('StA_change_title_realm_law_prestige_cost')|V0]"
+  STA_LAW_CHANGE_PRESTIGE_VALUE: ""
+  STA_LAW_CHANGE_TYRANNY: "[tyranny|E] increase: [Add_CFixedPoint(GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_cooldown'),'(CFixedPoint)0')|-=0]"
+  STA_LAW_CHANGE_TYRANNY_VALUE: "[Add_CFixedPoint(GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_cooldown'),'(CFixedPoint)0')|-=0] "
+  STA_LAW_CHANGE_COOLDOWN: "@time_icon! Cooldown increase: [GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_cooldown_increase_year')|0] years and [GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_cooldown_increase_month')|0] months"
+  STA_LAW_CHANGE_COOLDOWN_VALUE: "[GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_cooldown_increase_year')|0] years and [GetPlayer.MakeScope.Var('StA_change_law_title').ScriptValue('StA_cooldown_increase_month')|0] months"
 
   STA_LAW_CHANGE_VASSAL_OPT_IN: "[GetDataModelSize(GetPlayer.MakeScope.GetList('vassal_opt_in'))|0] Vassals impacted"
   STA_LAW_CHANGE_VASSAL_OPT_OUT: "[GetDataModelSize(GetPlayer.MakeScope.GetList('vassal_opt_out'))|0] Vassals exempted"
 
-  STA_LAW_CHANGE_COST_ALERT: "You do not have the necessary Authority to enact this law!"
-  STA_LAW_CHANGE_COOLDOWN_ALERT: "You cannot spend Authority while a cooldown is active!"
+  STA_LAW_CHANGE_COST_ALERT: "Enacting this law will put you over [authority|E] capacity!"
+  STA_LAW_CHANGE_COOLDOWN_ALERT: "Enacting this law will increase your [tyranny|E]!"
 
   STA_TITLE_REALM: "[GetPlayer.MakeScope.Var('StA_change_law_title').Title.GetBaseName]"
   STA_LAW_CHANGE_LAW: "[Localize(GetVariableSystem.Get('StA_confirm_title_law'))]"
@@ -155,8 +162,11 @@
 
   StA_desire_feudal_government_taxes_title_realm_law: "From current Title Realm Law"
   StA_desire_personality_boldness: "Personality (Boldness)"
+  StA_desire_personality_greed: "Personality (Greed)"
 
   StA_resentment: "Resentment: [Character.MakeScope.ScriptValue('StA_vassal_resentment')|-=0]"
+  StA_resentment_desire_value: "Desires law change"
+  StA_resentment_loyalty: "Loyalty"
 
   # title_revocation_rights_0_cost: "$title_revocation_rights_default$"
   # title_revocation_rights_1_cost: "$title_revocation_rights_protected$"
@@ -286,15 +296,3 @@ FACTION_DISCONTENT_PROGRESS: "[Faction.GetName]"
 STA_AUTHORITY_KARLING_HERITAGE: "Karling Heritage"
 culture_parameter_natural_authority: "Rulers have higher @authority_icon! [authority|E]"
 STA_AUTHORITY_NATURAL_AUTHORITY: "@culture_icon! $tradition_hereditary_hierarchy_name$"
-
-I_ACCEPT_TITLE_LAW_CHANGE: "You accept the requested law change."
-# DEPOSE_FACTION_TITLE_NAME:0 "[claimed_title.GetBaseNameNoTierNoTooltip] Claimant Faction"
-# DEPOSE_FACTION_DYNAMIC_NAME: "[Scope.Var('claimant_faction').Title.GetBaseName]"
-depose_faction_short_effect_desc: "This faction wants to install their claimant on the throne"
-feudal_claimant_elective_law: "Claimant Faction"
-feudal_claimant_elective_electors: "Faction members"
-feudal_claimant_elective_candidates: "Title claimants"
-
-DEFENSE_OF_THE_REALM: "Defense of the Realm"
-defense_of_the_realm_faction_short_effect_desc: "Will defend the realm against domestic threats"
-DEFENSE_OF_THE_REALM_FACTION_POWER: "Defense of the Realm: #V $VALUE|1=-$#!"

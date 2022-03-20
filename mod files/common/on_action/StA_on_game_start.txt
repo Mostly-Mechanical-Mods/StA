@@ -152,5 +152,10 @@ StA_title_realm_law_init = {
 			}
 			update_vassal_contract = yes
 		}
+
+		set_global_variable = {
+			name = StA_title_realm_size_init
+			value = yes
+		}
 	}
 }

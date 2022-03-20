@@ -3,13 +3,17 @@
 		limit = { has_variable = StA_title_realm_law }
 		var:StA_title_realm_law = {
 			if = {
-				limit = { has_variable = StA_cooldown_law_change }
-				change_variable = {
+				limit = {
+					has_variable = StA_cooldown_law_change
+					var:title.StA_cooldown_law_change > var:StA_cooldown_law_change.compare_value
+				}
+				set_variable = {
 					name = StA_cooldown_law_change
-					add = var:title.StA_cooldown_law_change
+					value = var:title.StA_cooldown_law_change
 				}
 			}
-			else = {
+			else_if = {
+				limit = { NOT = { has_variable = StA_cooldown_law_change }}
 				set_variable = {
 					name = StA_cooldown_law_change
 					value = var:title.StA_cooldown_law_change
