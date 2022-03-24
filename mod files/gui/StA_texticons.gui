@@ -29,9 +29,99 @@ texticon = {
 }
 
 texticon = {
+	icon = submission_icon
+	iconsize = {
+		texture = "gfx/interface/icons/laws/submission.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = grandeur_icon
+	iconsize = {
+		texture = "gfx/interface/icons/laws/grandeur.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = gender_law_icon
+	iconsize = {
+		texture = "gfx/interface/icons/laws/gender_law_icon.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = partial_control_icon
+	iconsize = {
+		texture = "gfx/interface/icons/laws/partial_control.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+# texticon = {
+# 	icon = authority_icon
+# 	iconsize = {
+# 		texture = "gfx/interface/icons/laws/StA_authority_icon.dds"
+# 		size = { 25 25 }
+# 		offset = { 0 6 }
+# 		fontsize = 16
+# 	}
+# }
+
+texticon = {
 	icon = authority_icon
 	iconsize = {
-		texture = "gfx/interface/icons/laws/StA_authority_icon.dds"
+		texture = "gfx/interface/icons/laws/authority_regalia.dds"
+		size = { 14 21 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+# texticon = {
+# 	icon = authority_icon
+# 	iconsize = {
+# 		texture = "gfx/interface/icons/laws/authority_crown.dds"
+# 		size = { 21 14 }
+# 		# offset = { 0 0 }
+# 		fontsize = 16
+# 	}
+# }
+
+# texticon = {
+# 	icon = authority_icon
+# 	iconsize = {
+# 		texture = "gfx/interface/icons/laws/authority_throne.dds"
+# 		size = { 15 23 }
+# 		offset = { 0 5 }
+# 		fontsize = 16
+# 	}
+# }
+
+texticon = {
+	icon = culture_icon
+	iconsize = {
+		texture = "gfx/interface/icons/icon_culture.dds"
+		size = { 25 25 }
+		offset = { 0 6 }
+		fontsize = 16
+	}
+}
+
+texticon = {
+	icon = tyranny_icon
+	iconsize = {
+		texture = "gfx/interface/icons/icon_culture.dds"
 		size = { 25 25 }
 		offset = { 0 6 }
 		fontsize = 16

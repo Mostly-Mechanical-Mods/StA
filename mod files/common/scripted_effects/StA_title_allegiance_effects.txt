@@ -102,8 +102,15 @@ StA_calculate_average_submission_ruler = {
 		value = 0
 	}
 	set_variable = {
-		name = total_weighted_submission
+		name = total_weighted_resentment
 		value = 0
+	}
+	if = {
+		limit = { exists = global_var:LTAF_is_loaded }
+		set_variable = {
+			name = total_weighted_loyalty
+			value = 0
+		}
 	}
 	var:title = {
 		if = { limit = { debug_only = yes } debug_log_scopes = no }
@@ -126,14 +133,27 @@ StA_calculate_average_submission_ruler = {
 						add = PREV.max_military_strength
 					}
 					if = { limit = { debug_only = yes } var:total_strength = { debug_log_scopes = no }}
-					change_variable = {
-						name = total_weighted_submission
-						add = {
-							add = PREV.StA_submission
-							multiply = PREV.max_military_strength
+					if = {
+						limit = { PREV = { has_government = feudal_government }}
+						change_variable = {
+							name = total_weighted_resentment
+							add = {
+								add = PREV.StA_vassal_resentment
+								multiply = PREV.max_military_strength
+							}
 						}
 					}
-					if = { limit = { debug_only = yes } var:total_weighted_submission = { debug_log_scopes = no }}
+					if = {
+						limit = { exists = global_var:LTAF_is_loaded }
+						change_variable = {
+							name = total_weighted_loyalty
+							add = {
+								add = PREV.LTAF_loyalty
+								multiply = PREV.max_military_strength
+							}
+						}
+					}
+					if = { limit = { debug_only = yes } var:total_weighted_resentment = { debug_log_scopes = no }}
 				}
 			}
 		}
@@ -142,19 +162,153 @@ StA_calculate_average_submission_ruler = {
 		limit = { var:total_strength > 0 }
 		debug_log = "total strength > 0"
 		set_variable = {
-			name = average_submission
+			name = average_resentment
 			value = {
-				add = var:total_weighted_submission
-				divide = var:total_strength
+				add = var:total_weighted_resentment
+				divide = {
+					value = var:total_strength
+					min = 1
+				}
+			}
+		}
+		if = {
+			limit = { exists = global_var:LTAF_is_loaded }
+			set_variable = {
+				name = average_loyalty
+				value = {
+					add = var:total_weighted_loyalty
+					divide = {
+						value = var:total_strength
+						min = 1
+					}
+				}
 			}
 		}
 	}
 	else = {
 		debug_log = "total strength = 0"
 		set_variable = {
-			name = average_submission
+			name = average_resentment
 			value = 0
 		}
+		if = {
+			limit = { exists = global_var:LTAF_is_loaded }
+			set_variable = {
+				name = average_loyalty
+				value = 0
+			}
+		}
 	}
-	if = { limit = { debug_only = yes } var:average_submission = { debug_log_scopes = no }}
+	# if = { limit = { debug_only = yes } var:average_submission = { debug_log_scopes = no }}
 }
+
+StA_reset_title_realm_coverage = {
+	save_scope_as = title_temp
+	if = {
+		limit = { has_variable = StA_title_realm_law }
+		if = {
+			limit = { debug_only = yes }
+			debug_log = "RESET TITLE REALM COVERAGE"
+			debug_log_scopes = no
+		}
+		set_variable = {
+			name = StA_title_realm_coverage
+			value = 0
+		}
+		every_in_de_jure_hierarchy = {
+			limit = {
+				tier = tier_county
+				holder = {
+					NOR = {
+						THIS = scope:title_temp.holder
+						primary_title = {
+							has_variable = StA_title_allegiance
+							var:StA_title_allegiance = scope:title_temp
+						}
+						any_liege_or_above = {
+							primary_title = {
+								has_variable = StA_title_allegiance
+								var:StA_title_allegiance = scope:title_temp
+							}
+						}
+					}
+				}
+			}
+			if = {
+				limit = { debug_only = yes }
+				debug_log = "DE JURE COUNTY"
+				save_scope_as = county_temp
+				debug_log_scopes = no
+			}
+			PREV = {
+				change_variable = {
+					name = StA_title_realm_coverage
+					subtract = 1
+				}
+			}
+		}
+	}
+}
+
+# StA_reset_title_realm_coverage = {
+# 	save_scope_as = title_temp
+# 	if = {
+# 		limit = { has_variable = StA_title_realm_law }
+# 		if = {
+# 			limit = { debug_only = yes }
+# 			debug_log = "RESET TITLE REALM COVERAGE"
+# 			debug_log_scopes = no
+# 		}
+# 		set_variable = {
+# 			name = StA_title_realm_coverage
+# 			value = 0
+# 		}
+# 		every_in_de_jure_hierarchy = {
+# 			limit = {
+# 				tier = tier_county
+# 				holder = {
+# 					OR = {
+# 						is_vassal_or_below_of = scope:title_temp.holder
+# 						THIS = scope:title_temp.holder
+# 					}
+# 				}
+# 			}
+# 			if = {
+# 				limit = { debug_only = yes }
+# 				debug_log = "DE JURE COUNTY"
+# 				save_scope_as = county_temp
+# 				debug_log_scopes = no
+# 			}
+# 			ordered_this_title_or_de_jure_above = {
+# 				limit = {
+# 					exists = holder
+# 					holder = scope:title_temp.holder
+# 					has_variable = StA_title_realm_law
+# 				}
+# 				order_by = reverse_tier
+# 				if = {
+# 					limit = { debug_only = yes }
+# 					debug_log = "DE JURE TITLE REALM LAW"
+# 					debug_log_scopes = no
+# 				}
+# 				scope:title_temp = {
+# 					if = {
+# 						limit = { var:StA_title_realm_law = scope:title_temp.var:StA_title_realm_law }
+# 						if = {
+# 							limit = { debug_only = yes }
+# 							debug_log = "COUNT IN"
+# 						}
+# 						change_variable = {
+# 							name = StA_title_realm_coverage
+# 							add = 1
+# 						}
+# 					}
+# 					else_if = {
+# 						limit = { debug_only = yes }
+# 						debug_log = "COUNT OUT"
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+# }

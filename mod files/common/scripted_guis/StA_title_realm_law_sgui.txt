@@ -137,30 +137,23 @@ StA_law_change_cooldown_alert = {
 StA_confirm_title_law = {
 	scope = character
 	is_valid = {
-		trigger_if = {
-			limit = { var:StA_change_law_cost > 0 }
-			var:StA_change_law_cost_check > 0
-			var:StA_change_law_title.StA_cooldown = 0
-		}
+		prestige >= StA_change_title_realm_law_prestige_cost
 	}
 	effect = {
 		var:StA_change_law_title = {
 			StA_update_cooldown_law_change = yes
-			var:StA_title_realm_law = {
-				switch = {
-					trigger = ROOT.var:StA_change_law_obligation
-					flag:feudal_government_taxes_ = { set_variable = { name = feudal_government_taxes_ value = ROOT.var:StA_change_law_level }}
-					flag:feudal_government_levies_ = { set_variable = { name = feudal_government_levies_ value = ROOT.var:StA_change_law_level }}
-					flag:succession_rights_ = { set_variable = { name = succession_rights_ value = ROOT.var:StA_change_law_level }}
-					flag:war_declaration_rights_ = { set_variable = { name = war_declaration_rights_ value = ROOT.var:StA_change_law_level }}
-					flag:title_revocation_rights_ = { set_variable = { name = title_revocation_rights_ value = ROOT.var:StA_change_law_level }}
-				}
+			title_realm_law_change = {
+				LAW = ROOT.var:StA_change_law_obligation
+				LEVEL = ROOT.var:StA_change_law_level
 			}
-			every_in_list = {
-				variable = StA_pledge_allegiance
-				limit = { holder = { has_government = feudal_government }}
-				holder = { update_vassal_contract = yes }
-			}
+		}
+		add_prestige = {
+			subtract = StA_change_title_realm_law_prestige_cost
+			max = 0
+		}
+		add_tyranny = {
+			add = var:StA_change_law_title.StA_cooldown
+			min = 0
 		}
 		remove_variable = StA_confirm_title_window_on
 		remove_variable = StA_change_law_title
@@ -191,6 +184,7 @@ StA_title_window_player = {
 
 	is_valid = {
 		exists = scope:title
+		exists = scope:title.holder
 		scope:title = { has_variable = StA_title_realm_law }
 	}
 
@@ -269,7 +263,10 @@ StA_title_window_player = {
 StA_title_window_allegiance = {
 	scope = title
 
-	is_valid = { has_variable = StA_title_realm_law }
+	is_valid = {
+		has_variable = StA_title_realm_law
+		exists = holder
+	}
 
 	effect = {
 		clear_variable_list = StA_title_window_allegiance
@@ -335,5 +332,85 @@ StA_title_window_create_title = {
 	# 			create_story = StA_title_realm_law
 	# 		}
 	# 	}
+	}
+}
+
+StA_inherits_succession_law = {
+	scope = title
+	is_shown = {
+		OR = {
+			has_title_law = StA_single_heir_succession_law
+			has_title_law = StA_single_heir_succession_law_youngest
+			has_title_law = StA_single_heir_dynasty_house
+		}
+	}
+}
+
+StA_vassal_in_faction = {
+	scope = character
+	is_shown = {
+		liege = {
+			any_targeting_faction = {
+				has_variable = StA_title_allegiance
+				var:StA_title_allegiance = ROOT.primary_title.var:StA_title_allegiance
+				any_faction_member = {
+					THIS = ROOT
+				}
+			}
+		}
+	}
+}
+
+faction_window_cant_join_faction = {
+	scope = character
+	is_shown = {
+		OR = {
+			is_adult = no
+			liege = { has_strong_hook = PREV }
+			is_allied_to = liege
+			has_relation_friend = liege
+			has_relation_lover = liege
+			has_relation_soulmate = liege
+			has_secret_relation_lover = liege
+			is_imprisoned = yes
+			has_trait = incapable
+			has_character_flag = joining_faction_block
+		}
+	}
+	effect = {
+		clear_variable_list = faction_window_cant_join_creater_members
+		ordered_vassal = {
+			limit = {
+				OR = {
+					is_adult = no
+					PREV = { has_strong_hook = PREV }
+					is_allied_to = PREV
+					has_relation_friend = PREV
+					has_relation_lover = PREV
+					has_relation_soulmate = PREV
+					has_secret_relation_lover = PREV
+					trigger_if = {
+						limit = {
+							exists = joined_faction
+							joined_faction = {
+								faction_is_at_war = no
+							}
+						}
+						is_imprisoned = yes
+					}
+					has_trait = incapable
+					has_character_flag = joining_faction_block
+				}
+			}
+			max = 1000
+			check_range_bounds = no
+			order_by = highest_held_title_tier
+			PREV = {
+				add_to_variable_list = {
+					name = LTAF_faction_window_cant_join_creater_members
+					target = PREV
+				}
+			}
+		}
 	}
 }

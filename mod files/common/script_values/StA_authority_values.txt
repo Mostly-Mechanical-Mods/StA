@@ -10,7 +10,10 @@ StA_max_mil_strength = {
 
 StA_relative_mil_strength = {
 	add = max_military_strength
-	divide = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:total_strength
+	divide = {
+		value = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:total_strength
+		min = 1
+	}
 }
 
 StA_contract_score = {
@@ -62,27 +65,27 @@ StA_title_realm_law_score = {
 }
 
 StA_title_realm_authority_capacity = {
-	add = {
-		value = {
-			add = StA_title_tier
-			subtract = 1
-			multiply = 10
-		}
-		desc = "STA_AUTHORITY_RANK"
-		format = "BASE_VALUE_FORMAT"
-	}
 	if = {
-		limit = { has_dlc_feature = royal_court }
+		limit = { holder = { has_royal_court = yes }}
 		add = {
 			value = {
 				add = holder.court_grandeur_current_level
 				multiply = 10
 			}
 			desc = "STA_AUTHORITY_COURT_GRANDEUR"
-			format = "BASE_VALUE_FORMAT"
+			format = "STA_BASE_VALUE_FORMAT"
 		}
 	}
 	else = {
+		add = {
+			value = {
+				add = StA_title_tier
+				subtract = 1
+				multiply = 10
+			}
+			desc = "STA_AUTHORITY_RANK"
+			format = "BASE_VALUE_FORMAT"
+		}
 		add = {
 			value = {
 				holder.culture = {
@@ -105,17 +108,57 @@ StA_title_realm_authority_capacity = {
 		}
 	}
 	if = {
-		limit = { has_variable = StA_title_realm_law }
-		multiply = {
-			value = {
-				add = 100
-				add = var:StA_title_realm_law.var:average_submission
-				divide = 100
-			}
-			desc = "STA_AUTHORITY_AVERAGE_SUBMISSION"
-			format = "BASE_VALUE_FORMAT"
+		limit = { holder.culture = { has_cultural_parameter = natural_authority }}
+		add = {
+			value = 20
+			desc = "STA_AUTHORITY_NATURAL_AUTHORITY"
+			format = "STA_BASE_VALUE_FORMAT"
 		}
 	}
+	if = {
+		limit = { has_variable = StA_title_realm_size }
+		multiply = {
+			value = 1
+			add = {
+				value = StA_authority_capacity_coverage_impact
+				desc = "STA_AUTHORITY_REALM_COVERAGE"
+				format = "STA_BASE_VALUE_FORMAT_PERCENTAGE"
+			}
+			# subtract = {
+			# 	value = StA_authority_capacity_submission_impact
+			# 	desc = "STA_AUTHORITY_AVERAGE_SUBMISSION"
+			# 	format = "STA_BASE_VALUE_FORMAT_PERCENTAGE"
+			# }
+		}
+	}
+	if = {
+		limit = {
+			exists = global_var:LTAF_is_loaded
+			has_variable = StA_title_realm_law
+		}
+		multiply = {
+			value = 1
+			add = {
+				value = {
+					add = var:StA_title_realm_law.var:average_loyalty
+					divide = 100
+				}
+				desc = "STA_AUTHORITY_AVERAGE_LOYALTY"
+				format = "STA_BASE_VALUE_FORMAT_PERCENTAGE"
+			}
+		}
+	}
+	# if = {
+	# 	limit = { has_variable = StA_title_realm_law }
+	# 	multiply = {
+	# 		value = 1
+	# 		subtract = {
+	# 			value = StA_authority_capacity_submission_impact
+	# 			desc = "STA_AUTHORITY_AVERAGE_SUBMISSION"
+	# 			format = "STA_BASE_VALUE_FORMAT_PERCENTAGE"
+	# 		}
+	# 	}
+	# }
 }
 
 StA_title_realm_authority = {
@@ -221,7 +264,7 @@ StA_title_realm_authority = {
 		}
 		add = {
 			value = male_only_law_cost
-			desc = "male_only_law"
+			desc = "male_only_law_icon_first"
 			format = "BASE_VALUE_FORMAT"
 		}
 	}
@@ -335,8 +378,8 @@ StA_title_realm_authority_unused = {
 StA_change_law_cost_check = {
 	add = var:StA_change_law_cost
 	var:StA_change_law_title = {
-		subtract = StA_title_realm_authority_capacity
 		add = StA_title_realm_authority
+		subtract = StA_title_realm_authority_capacity
 	}
 }
 
@@ -457,6 +500,9 @@ scandinavian_elective_succession_law_cost = {
 	value = 30
 }
 
+StA_elective_law_cost = {
+	value = 30
+}
 
 
 high_authority_capacity = {
@@ -467,3 +513,26 @@ medium_authority_capacity = {
 	value = 25
 }
 
+
+
+StA_authority_capacity_coverage_impact = {
+	add = {
+		if = {
+			limit = { has_variable = StA_title_realm_coverage }
+			add = var:StA_title_realm_coverage
+		}
+		divide = {
+			value = var:StA_title_realm_size
+			min = 1
+		}
+	}
+	# subtract = 1
+}
+
+StA_authority_capacity_submission_impact = {
+	if = {
+		limit = { has_variable = StA_title_realm_law }
+		# subtract = var:StA_title_realm_law.var:average_submission
+	}
+	divide = 100
+}

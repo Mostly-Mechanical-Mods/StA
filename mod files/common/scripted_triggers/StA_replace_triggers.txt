@@ -87,3 +87,22 @@ petition_liege_title_vassal_trigger = {
 		}
 	}
 }
+
+can_change_title_law_trigger = {
+	is_at_war = no
+}
+
+can_title_have_law_general_trigger = {
+	tier >= tier_duchy
+	is_temporal_head_of_faith_trigger = no
+	trigger_if = {
+		limit = {
+			exists = global_var:StA_is_loaded
+			holder = {
+				has_government = feudal_government
+				is_ai = no
+			}
+		}
+		has_variable = StA_title_realm_law
+	}
+}

@@ -1,0 +1,3 @@
+﻿LTAF_loyalty = {
+	value = ai_honor
+}

@@ -1,0 +1,506 @@
+﻿# feudal_claimant_elective_faction = {
+# 	casus_belli = depose_war
+
+# 	short_effect_desc = depose_faction_short_effect_desc
+
+# 	sort_order = 2
+
+# 	show_special_title = yes
+# 	name = DEPOSE_FACTION_DYNAMIC_NAME
+
+# 	discontent_progress = {
+# 		base = -100
+
+# 		common_discontent_progress_modifier = yes
+# 	}
+
+# 	power_threshold = {
+# 		base = 80
+
+# 		modifier = {
+# 			add = 20 
+# 			faction_target = {
+# 				has_perk = hard_rule_perk
+# 			}
+# 			desc = "FACTION_POWER_HARD_RULE"
+# 		}
+
+# 		modifier = {
+# 			add = {
+# 				faction_target = {
+# 					every_targeting_faction = {
+# 						limit = { faction_is_type = defense_of_the_realm_faction }
+# 						add = faction_power
+# 					}
+# 				}
+# 			}
+# 			faction_target = {
+# 				any_targeting_faction = {
+# 					faction_is_type = defense_of_the_realm_faction
+# 				}
+# 			}
+# 			desc = "DEFENSE_OF_THE_REALM_FACTION_POWER"
+# 		}
+
+# 		#Lower the threshold depending on the state of other factions
+# 		# dynamic_power_threshold_scripted_modifier = {
+# 		# 	FACTION_TYPE1 = liberty_faction
+# 		# 	FACTION_TYPE2 = independence_faction
+# 		# 	FACTION_TYPE3 = populist_faction
+# 		# }
+# 	}
+
+# 	is_valid = { # If the FACTION itself is valid
+# 		# see also invalidate_claimant_factions_on_death_effect for what happens when the claimant dies
+# 	}
+
+# 	demand = { # The effect of pressing demand
+# 		save_scope_as = faction
+
+# 		faction_leader = {
+# 			save_scope_as = faction_leader
+# 		}
+
+# 		faction_target = {
+# 			save_scope_as = faction_target
+# 		}
+
+# 		special_character = {
+# 			save_scope_as = faction_claimant
+# 		}
+
+# 		special_title = {
+# 			save_scope_as = faction_targeted_title
+# 		}
+
+# 		# Let the human players in the faction know that the demand will be sent
+# 		every_faction_member = {
+# 			limit = {
+# 				is_ai = no
+# 				NOT = { this = scope:faction.faction_leader }
+# 			}
+# 			trigger_event = faction_demand.2005
+# 		}
+
+# 		# Send the actual demand in 5 days
+# 		faction_target = {
+# 			trigger_event = {
+# 				id = faction_demand.2001
+# 				days = 5
+# 			}
+# 		}
+# 	}
+
+# 	on_creation = {
+# 		set_variable = {
+# 			name = claimed_title
+# 			value = faction_leader.primary_title.var:StA_title_allegiance
+# 		}
+# 		var:claimed_title = {
+# 			save_scope_as = claimed_title
+# 			set_variable = {
+# 				name = claimant_faction
+# 				value = PREV
+# 			}
+# 		}
+# 		switch = {
+# 			trigger = var:claimed_title.tier
+# 			tier_empire = {
+# 				create_dynamic_title = {
+# 					tier = empire
+# 					name = DEPOSE_FACTION_TITLE_NAME
+# 				}
+# 			}
+# 			tier_kingdom = {
+# 				create_dynamic_title = {
+# 					tier = kingdom
+# 					name = DEPOSE_FACTION_TITLE_NAME
+# 				}
+# 			}
+# 			tier_duchy = {
+# 				create_dynamic_title = {
+# 					tier = duchy
+# 					name = DEPOSE_FACTION_TITLE_NAME
+# 				}
+# 			}
+# 		}
+# 		scope:new_title = {
+# 			set_coa = PREV.var:claimed_title
+# 			set_variable = {
+# 				name = claimed_title
+# 				value = PREV.var:claimed_title
+# 			}
+# 		}
+# 		set_variable = {
+# 			name = claimant_faction
+# 			value = scope:new_title
+# 		}
+# 		create_title_and_vassal_change = {
+# 			type = faction_demand
+# 			save_scope_as = change
+# 			add_claim_on_loss = no
+# 		}
+		
+# 		scope:new_title = {
+# 			change_title_holder = {
+# 				holder = root.faction_target
+# 				change = scope:change
+# 			}
+# 		}
+# 		resolve_title_and_vassal_change = scope:change
+# 		scope:new_title = {
+# 			add_title_law = feudal_claimant_elective_law
+# 		}
+# 		set_variable = {
+# 			name = claimant_title
+# 			value = scope:new_title
+# 		}
+# 		scope:claimed_title = {
+# 			every_claimant = {
+# 				explicit = all
+# 				add_unpressed_claim = scope:new_title
+# 			}
+# 		}
+# 	}
+
+# 	update_effect = {
+# 		if = {
+# 			limit = { NOT = { has_variable = claimed_title }}
+# 			set_variable = {
+# 				name = claimed_title
+# 				value = faction_leader.primary_title.var:StA_title_allegiance
+# 			}
+# 		}
+# 		every_faction_member = {
+# 			set_variable = {
+# 				name = claimant_faction
+# 				value = PREV.var:claimed_title
+# 				days = faction_effect_interval
+# 			}
+# 		}
+# 		var:claimed_title = {
+# 			every_claimant = {
+# 				add_unpressed_claim = ROOT.var:claimant_faction
+# 			}
+# 		}
+# 	}
+
+# 	character_leaves = {
+# 		scope:faction_member = { remove_variable = claimant_faction }
+# 	}
+
+# 	leader_leaves = {
+# 		if = {
+# 			limit = {
+# 				any_faction_member = {
+# 					NOT = { THIS = scope:faction_member }
+# 					count = 0
+# 				}
+# 			}
+# 			faction_target = { destroy_title = var:claimant_title }
+# 		}
+# 	}
+
+# 	ai_demand_chance = {
+# 		base = 0
+
+# 		#Won't send ultimatum if the claimant is imprisoned by the faction-target!
+# 		modifier = {
+# 			add = -500
+# 			faction_target = {
+# 				any_prisoner = {
+# 					this = root.special_character
+# 				}
+# 			}
+# 		}
+
+# 		# 40% base chance at minimum power (80%), increasing linearly
+# 		compare_modifier = {
+# 			value = faction_power
+# 			multiplier = 0.5
+# 		}
+
+# 		# Once the faction has a good chance to win (10% stronger than liege) demand chance increases much more rapidly.
+# 		compare_modifier = {
+# 			trigger = {	faction_power > 110 }
+# 			value = faction_power
+# 			multiplier = 1
+# 		}
+
+# 		# Less likely if already in a war with an external ruler
+# 		modifier = {
+# 			add = -50
+# 			faction_target = {
+# 				any_war_enemy = {
+# 					NOT = {
+# 						target_is_liege_or_above = root.faction_target
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+
+# 	on_war_start = {}
+
+# 	is_character_valid = { # Is the character valid to stay in the faction? This is also checked when creating it...
+# 		common_character_validity_trigger = {
+# 			FACTION_TARGET = scope:faction.faction_target
+# 		}
+# 	}
+
+# 	can_character_create = { # If a character is allowed to create the faction. The 'is_character_valid' block is also checked in conjunction with this when creating a faction.
+# 		common_character_validity_trigger = {
+# 			FACTION_TARGET = scope:target
+# 		}
+
+# 		common_can_character_join_trigger = {
+# 			FACTION_TARGET = scope:target
+# 		}
+
+# 		common_can_character_create_trigger = {
+# 			FACTION_TARGET = scope:target
+# 		}
+# 		has_variable = faction_demand_refused_by
+# 		var:faction_demand_refused_by = scope:target
+
+# 		scope:target = {
+# 			any_targeting_faction = {
+# 				faction_is_type = feudal_claimant_elective_faction
+# 				var:claimed_title = ROOT.primary_title.var:StA_title_allegiance
+# 				NOT = { faction_leader = ROOT }
+# 				count = 0
+# 			}
+# 		}
+# 	}
+
+# 	can_character_join = { # Can a character join an existing faction?
+# 		common_can_character_join_trigger = {
+# 			FACTION_TARGET = scope:faction.faction_target
+# 		}
+# 		has_variable = faction_demand_refused_by
+# 		var:faction_demand_refused_by = scope:faction.faction_target
+# 		trigger_if = {
+# 			limit = { scope:faction = { has_variable = claimed_title }}
+# 			primary_title.var:StA_title_allegiance = scope:faction.var:claimed_title
+# 		}
+# 	}
+
+# 	can_character_become_leader = {
+# 		is_landed = yes
+# 	}
+
+# 	can_character_create_ui = {
+# 		is_character_interaction_valid = {
+# 			recipient = scope:target
+# 			interaction = create_claimant_faction_against_interaction
+# 		}
+# 	}
+
+# 	ai_create_score = { # How likely is an AI to create a faction?
+# 		base = -25
+
+# 		####
+# 		# BLOCKERS
+# 		####
+# 		common_create_faction_blockers = {
+# 			FACTION_TARGET = scope:target
+# 			FLAG = none
+# 		}
+
+# 		####
+# 		# AI modifiers
+# 		####
+# 		common_faction_modifiers = {
+# 			FACTION_TARGET = scope:target
+# 			OPINION_MULTIPLIER = -1.5
+# 			MAX_OPINION = 150
+# 			POWER = 0
+# 			THRESHOLD = 80
+# 		}
+
+# 		StA_claimant_faction_modifiers = {
+# 			FACTION_TARGET = scope:target
+# 		}
+
+# 		modifier = {
+# 			add = {
+# 				primary_title.var:StA_title_allegiance = {
+# 					every_claimant = {
+# 						explicit = all
+# 						min = StA_claimant_score
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+
+# 	ai_join_score = { # How likely is an AI to join an existing faction?
+# 		base = -25
+
+# 		common_join_faction_blockers = {
+# 			FACTION_TARGET = scope:faction.faction_target
+# 		}
+
+# 		common_faction_modifiers = {
+# 			FACTION_TARGET = scope:faction.faction_target
+# 			OPINION_MULTIPLIER = -1
+# 			MAX_OPINION = 100
+# 			POWER = scope:faction.faction_power
+# 			THRESHOLD = scope:faction.faction_power_threshold
+# 		}
+
+# 		StA_claimant_faction_modifiers = {
+# 			FACTION_TARGET = scope:faction.faction_target
+# 		}
+
+# 		modifier = {
+# 			add = {
+# 				primary_title.var:StA_title_allegiance = {
+# 					every_claimant = {
+# 						explicit = all
+# 						min = StA_claimant_score
+# 					}
+# 				}
+# 			}
+# 		}
+
+# 		##########################
+# 		# Faction 'Stacking' Factors, attempts to cluster AI rulers into several powerful factions instead of many weak ones.
+# 		# modifier = {
+# 		# 	scope:faction.faction_power >= scope:faction.faction_power_halfway_threshold
+# 		# 	factor = faction_weight_factor_power_halfway_threshold
+# 		# }
+# 		# modifier = {
+# 		# 	scope:faction.faction_power >= scope:faction.faction_power_pushing_threshold
+# 		# 	factor = faction_weight_factor_power_pushing_threshold
+# 		# }
+# 		# modifier = {
+# 		# 	scope:faction.faction_power >= scope:faction.faction_power_threshold
+# 		# 	factor = faction_weight_factor_power_exceeds_threshold
+# 		# }
+# 	}
+
+# 	is_county_valid = {
+# 		scope:faction.faction_target = holder
+# 	}
+
+# 	can_county_join = {
+# 		# Counties can only join if the De Jure belong to the title being claimed.
+# 		exists = scope:faction.faction_leader
+# 		target_is_de_jure_liege_or_above = scope:faction.faction_leader.primary_title.var:StA_title_allegiance
+# 	}
+
+# 	county_join_score =  {
+# 		base = -80 # Needs to be less than the weight set in 00_populist_faction.txt, or counties will never join a claimant faction over a populist faction.
+
+# 		# Up to +3 join score per negative opinion (+80 at -27 opinion) if different culture. 
+# 		compare_modifier = {
+# 			trigger = {
+# 				NOT = { scope:faction.faction_target.culture = this.title_province.culture }
+# 				# scope:faction.special_character.culture = this.title_province.culture 
+# 			}
+# 			value = county_opinion
+# 			multiplier = -2.0
+# 		}
+# 		compare_modifier = {
+# 			trigger = {
+# 				NOT = { this.title_province.culture = { has_same_culture_heritage = scope:faction.faction_target.culture } }
+# 				# this.title_province.culture = { has_same_culture_heritage = scope:faction.special_character.culture }
+# 			}
+# 			value = county_opinion
+# 			multiplier = -2.0
+# 		}
+
+# 		# If we have better relations with the claimant's faith than our current liege's, gain up to +5 join score per negative opinion (at Righteous) down to +1 join score per negative opinion (at Hostile).
+# 		# compare_modifier = {
+# 		# 	trigger = {
+# 		# 		faith = {
+# 		# 			faith_hostility_level_comparison = {
+# 		# 				scope:faction.faction_target.faith > scope:faction.special_character.faith
+# 		# 			}
+# 		# 		}
+# 		# 	}
+# 		# 	value = county_opinion
+# 		# 	multiplier = {
+# 		# 		value = 0.0
+# 		# 		if = {
+# 		# 			limit = {
+# 		# 				faith = {
+# 		# 					faith_hostility_level = {
+# 		# 						target = scope:faction.special_character.faith
+# 		# 						value = faith_hostile_level
+# 		# 					}
+# 		# 				}
+# 		# 			}
+# 		# 			value = -1.0 # Hostile
+# 		# 		}
+# 		# 		else_if = {
+# 		# 			limit = {
+# 		# 				faith = {
+# 		# 					faith_hostility_level = {
+# 		# 						target = scope:faction.special_character.faith
+# 		# 						value = faith_astray_level
+# 		# 					}
+# 		# 				}
+# 		# 			}
+# 		# 			value = -3.0 # Astray
+# 		# 		}
+# 		# 		else = {
+# 		# 			value = -5.0 # Righteous
+# 		# 		}
+# 		# 	}
+# 		# }
+
+# 		legalism_virtue_and_sin_modifier = {
+# 			TARGET = scope:faction.faction_target
+# 			SCORE_PER_TRAIT = 50 # Worth ~12 opinion per virtue.
+# 		}
+
+# 		# Greatly reduced chance for a character's capital county to form a faction against them (extra -25 opinion needed).
+# 		modifier = {
+# 			add = -200
+# 			this.title_province = scope:faction.faction_target.capital_province
+# 		}
+		
+# 		# More likely to support adult claimants when a child is on the throne.
+# 		modifier = {
+# 			add = 10
+# 			exists = scope:faction.faction_target
+# 			# exists = scope:faction.special_character
+# 			scope:faction.faction_target = { is_adult = no }
+# 			# scope:faction.special_character = { is_adult = yes }
+# 		}
+
+# 		# Peasants perfer magnanimous rulers over harsh or cruel ones.
+# 		# compare_modifier = {
+# 		# 	factor = {
+# 		# 		# Gets a value between 0 (max greedy/dishonorable/vengeful/cruel) and 800 (max honorable/compassionate/generous/forgiving).
+# 		# 		value = 400
+# 		# 		add = scope:faction.special_character.ai_honor
+# 		# 		add = scope:faction.special_character.ai_compassion
+# 		# 		subtract = scope:faction.special_character.ai_greed
+# 		# 		subtract = scope:faction.special_character.ai_vengefulness
+
+# 		# 		# Converts the personality score into a percentage between 0% (will never support) and 100% (really wants to support)
+# 		# 		divide = 800 
+# 		# 	}
+
+# 		# 	# How big the factor is for supporting this claimant over other factions at max support. 
+# 		# 	multiplier = 2
+# 		# }
+# 	}
+
+# 	county_allow_join = yes
+# 	county_allow_create = no
+# 	county_power = county_levies_to_raise
+
+# 	character_allow_create = yes
+
+# 	character_allow_join = yes
+
+# 	multiple_targeting = yes
+
+# 	special_character_title = "FACTIONS_WINDOW_CLAIMANT"
+
+# 	ignore_soft_block = yes
+# }

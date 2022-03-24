@@ -1,0 +1,81 @@
+﻿StA_faction_CB = {
+	group = StA_factions
+	ai_only_against_liege = yes
+	should_check_for_interface_availability = no
+	target_titles = all
+	allowed_for_character = {
+		scope:attacker = {
+			has_government = feudal_government
+			OR = {
+				is_leading_faction_type = feudal_government_taxes_faction
+				is_leading_faction_type = feudal_government_levies_faction
+				is_leading_faction_type = title_revocation_rights_faction
+				is_leading_faction_type = war_declaration_rights_faction
+				is_leading_faction_type = succession_rights_faction
+			}
+		}
+	}
+
+	allowed_against_character = {
+		is_ai = no
+		has_government = feudal_government
+		THIS = scope:defender.liege
+		THIS = scope:defender.primary_title.var:StA_title_allegiance.holder
+	}
+
+	# is_allowed_claim_title = {
+	# 	THIS = scope:defender.primary_title.var:StA_title_allegiance
+	# }
+
+	valid_to_start = {
+
+	}
+
+	on_declaration = {
+
+	}
+
+	on_victory_desc = {
+		
+	}
+
+	on_victory = {
+	}
+
+	on_white_peace_desc = {
+	}
+
+	on_white_peace = {
+	}
+
+	on_defeat_desc = {
+	}
+
+	on_defeat = {
+	}
+
+	on_invalidated_desc = msg_invalidate_war_title
+
+	check_defender_inheritance_validity = no
+
+	on_primary_attacker_death = inherit_faction
+	on_primary_defender_death = inherit
+
+	transfer_behavior = transfer
+
+	attacker_allies_inherit = no
+	defender_allies_inherit = yes
+
+	war_name = "INDEPENDENCE_WAR_NAME"
+
+	interface_priority = 80
+
+	attacker_wargoal_percentage = 1.0
+	defender_wargoal_percentage = 0.0 # A single occupation will do
+	defender_ticking_warscore_delay = { days = 0 } # No need for a delay here since the defender actually needs to occupy something rather than starting in control
+
+	max_attacker_score_from_battles = 100
+	max_defender_score_from_battles = 50
+
+	max_ai_diplo_distance_to_title = 500
+}

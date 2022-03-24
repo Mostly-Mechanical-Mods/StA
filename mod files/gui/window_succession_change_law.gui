@@ -84,7 +84,7 @@ window = {
 									}	
 								}
 							}
-							
+
 							vbox = {
 								visible = "[DataModelHasItems(SuccessionLawChangeWindow.GetSingleHeirLaws)]"
 								spacing = 5

@@ -1,0 +1,5 @@
+﻿title_law_change_on_faction_demand = {
+	first = I_ACCEPT_TITLE_LAW_CHANGE
+	third = CHARACTER_ACCEPTS_TITLE_LAW_CHANGE
+	global = GLOBAL_ACCEPTS_TITLE_LAW_CHANGE
+}
