@@ -159,6 +159,7 @@
 	}
 	
 	single_heir_succession_law = {
+		# [StA]
 		can_title_have = {
 			trigger_if = {
 				limit = { exists = global_var:StA_is_loaded }
@@ -175,8 +176,11 @@
 			trigger_else = { always = no }
 		}
 		on_pass = {
-			set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law }
+			hidden_effect = {
+				set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law }
+			}
 		}
+		# [/StA]
 		can_keep = {
 			can_keep_single_heir_succession_law_trigger = yes
 			# Vassal Contract allows it
@@ -233,6 +237,7 @@
 	}
 	
 	single_heir_succession_law_youngest = {
+		# [StA]
 		can_title_have = {
 			trigger_if = {
 				limit = { exists = global_var:StA_is_loaded }
@@ -248,8 +253,11 @@
 			}
 			trigger_else = { always = no }
 		}
+		# [/StA]
 		on_pass = {
-			set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law_youngest }
+			hidden_effect = {
+				set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law_youngest }
+			}
 		}
 		can_keep = {
 			can_keep_single_heir_youngest_succession_law_trigger = yes
@@ -289,6 +297,7 @@
 	}
 	
 	single_heir_dynasty_house = {
+		# [StA]
 		can_title_have = {
 			trigger_if = {
 				limit = { exists = global_var:StA_is_loaded }
@@ -304,8 +313,11 @@
 			}
 			trigger_else = { always = no }
 		}
+		# [/StA]
 		on_pass = {
-			set_succession_law_on_dependent_titles = { LAW = single_heir_dynasty_house }
+			hidden_effect = {
+				set_succession_law_on_dependent_titles = { LAW = single_heir_dynasty_house }
+			}
 		}
 		can_keep = {
 			can_keep_single_heir_dynasty_house_trigger = yes
