@@ -161,6 +161,20 @@ StA_confirm_title_law = {
 				limit = { holder = { has_government = feudal_government }}
 				holder = { update_vassal_contract = yes }
 			}
+<<<<<<< Updated upstream
+=======
+		}
+		add_prestige = {
+			subtract = StA_change_title_realm_law_prestige_cost
+			max = 0
+		}
+		if = {
+			limit = { var:StA_change_law_cost > 0 }
+			add_tyranny = {
+				add = var:StA_change_law_title.StA_cooldown
+				min = 0
+			}
+>>>>>>> Stashed changes
 		}
 		remove_variable = StA_confirm_title_window_on
 		remove_variable = StA_change_law_title
