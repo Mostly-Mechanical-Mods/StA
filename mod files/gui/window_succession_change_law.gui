@@ -104,7 +104,6 @@ window = {
 								}
 
 								text_single = {
-									visible = "[GetPlayer.GetGovernment.IsType('feudal_government')]"
 									align = center
 									text = "STA_SINGLE_REALM_HEIR_LAW_OVERRIDE"
 								}

@@ -457,36 +457,6 @@ scandinavian_elective_succession_law_cost = {
 	value = 30
 }
 
-<<<<<<< Updated upstream
-=======
-mahestan_elective_succession_law_cost = {
-	value = 30
-}
-
-imperial_elective_succession_law_cost = {
-	value = 30
-}
-
-eldership_elective_succession_law_cost = {
-	value = 30
-}
-
-royal_elective_succession_law_cost = {
-	value = 30
-}
-
-outremer_elective_succession_law_cost = {
-	value = 30
-}
-
-kurultai_elective_succession_law_cost = {
-	value = 30
-}
-
-StA_elective_law_cost = {
-	value = 30
-}
->>>>>>> Stashed changes
 
 
 high_authority_capacity = {
