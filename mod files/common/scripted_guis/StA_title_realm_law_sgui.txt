@@ -146,6 +146,20 @@ StA_confirm_title_law = {
 				LAW = ROOT.var:StA_change_law_obligation
 				LEVEL = ROOT.var:StA_change_law_level
 			}
+<<<<<<< Updated upstream
+=======
+		}
+		add_prestige = {
+			subtract = StA_change_title_realm_law_prestige_cost
+			max = 0
+		}
+		if = {
+			limit = { var:StA_change_law_cost > 0 }
+			add_tyranny = {
+				add = var:StA_change_law_title.StA_cooldown
+				min = 0
+			}
+>>>>>>> Stashed changes
 		}
 		add_prestige = {
 			subtract = StA_change_title_realm_law_prestige_cost
