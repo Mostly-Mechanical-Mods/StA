@@ -140,20 +140,26 @@ StA_confirm_title_law = {
 		prestige >= StA_change_title_realm_law_prestige_cost
 	}
 	effect = {
-		var:StA_change_law_title = {
-			StA_update_cooldown_law_change = yes
-			title_realm_law_change = {
-				LAW = ROOT.var:StA_change_law_obligation
-				LEVEL = ROOT.var:StA_change_law_level
+		if = {
+			limit = {
+				has_variable = StA_change_law_cost
+				var:StA_change_law_cost > 0
+			}
+			add_tyranny = {
+				add = var:StA_change_law_title.StA_cooldown
+				min = 0
 			}
 		}
 		add_prestige = {
 			subtract = StA_change_title_realm_law_prestige_cost
 			max = 0
 		}
-		add_tyranny = {
-			add = var:StA_change_law_title.StA_cooldown
-			min = 0
+		var:StA_change_law_title = {
+			StA_update_cooldown_law_change = yes
+			title_realm_law_change = {
+				LAW = ROOT.var:StA_change_law_obligation
+				LEVEL = ROOT.var:StA_change_law_level
+			}
 		}
 		remove_variable = StA_confirm_title_window_on
 		remove_variable = StA_change_law_title
@@ -414,3 +420,53 @@ faction_window_cant_join_faction = {
 		}
 	}
 }
+
+# StA_open_title_succession_law = {
+# 	scope = character
+# 	saved_scopes = {
+# 		title
+# 	}
+# 	effect = {
+# 		set_variable = {
+# 			name = StA_title_succession_title
+# 			value = scope:title
+# 		}
+# 	}
+# }
+
+# StA_select_title_succession_law = {
+# 	scope = character
+# 	saved_scopes = {
+# 		law
+# 	}
+# 	effect = {
+# 		set_variable = {
+# 			name = StA_title_succession_law
+# 			value = scope:law
+# 		}
+# 	}
+# }
+
+# StA_confirm_title_succession_law = {
+# 	scope = character
+# 	saved_scopes = {
+# 		title
+# 		law
+# 	}
+# 	effect = {
+# 		scope:title = {
+# 			switch = {
+# 				trigger = scope:law
+# 				flag:confederate_partition_succession_law = { add_title_law = confederate_partition_succession_law }
+# 				flag:partition_succession_law = { add_title_law = partition_succession_law }
+# 				flag:high_partition_succession_law = { add_title_law = high_partition_succession_law }
+# 				flag:single_heir_succession_law = { add_title_law = single_heir_succession_law }
+# 				flag:single_heir_succession_law_youngest = { add_title_law = single_heir_succession_law_youngest }
+# 				flag:single_heir_dynasty_house = { add_title_law = single_heir_dynasty_house }
+# 				flag:holy_order_succession_law = { add_title_law = holy_order_succession_law }
+# 				flag:mercenary_company_succession_law = { add_title_law = mercenary_company_succession_law }
+# 				flag:city_succession_law = { add_title_law = city_succession_law }
+# 			}
+# 		}
+# 	}
+# }
