@@ -1,0 +1,10 @@
+widget = {
+	size = { 0 0 }
+	name = "StA_gui_setup"
+	widgetid = "StA_gui_setup"
+	state = {
+		name = "StA_gui_setup"
+		trigger_on_create = yes
+		on_start = "[GetScriptedGui('StA_gui_setup_sgui').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+	}
+}

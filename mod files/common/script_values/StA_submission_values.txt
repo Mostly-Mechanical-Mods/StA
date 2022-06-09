@@ -173,7 +173,10 @@ StA_submission_zeal = {
 
 StA_submission_vengefulness = {
 	value = 0
-	add = var:opinion_liege
+	if = {
+		limit = { has_variable = opinion_liege }
+		add = var:opinion_liege
+	}
 	min = neg_ai_vengefulness
 }
 
@@ -228,19 +231,11 @@ StA_submission_culture = {
 		culture = {
 			if = {
 				limit = { cultural_acceptance = { target = scope:liege_culture value < 25 }}
-				subtract = 75
-			}
-			else_if = {
-				limit = { cultural_acceptance = { target = scope:liege_culture value < 50 }}
-				subtract = 50
-			}
-			else_if = {
-				limit = { cultural_acceptance = { target = scope:liege_culture value < 75 }}
 				subtract = 25
 			}
-			if = {
-				limit = { has_same_culture_heritage = scope:liege_culture }
-				add = 20
+			else_if = {
+				limit = { cultural_acceptance = { target = scope:liege_culture value > 75 }}
+				add = 25
 			}
 		}
 		if = {
@@ -250,7 +245,11 @@ StA_submission_culture = {
 					liege = { knows_language_of_culture = PREV.culture }
 				}
 			}
-			add = 20
+			add = 25
+		}
+		add = {
+			add = ai_sociability
+			max = liege.ai_sociability
 		}
 	}
 }

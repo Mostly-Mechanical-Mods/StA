@@ -1,0 +1,28 @@
+﻿# claimant_succession_laws = {
+# 	#Default Feudal Elective
+# 	feudal_claimant_elective_law = {
+# 		should_show_for_title = { always = no }
+# 		can_have = {
+# 			has_government = feudal_government
+# 			highest_held_title_tier >= tier_duchy
+
+# 		}
+# 		can_pass = {
+
+# 		}
+# 		can_title_have = {
+# 			has_variable = claimed_title
+# 		}
+# 		succession = {
+# 			order_of_succession = election
+# 			election_type = feudal_claimant_elective
+# 		}
+# 		flag = elective_succession_law
+# 		revoke_cost = {
+# 			prestige = change_title_succession_law_prestige_cost
+# 		}
+# 		pass_cost = {
+# 			prestige = change_title_succession_law_prestige_cost
+# 		}
+# 	}
+# }

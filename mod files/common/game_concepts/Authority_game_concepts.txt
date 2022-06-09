@@ -1,10 +1,4 @@
-﻿realm_authority = {
-	texture = "gfx/interface/icons/message_feed/law.dds"
-	#texture = "gfx/interface/icons/laws/realm_authority_0.dds"
-	parent = law
-}
-
-submission = {
+﻿submission = {
 }
 
 authority = {
@@ -14,6 +8,9 @@ authority_capacity = {
 }
 
 authority_spent = {
+}
+
+partial_control = {
 }
 
 StA_submission_de_jure = {}

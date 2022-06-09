@@ -20,7 +20,7 @@ window = {
 		# [/Vanilla] [/UniUI]
 		on_start = "[GetVariableSystem.Set( 'hide_bottom_left_HUD', 'true' )]"
 
-		using = Animation_FadeIn_Standard
+		using = Animation_FadeIn_Quick
 		using = Sound_WindowShow_Standard
 	}
 
@@ -361,7 +361,7 @@ window = {
 
 				### TABS ###
 				# [UniUI] [Vanilla] Not StA
-				container = {
+				hbox = {
 					visible = "[Not(And(GetGlobalVariable('StA_is_loaded').IsSet,TitleViewWindow.GetTitle.GetHolder.GetGovernment.IsType('feudal_government')))]"
 				# [/Vanilla] [/UniUI]
 				hbox = {
@@ -964,8 +964,9 @@ template title_window_background_illustration
 		fittype = centercrop
 
 		modify_texture = {
-			texture = "gfx/interface/component_masks/mask_fade_vertical_up.dds"
+			texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
 			blend_mode = alphamultiply
+			mirror = vertical
 		}
 
 		using = Mask_Rough_Edges

@@ -52,3 +52,43 @@ ruler_authority = {
 		vassal_count > 0
 	}
 }
+
+de_jure_title_realm_above = {
+	base = this_title_or_de_jure_above
+	conditions = {
+		NOT = { THIS = PREV }
+		trigger_if = {
+			limit = {
+				exists = county
+				exists = county.holder
+				county.holder = holder
+				exists = county.var:StA_title_realm_law
+			}
+		}
+		trigger_else_if = {
+			limit = {
+				exists = duchy
+				exists = duchy.holder
+				duchy.holder = holder
+				exists = duchy.var:StA_title_realm_law
+			}
+		}
+		trigger_else_if = {
+			limit = {
+				exists = kingdom
+				exists = kingdom.holder
+				kingdom.holder = holder
+				exists = kingdom.var:StA_title_realm_law
+			}
+		}
+		trigger_else_if = {
+			limit = {
+				exists = empire
+				exists = empire.holder
+				empire.holder = holder
+				exists = empire.var:StA_title_realm_law
+			}
+		}
+		trigger_else = { always = no }
+	}
+}

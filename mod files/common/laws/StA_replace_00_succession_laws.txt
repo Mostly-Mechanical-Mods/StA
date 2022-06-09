@@ -161,8 +161,11 @@
 	single_heir_succession_law = {
 		can_title_have = {
 			trigger_if = {
-				limit = { exists = global_var:StA_is_loaded }
-				title_can_have_succession_law = { LAW = single_heir_succession_law }
+				limit = {
+					exists = global_var:StA_is_loaded
+					holder = { has_government = feudal_government }
+				}
+				has_variable = StA_title_realm_law
 			}
 			trigger_else = { always = no }
 		}
@@ -192,10 +195,7 @@
 			can_have_single_heir_succession_law_trigger = yes
 		}
 		can_pass = {
-			OR = {
-				can_change_succession_law_trigger = yes
-
-			}
+			can_change_succession_law_trigger = yes
 		}
 		should_start_with = {
 			historical_succession_access_single_heir_succession_law_trigger = yes
@@ -235,8 +235,11 @@
 	single_heir_succession_law_youngest = {
 		can_title_have = {
 			trigger_if = {
-				limit = { exists = global_var:StA_is_loaded }
-				title_can_have_succession_law = { LAW = single_heir_succession_law_youngest }
+				limit = {
+					exists = global_var:StA_is_loaded
+					holder = { has_government = feudal_government }
+				}
+				has_variable = StA_title_realm_law
 			}
 			trigger_else = { always = no }
 		}
@@ -291,8 +294,11 @@
 	single_heir_dynasty_house = {
 		can_title_have = {
 			trigger_if = {
-				limit = { exists = global_var:StA_is_loaded }
-				title_can_have_succession_law = { LAW = single_heir_dynasty_house }
+				limit = {
+					exists = global_var:StA_is_loaded
+					holder = { has_government = feudal_government }
+				}
+				has_variable = StA_title_realm_law
 			}
 			trigger_else = { always = no }
 		}

@@ -1,0 +1,190 @@
+﻿# Faction demand events
+
+namespace = StA_faction_demand
+
+# Liberty Faction Demand
+# by Henrik Fåhraeus
+StA_faction_demand.0101 = {
+	type = letter_event
+	sender = scope:faction_leader
+	opening = {
+		desc = "FACTION_DEMAND_LIBERTY"
+	}
+	desc = "FACTION_DEMAND_LIBERTY_DESC"
+	
+	trigger = {
+		exists = scope:faction
+		scope:faction = { has_variable = faction_type }
+	}
+
+	option = {
+		name = "FACTION_DEMAND_ACCEPT"
+		debug_log = "FACTION_DEMAND_ACCEPT"
+		add_dread = medium_dread_loss
+		
+		switch = {
+			trigger = scope:faction.var:faction_type
+			flag:feudal_government_taxes_ = { save_scope_value_as = { name = old_level value = scope:faction.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_taxes_ }}
+			flag:feudal_government_levies_ = { save_scope_value_as = { name = old_level value = scope:faction.var:StA_title_allegiance.var:StA_title_realm_law.var:feudal_government_levies_ }}
+			flag:war_declaration_rights_ = { save_scope_value_as = { name = old_level value = scope:faction.var:StA_title_allegiance.var:StA_title_realm_law.var:war_declaration_rights_ }}
+			flag:title_revocation_rights_ = { save_scope_value_as = { name = old_level value = scope:faction.var:StA_title_allegiance.var:StA_title_realm_law.var:title_revocation_rights_ }}
+			flag:succession_rights_ = { save_scope_value_as = { name = old_level value = scope:faction.var:StA_title_allegiance.var:StA_title_realm_law.var:succession_rights_ }}
+		}
+
+		scope:old_level = { debug_log_scopes = no }
+		
+		if = {
+			limit = { scope:old_level = 0 }
+			save_scope_value_as = { name = new_level value = 1 }
+		}
+		else = {
+			save_scope_value_as = { name = new_level value = { add = scope:old_level subtract = 1 }}
+		}
+
+		scope:new_level = { debug_log_scopes = no }
+		
+		scope:faction = {
+			every_faction_member = {
+				switch = {
+					trigger = scope:faction.var:faction_type
+					flag:feudal_government_taxes_ = { remove_variable = feudal_government_taxes_opt_out }
+					flag:feudal_government_levies_ = { remove_variable = feudal_government_levies_opt_out }
+					flag:war_declaration_rights_ = { remove_variable = war_declaration_rights_opt_out }
+					flag:title_revocation_rights_ = { remove_variable = title_revocation_rights_opt_out }
+					flag:succession_rights_ = { remove_variable = succession_rights_opt_out }
+				}
+				set_variable = {
+					name = faction_demand_accepted_by
+					value = scope:faction_target
+					years = 10
+				}
+			}
+		}
+
+		scope:faction.var:StA_title_allegiance = {
+			debug_log_scopes = no
+			custom_description = {
+				text = "title_law_change_on_faction_demand"
+				subject = scope:faction_target
+				title_realm_law_change = {
+					LAW = scope:faction.var:faction_type
+					LEVEL = scope:new_level
+				}
+			}
+		}
+	
+
+
+
+		scope:faction.var:StA_title_allegiance = {
+
+		}
+
+		add_prestige = -200
+
+		set_variable = {
+			name = recently_caved_to_faction
+			years = 5
+		}
+
+		# scope:faction_leader = {
+		# 	trigger_event = {
+		# 		id = faction_demand.0102
+		# 	}
+		# }
+
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 90
+				scope:faction = { faction_power >= 100 }
+			}
+			modifier = {
+				add = 50
+				scope:faction = { faction_power >= 125 }
+			}
+			modifier = {
+				add = 50
+				scope:faction = { faction_power >= 150 }
+			}
+			modifier = {
+				add = 50
+				scope:faction = { faction_power >= 200 }
+			}
+			modifier = {
+				add = 50
+				any_character_war = {
+					is_war_leader = root
+					is_defender = root
+				}
+			}
+			modifier = {
+				factor = 0.1
+				any_ally = {
+					NOR = {
+						target_is_liege_or_above = root
+						target_is_vassal_or_below = root
+					}
+					max_military_strength > root.max_military_strength
+				}
+			}
+		}
+	}
+
+	option = {
+		name = "FACTION_DEMAND_REFUSE"
+
+		scope:faction = {
+			every_faction_member = {
+				set_variable = {
+					name = faction_demand_refused_by
+					value = scope:faction_target
+					years = 10
+				}
+			}
+		}
+		
+		# scope:faction_leader = {
+		# 	trigger_event = {
+		# 		id = faction_demand.0103
+		# 		days = 1
+		# 	}
+		# }
+
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 4.0
+			}
+			modifier = {
+				add = 50
+				scope:faction = { faction_power < 80 }
+			}
+			modifier = {
+				add = 100
+				scope:faction = { faction_power < 60 }
+			}
+			modifier = {
+				add = 1000
+				scope:faction = { faction_power < 40 }
+			}
+		}
+	}
+
+	after = {
+		scope:faction.var:StA_title_allegiance = {
+			switch = {
+				trigger = scope:faction.var:faction_type
+				flag:feudal_government_taxes_ = { set_variable = { name = feudal_government_taxes_faction_cooldown years = 10 }}
+				flag:feudal_government_levies_ = { set_variable = { name = feudal_government_levies_faction_cooldown years = 10 }}
+				flag:war_declaration_rights_ = { set_variable = { name = war_declaration_rights_faction_cooldown years = 10 }}
+				flag:title_revocation_rights_ = { set_variable = { name = title_revocation_rights_faction_cooldown years = 10 }}
+				flag:succession_rights_ = { set_variable = { name = succession_rights_faction_cooldown years = 10 }}
+			}
+		}
+		
+		scope:faction = {
+			destroy_faction = yes
+		}
+	}
+}
