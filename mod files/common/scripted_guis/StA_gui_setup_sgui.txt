@@ -65,6 +65,9 @@
 			StA_setup_title_succession_law_story = { LAW = gaelic_elective_succession_law }
 			StA_setup_title_succession_law_story = { LAW = saxon_elective_succession_law }
 			StA_setup_title_succession_law_story = { LAW = scandinavian_elective_succession_law }
+			StA_setup_title_succession_law_story = { LAW = single_heir_succession_law }
+			StA_setup_title_succession_law_story = { LAW = single_heir_succession_law_youngest }
+			StA_setup_title_succession_law_story = { LAW = single_heir_dynasty_house }
 		}
 		set_global_variable = {
 			name = 0

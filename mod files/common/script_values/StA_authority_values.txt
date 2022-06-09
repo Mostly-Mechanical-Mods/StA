@@ -159,6 +159,7 @@ StA_title_realm_authority_capacity = {
 	# 		}
 	# 	}
 	# }
+	add = 100
 }
 
 StA_title_realm_authority = {
@@ -502,6 +503,18 @@ scandinavian_elective_succession_law_cost = {
 
 StA_elective_law_cost = {
 	value = 30
+}
+
+StA_single_heir_succession_law_cost = {
+	value = 50
+}
+
+StA_single_heir_succession_law_youngest_cost = {
+	value = 50
+}
+
+StA_single_heir_dynasty_house_cost = {
+	value = 50
 }
 
 

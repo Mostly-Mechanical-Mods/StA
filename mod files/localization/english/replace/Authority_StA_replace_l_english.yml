@@ -100,6 +100,10 @@
   StA_single_heir_succession_law_subname: "$single_heir_succession_law_subname$"
   StA_single_heir_succession_law_effects: "$single_heir_succession_law_effects$"
 
+  StA_single_heir_succession_law_youngest: "$single_heir_succession_law_youngest$"
+  StA_single_heir_succession_law_subname: "$single_heir_succession_law_youngest_subname$"
+  StA_single_heir_succession_law_effects: "$single_heir_succession_law_youngest_effects$"
+
   # SUCCESSION_ELECTION_WINDOW_TITLE: "[Select_CString(SuccessionElectionWindow.GetTitle.MakeScope.Var('claimed_title').IsSet,Localize('CLAIMANT_FACTION_WINDOW_TITLE'),Localize('VANILLA_SUCCESSION_ELECTION_WINDOW_TITLE'))]"
   # SUCCESSION_ELECTION_WINDOW_LAW: "[Select_CString(SuccessionElectionWindow.GetTitle.MakeScope.Var('claimed_title').IsSet,Localize('CLAIMANT_FACTION_WINDOW_LAW'),Localize('VANILLA_SUCCESSION_ELECTION_WINDOW_LAW'))]"
   # SUCCESSION_ELECTION_WINDOW_RULES_ELECTORS: "[Select_CString(SuccessionElectionWindow.GetTitle.MakeScope.Var('claimed_title').IsSet,Localize('CLAIMANT_FACTION_WINDOW_RULES_ELECTORS'),Localize('VANILLA_SUCCESSION_ELECTION_WINDOW_RULES_ELECTORS'))]"

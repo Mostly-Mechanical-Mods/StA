@@ -34,6 +34,10 @@ StA_setup_title_succession_law_story = {
       value = flag:$LAW$
     }
     set_variable = {
+      name = law_key
+      value = flag:$LAW$_key
+    }
+    set_variable = {
       name = law_cost
       value = flag:$LAW$_cost
     }

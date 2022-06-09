@@ -882,6 +882,9 @@ window = {
 								text = "TITLE_VIEW_SHOW_ADD_LAWS"
 								visible = "[And( Character.IsLocalPlayer, TitleViewWindow.CanAddLaws )]"
 								onclick = "[TitleViewWindow.ToggleLaws]"
+								# [Inherichance]
+								onclick = "[GetScriptedGui('StA_open_title_succession_law').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('title',TitleAddWindow.GetTitle.MakeScope).End)]"
+								# [/Inherichance]
 							}
 
 							button_standard = {

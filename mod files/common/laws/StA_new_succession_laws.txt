@@ -1,5 +1,5 @@
 ﻿StA_succession_order_laws = {
-	# flag = realm_law
+	flag = exclude_gui
 	StA_single_heir_succession_law = {
 		can_title_have = {
 			title_can_have_StA_succession_law = { LAW = single_heir_succession_law }
@@ -21,12 +21,12 @@
 			}
 		}
 		can_have = {
-			can_have_single_heir_succession_law_trigger = yes
-			has_variable = StA_inherit_succession_law
+			# can_have_single_heir_succession_law_trigger = yes
+			# has_variable = StA_inherit_succession_law
 		}
 		can_pass = {
 			OR = {
-				can_change_succession_law_trigger = yes
+				# can_change_succession_law_trigger = yes
 			}
 		}
 		should_start_with = {

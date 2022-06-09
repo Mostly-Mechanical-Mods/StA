@@ -148,6 +148,9 @@ StA_patch_2100 = {
 		StA_setup_title_succession_law_story = { LAW = gaelic_elective_succession_law }
 		StA_setup_title_succession_law_story = { LAW = saxon_elective_succession_law }
 		StA_setup_title_succession_law_story = { LAW = scandinavian_elective_succession_law }
+		StA_setup_title_succession_law_story = { LAW = single_heir_succession_law }
+		StA_setup_title_succession_law_story = { LAW = single_heir_succession_law_youngest }
+		StA_setup_title_succession_law_story = { LAW = single_heir_dynasty_house }
 	}
 	every_independent_ruler = {
 		save_scope_as = ruler

@@ -226,6 +226,7 @@ window = {
 
 
 		vbox = {
+			allow_outside = yes
 			minimumsize = { 0 75 }
 			margin_bottom = 10
 			spacing = 5
@@ -249,6 +250,7 @@ window = {
 			datamodel = "[GetGlobalList('StA_title_succession_laws')]"
 			item = {
 				widget = {
+					allow_outside = yes
 					visible = "[EqualTo_string(TitleAddLawWindow.GetSelectedLaw.GetNameNoTooltip,Scope.Var('law').GetFlagName)]"
 					vbox = {
 						margin_bottom = 10
@@ -261,12 +263,16 @@ window = {
 							minimumsize = { 0 30 }
 						}
 						button_primary_big = {
-							position = { -100 -15 }
+							# position = { -100 -15 }
 							name = "add_law_button"
 							text = "TITLE_VIEW_TITLE_ADD_LAW_CONFIRM"
 							tooltip = "[TitleAddLawWindow.GetSelectTooltip]"
-							enabled = "[And(TitleAddLawWindow.CanSelect,LessThanOrEqualTo_CFixedPoint(TitleAddLawWindow.GetTitle.MakeScope.ScriptValue(Scope.Var('law_cost').GetFlagName),TitleAddLawWindow.GetTitle.MakeScope.ScriptValue('StA_title_realm_authority_unused')))]"
+							# enabled = "[And(TitleAddLawWindow.CanSelect,LessThanOrEqualTo_CFixedPoint(TitleAddLawWindow.GetTitle.MakeScope.ScriptValue(Scope.Var('law_cost').GetFlagName),TitleAddLawWindow.GetTitle.MakeScope.ScriptValue('StA_title_realm_authority_unused')))]"
+							enabled = "[TitleAddLawWindow.CanSelect]"
+							# [StA]
+							# onclick = "[GetScriptedGui('StA_change_title_succession_law').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).AddScope('title',TitleAddLawWindow.GetTitle.MakeScope).AddScope('law',MakeScopeFlag(Scope.Var('law_key').MakeScope.GetFlagName)).End)]"
 							onclick = "[TitleAddLawWindow.Select]"
+							# [/StA]
 						}
 					}
 				}

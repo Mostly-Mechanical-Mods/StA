@@ -203,7 +203,7 @@ types UniUI_StA_title_window {
 									}
 
 									text_single = {
-										visible = "[Character.MakeScope.Var('desire').IsSet]"
+										visible = "[And(Character.MakeScope.Var('desire').IsSet,Not(EqualTo_string(Character.MakeScope.Var('desire').GetFlagName,'no_desire')))]"
 										text = "[Localize(Concatenate(Character.MakeScope.Var('desire').GetFlagName,'icon_only'))]"
 										align = top|hcenter
 										tooltipwidget = {
