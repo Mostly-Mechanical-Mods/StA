@@ -1,0 +1,140 @@
+﻿# common\decisions\00_major_decisions_iberia_north_africa.txt
+
+unite_the_spanish_thrones_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+	ai_check_interval = 60
+	desc = unite_the_spanish_thrones_decision_desc
+
+	is_shown = {
+		culture = { has_cultural_pillar = heritage_iberian }
+		game_start_date >= 1000.1.1
+		OR = {
+			calc_true_if = { #At least 2 of the titles has de jure land
+				amount >= 2
+				title:k_castille = { any_in_de_jure_hierarchy = { tier = tier_county } }
+				title:k_leon = { any_in_de_jure_hierarchy = { tier = tier_county } }
+				title:k_spanish_galicia = { any_in_de_jure_hierarchy = { tier = tier_county } }
+			}
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:unite_the_spanish_thrones_decision
+			}
+		}
+		highest_held_title_tier < tier_empire
+	}
+
+	is_valid = {
+		culture = { has_cultural_pillar = heritage_iberian }
+		trigger_if = {
+			limit = { title:k_castille = { any_in_de_jure_hierarchy = { tier = tier_county } } } #Has de jure land
+			completely_controls = title:k_castille
+			has_title = title:k_castille
+			# [StA]
+			trigger_if = {
+				limit = { has_government = feudal_government }
+				custom_description = {
+					text = "title_has_medium_authority_capacity"
+					subject = title:k_castille
+					title:k_castille.StA_title_realm_authority_capacity >= medium_authority_capacity
+				}
+			}
+			# [/StA]
+		}
+		trigger_if = {
+			limit = { title:k_leon = { any_in_de_jure_hierarchy = { tier = tier_county } } } #Has de jure land
+			completely_controls = title:k_leon
+			has_title = title:k_leon
+			# [StA]
+			trigger_if = {
+				limit = { has_government = feudal_government }
+				custom_description = {
+					text = "title_has_medium_authority_capacity"
+					subject = title:k_leon
+					title:k_leon.StA_title_realm_authority_capacity >= medium_authority_capacity
+				}
+			}
+			# [/StA]
+		}
+		trigger_if = {
+			limit = { title:k_spanish_galicia = { any_in_de_jure_hierarchy = { tier = tier_county } } } #Has de jure land
+			completely_controls = title:k_spanish_galicia
+			has_title = title:k_spanish_galicia
+			# [StA]
+			trigger_if = {
+				limit = { has_government = feudal_government }
+				custom_description = {
+					text = "title_has_medium_authority_capacity"
+					subject = title:k_spanish_galicia
+					title:k_spanish_galicia.StA_title_realm_authority_capacity >= medium_authority_capacity
+				}
+			}
+			# [/StA]
+		}
+		custom_description = {
+   			text = unite_the_spanish_thrones_decision_primary
+			OR = {
+				has_primary_title = title:k_castille
+				has_primary_title = title:k_leon
+				has_primary_title = title:k_spanish_galicia
+				has_primary_title = title:k_portugal
+				has_primary_title = title:k_aragon
+				has_primary_title = title:k_navarra
+				has_primary_title = title:k_andalusia
+				has_primary_title = title:k_badajoz
+				has_primary_title = title:k_valencia
+			}
+		}
+		#Must not be too early
+		culture = { has_cultural_era_or_later = culture_era_high_medieval }
+		# [StA]
+		trigger_if = {
+			limit = { NOT = { has_government = feudal_government }}
+		# [/StA]
+			OR = { 
+				has_realm_law = crown_authority_2
+				has_realm_law = crown_authority_3
+			}
+		}
+	}
+
+	effect = {
+		save_scope_as = spain_uniter
+
+		show_as_tooltip = { unite_the_spanish_thrones_decision_effects = yes } #Actually applied in iberia_north_africa.0005 - prestige, laws, title changes
+
+		#Events
+		trigger_event = iberia_north_africa.0005
+		every_player = {
+			limit = {
+				NOT = { this = scope:spain_uniter }
+				is_within_diplo_range = { CHARACTER = scope:spain_uniter }
+			}
+			trigger_event = iberia_north_africa.0006
+		}
+
+		#Can only be done once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:unite_the_spanish_thrones_decision
+		}
+		set_global_variable = {
+			name = unite_the_spanish_thrones_decision
+			value = scope:spain_uniter
+		}
+		set_global_variable = {
+			name = unite_the_spanish_thrones_decision_title
+			value = scope:spain_uniter.primary_title
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

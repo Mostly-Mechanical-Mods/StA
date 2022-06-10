@@ -1,0 +1,16 @@
+﻿can_title_have_law_general_trigger = {
+	tier >= tier_duchy
+	is_temporal_head_of_faith_trigger = no
+	# [StA]
+	trigger_if = {
+		limit = {
+			exists = global_var:StA_is_loaded
+			holder = {
+				is_ai = no
+				has_government = feudal_government
+			}
+		}
+		has_variable = StA_title_realm_law
+	}
+	# [/StA]
+}

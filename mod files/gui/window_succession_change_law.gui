@@ -94,7 +94,9 @@ window = {
 								}
 
 								hbox = {
+									# [StA]
 									visible = "[Not(GetPlayer.GetGovernment.IsType('feudal_government'))]"
+									# [/StA]
 									datamodel = "[SuccessionLawChangeWindow.GetSingleHeirLaws]"
 									spacing = 10
 
@@ -102,11 +104,13 @@ window = {
 										button_law_choice = {}
 									}
 								}
-
+								
+								# [StA]
 								text_single = {
 									align = center
 									text = "STA_SINGLE_REALM_HEIR_LAW_OVERRIDE"
 								}
+								# [/StA]
 							}
 
 							vbox = {

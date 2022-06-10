@@ -145,7 +145,8 @@ window = {
 											}
 										}
 									}
-
+									
+									# [StA]
 									vbox = {
 										datamodel = "[GetPlayer.MakeScope.GetList('title_window_player')]"
 										visible = "[FactionsWindow.HasTargetingFactions]"
@@ -441,6 +442,7 @@ window = {
 											}
 										}
 									}
+									# [/StA]
 
 									text_multi = {
 										name = "no_factions_against_me"

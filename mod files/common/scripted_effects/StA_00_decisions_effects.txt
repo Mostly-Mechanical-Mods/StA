@@ -1,36 +1,4 @@
-﻿# OBLIGATION_TYPE - The type of the obligation in a vassal contract to set
-# this - The person who's obligation will be changed
-# Requires a local variable of the same name as OBLIGATION_TYPE
-set_obligation_if_changed_effect = {
-	if = {
-		limit = {
-			local_var:$OBLIGATION_TYPE$ != vassal_contract_obligation_level:$OBLIGATION_TYPE$
-		}
-		vassal_contract_set_obligation_level = {
-			type = $OBLIGATION_TYPE$
-			level = local_var:$OBLIGATION_TYPE$
-		}
-	}
-	if = {
-		limit = {
-			liege = { has_government = feudal_government }
-			primary_title.var:StA_title_allegiance.var:StA_title_realm_law = { has_variable = $OBLIGATION_TYPE$_ }
-		}
-		if = {
-			limit = { NOT = { vassal_contract_obligation_level:$OBLIGATION_TYPE$ = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:$OBLIGATION_TYPE$_ }}
-			set_variable = $OBLIGATION_TYPE$_opt_out
-		}
-		else = {
-			remove_variable = $OBLIGATION_TYPE$_opt_out
-		}
-		set_variable = {
-			name = StA_contract_score
-			value = StA_contract_score
-		}
-	}
-}
-
-convert_whole_realm_to_feudalism_effect = {
+﻿convert_whole_realm_to_feudalism_effect = {
 	#TOOLTIP INFO
 	#PLAYER EFFECTS
 	##Liege has clan? Convert to clan!
@@ -412,38 +380,5 @@ convert_whole_realm_to_feudalism_effect = {
 	}
 	trigger_event = {
 		on_action = StA_title_and_vassal_change
-	}
-}
-
-imprisonment_retribution_start_faction_war_if_valid = {
-	scope:recipient = {
-		custom_tooltip = FACTION_IMPRISONMENT_RETALIATION_WARNING
-	}
-	hidden_effect = {
-		if = {
-			limit = {
-				faction_power > faction_power_threshold
-				NOT = { faction_is_type = populist_faction }
-				StA_faction_is_title_realm_law_type = no
-			}
-
-			if = {
-				limit = {
-					faction_is_type = claimant_faction
-				}
-				special_title = {
-					save_scope_as = target_title
-				}
-				faction_start_war = {
-					title = scope:target_title
-				}
-			}
-			else = {
-				faction_start_war = {}
-			}
-			every_faction_member = {
-				trigger_event = faction_demand.9001
-			}
-		}
 	}
 }

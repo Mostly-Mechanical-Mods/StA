@@ -1,0 +1,31 @@
+﻿# OBLIGATION_TYPE - The type of the obligation in a vassal contract to set
+# this - The person who's obligation will be changed
+# Requires a local variable of the same name as OBLIGATION_TYPE
+set_obligation_if_changed_effect = {
+	if = {
+		limit = {
+			local_var:$OBLIGATION_TYPE$ != vassal_contract_obligation_level:$OBLIGATION_TYPE$
+		}
+		vassal_contract_set_obligation_level = {
+			type = $OBLIGATION_TYPE$
+			level = local_var:$OBLIGATION_TYPE$
+		}
+	}
+	if = {
+		limit = {
+			liege = { has_government = feudal_government }
+			primary_title.var:StA_title_allegiance.var:StA_title_realm_law = { has_variable = $OBLIGATION_TYPE$_ }
+		}
+		if = {
+			limit = { NOT = { vassal_contract_obligation_level:$OBLIGATION_TYPE$ = primary_title.var:StA_title_allegiance.var:StA_title_realm_law.var:$OBLIGATION_TYPE$_ }}
+			set_variable = $OBLIGATION_TYPE$_opt_out
+		}
+		else = {
+			remove_variable = $OBLIGATION_TYPE$_opt_out
+		}
+		set_variable = {
+			name = StA_contract_score
+			value = StA_contract_score
+		}
+	}
+}

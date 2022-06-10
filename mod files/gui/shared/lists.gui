@@ -1599,7 +1599,9 @@ types Lists
 							text = "MY_REALM_WINDOW_POWERFUL_VASSAL"
 							layoutpolicy_horizontal = expanding
 							align = nobaseline
+							# [UniUI] [StA]
 							autoresize = no
+							# [/StA] [/UniUI]
 						}
 
 						expand = {}
@@ -1628,6 +1630,7 @@ types Lists
 						# [UniUI] [StA]
 						hbox = {
 						layoutpolicy_horizontal = expanding
+						# [/StA] [/UniUI]
 						hbox = {
 							layoutpolicy_horizontal = expanding
 							visible = "[And( VassalContract.UsesObligationLevels, Not( Character.GetPrimaryTitle.IsBarony))]"
@@ -1644,10 +1647,17 @@ types Lists
 								}
 							}
 
-							text_single = {
+							text_single = { # Display the usual Levy and Tax for Feudal
+								visible = "[Character.GetGovernment.IsType('feudal_government')]"
 								layoutpolicy_horizontal = expanding
 								text = "MY_REALM_WINDOW_VASSAL_OBLIGATION"
 								default_format = "#low"
+								align = nobaseline
+							}
+
+							text_single = { # Display the government type for non Feudal
+								visible = "[Not(Character.GetGovernment.IsType('feudal_government'))]"
+								text = "[Character.GetGovernment.GetName]"
 								align = nobaseline
 							}
 
@@ -1675,6 +1685,8 @@ types Lists
 
 							expand = {}
 						}
+						
+						# [UniUI] [StA]
 
 						expand = {}
 

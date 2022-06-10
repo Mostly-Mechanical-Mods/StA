@@ -1056,8 +1056,9 @@ window = {
 
 							item = {
 								hbox = {
-									# visible = "[And( Not(GuiLawGroup.GetLawGroup.HasFlag( 'realm_law' )), GuiLawGroup.IsAvailable )]"
+									# [StA]
 									visible = "[And( And(Not( GuiLawGroup.GetLawGroup.HasFlag( 'realm_law' )), Not( GuiLawGroup.GetLawGroup.HasFlag( 'exclude_gui' ) )), GuiLawGroup.IsAvailable ))]"
+									# [/StA]
 									layoutpolicy_horizontal = growing
 
 									vbox = {

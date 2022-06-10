@@ -71,32 +71,60 @@
 	}
 
 	#safe guard to avoid Factions being created when the game starts
-	# modifier = {
-	# 	add = -10000
-	# 	years_from_game_start < 1
-	# 	$FACTION_TARGET$.primary_title.tier = tier_duchy
-	# }
+	modifier = {
+		add = -10000
+		years_from_game_start < 1
+		$FACTION_TARGET$.primary_title.tier = tier_duchy
 
-	# modifier = {
-	# 	add = -10000
-	# 	years_from_game_start < 5
-	# 	$FACTION_TARGET$.primary_title.tier = tier_kingdom
-	# }
+		# The modifier should not be applied for the Iberian struggle
+		NOT = {
+			$FACTION_TARGET$ = {
+				any_character_struggle = {
+					involvement = involved
+				}
+			}
+		}
+	}
 
-	# modifier = {
-	# 	add = -10000
-	# 	years_from_game_start < 10
-	# 	$FACTION_TARGET$.primary_title.tier = tier_empire
-	# }
+	modifier = {
+		add = -10000
+		years_from_game_start < 5
+		$FACTION_TARGET$.primary_title.tier = tier_kingdom
+
+		# The modifier should not be applied for the Iberian struggle
+		NOT = {
+			$FACTION_TARGET$ = {
+				any_character_struggle = {
+					involvement = involved
+				}
+			}
+		}
+	}
+
+	modifier = {
+		add = -10000
+		years_from_game_start < 10
+		$FACTION_TARGET$.primary_title.tier = tier_empire
+
+		# The modifier should not be applied for the Iberian struggle
+		NOT = {
+			$FACTION_TARGET$ = {
+				any_character_struggle = {
+					involvement = involved
+				}
+			}
+		}
+	}
+	
 }
 
 liberty_faction_modifiers = {
 	modifier = {
 		add = -1000
 		$FACTION_TARGET$ = {
-			OR = {
+			AND = {
 				is_ai = no
-				NOT = { has_government = feudal_government }
+				has_government = feudal_government
 			}
 		}
 	}
