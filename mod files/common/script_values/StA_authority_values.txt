@@ -159,7 +159,7 @@ StA_title_realm_authority_capacity = {
 	# 		}
 	# 	}
 	# }
-	add = 100
+	# add = 100
 }
 
 StA_title_realm_authority = {

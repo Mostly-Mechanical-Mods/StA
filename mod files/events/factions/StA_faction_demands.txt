@@ -8,9 +8,42 @@ StA_faction_demand.0101 = {
 	type = letter_event
 	sender = scope:faction_leader
 	opening = {
-		desc = "FACTION_DEMAND_LIBERTY"
+		desc = StA_faction_demend.t
 	}
-	desc = "FACTION_DEMAND_LIBERTY_DESC"
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:faction.var:faction_type = flag:feudal_government_taxes_
+				}
+				desc = StA_faction_demend.feudal_government_taxes.desc
+			}
+			triggered_desc = {
+				trigger = {
+					scope:faction.var:faction_type = flag:feudal_government_levies_
+				}
+				desc = StA_faction_demend.feudal_government_levies.desc
+			}
+			triggered_desc = {
+				trigger = {
+					scope:faction.var:faction_type = flag:war_declaration_rights_
+				}
+				desc = StA_faction_demend.war_declaration_rights.desc
+			}
+			triggered_desc = {
+				trigger = {
+					scope:faction.var:faction_type = flag:title_revocation_rights_
+				}
+				desc = StA_faction_demend.title_revocation_rights.desc
+			}
+			triggered_desc = {
+				trigger = {
+					scope:faction.var:faction_type = flag:succession_rights_
+				}
+				desc = StA_faction_demend.succession_rights.desc
+			}
+		}
+	}
 	
 	trigger = {
 		exists = scope:faction
@@ -18,7 +51,7 @@ StA_faction_demand.0101 = {
 	}
 
 	option = {
-		name = "FACTION_DEMAND_ACCEPT"
+		name = "STA_FACTION_DEMAND_ACCEPT"
 		debug_log = "FACTION_DEMAND_ACCEPT"
 		add_dread = medium_dread_loss
 		
@@ -73,13 +106,6 @@ StA_faction_demand.0101 = {
 			}
 		}
 	
-
-
-
-		scope:faction.var:StA_title_allegiance = {
-
-		}
-
 		add_prestige = -200
 
 		set_variable = {
@@ -132,7 +158,7 @@ StA_faction_demand.0101 = {
 	}
 
 	option = {
-		name = "FACTION_DEMAND_REFUSE"
+		name = "STA_FACTION_DEMAND_REFUSE"
 
 		scope:faction = {
 			every_faction_member = {
@@ -186,5 +212,7 @@ StA_faction_demand.0101 = {
 		scope:faction = {
 			destroy_faction = yes
 		}
+
+		custom_tooltip = "vassals_build_resentment"
 	}
 }

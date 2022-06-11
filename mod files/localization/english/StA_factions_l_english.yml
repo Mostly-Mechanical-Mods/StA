@@ -1,0 +1,15 @@
+﻿l_english:
+
+  StA_faction_demend.t: "[faction.GetName] in the [faction.MakeScope.Var('StA_title_allegiance').Title.GetName]"
+
+  StA_faction_demend.feudal_government_taxes.desc: "[faction_leader.Custom2('AppropriateGreetingNegative', ROOT.Char)]\n\nThe tax burden on your vassals is getting too heavy to bear. I urge you to consider lowering taxes in the [faction.MakeScope.Var('StA_title_allegiance').Title.GetName], so they can make ends meet."
+  StA_faction_demend.feudal_government_levies.desc: "[faction_leader.Custom2('AppropriateGreetingNegative', ROOT.Char)]\n\nThe levies burden on your vassals is stretching their troops thin. I urge you to consider lowering taxes in the [faction.MakeScope.Var('StA_title_allegiance').Title.GetName], so they can properly defend themselves against agression."
+  StA_faction_demend.war_declaration_rights.desc: "[faction_leader.Custom2('AppropriateGreetingNegative', ROOT.Char)]\n\nOffense is the best defense. I urge you to consider allowing your vassals in the [faction.MakeScope.Var('StA_title_allegiance').Title.GetName] to wage war, so they can settle their disputes on their own."
+  StA_faction_demend.title_revocation_rights.desc: "[faction_leader.Custom2('AppropriateGreetingNegative', ROOT.Char)]\n\nNo one likes having a sword hanging above their head. I urge you to consider granting Title Revocation Protection in the [faction.MakeScope.Var('StA_title_allegiance').Title.GetName], so they can sleep better at night."
+  StA_faction_demend.succession_rights.desc: "[faction_leader.Custom2('AppropriateGreetingNegative', ROOT.Char)]\n\nStronger vassals make for a stronger realm. I urge you to consider letting vassals in the [faction.MakeScope.Var('StA_title_allegiance').Title.GetName] handle their succession as they see fit, so their heirs can serve yours as efficiently as they have."
+
+  STA_FACTION_DEMAND_ACCEPT: "You make a good point."  
+  STA_FACTION_DEMAND_REFUSE: "I refuse your request."
+
+  I_ACCEPT_TITLE_LAW_CHANGE: "You enact the requested law change"
+  vassals_build_resentment: "Your vassals in the [faction.MakeScope.Var('StA_title_allegiance').Title.GetName] might pursue other means to reach their goals"
