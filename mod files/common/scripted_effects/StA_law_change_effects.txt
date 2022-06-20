@@ -107,12 +107,12 @@ StA_reset_authority = {
 }
 
 set_succession_law_on_dependent_titles_global = {
-	switch = {
-		trigger = has_title_law
-		single_heir_succession_law = { set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law }}
-		single_heir_succession_law_youngest = { set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law_youngest }}
-		single_heir_dynasty_house = { set_succession_law_on_dependent_titles = { LAW = single_heir_dynasty_house }}
-	}
+	# switch = {
+	# 	trigger = has_title_law
+	# 	single_heir_succession_law = { set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law }}
+	# 	single_heir_succession_law_youngest = { set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law_youngest }}
+	# 	single_heir_dynasty_house = { set_succession_law_on_dependent_titles = { LAW = single_heir_dynasty_house }}
+	# }
 }
 
 set_succession_law_on_dependent_titles = {
@@ -122,49 +122,49 @@ set_succession_law_on_dependent_titles = {
 			debug_log = "PASS SINGLE HEIR LAW"
 			debug_log_scopes = yes
 		}
-		if = {
-			limit = { exists = scope:title }
-			set_variable = StA_inherit_succession_law
-			scope:title = {
-				if = {
-					limit = { debug_only = yes }
-					debug_log_scopes = no
-				}
-				# set_variable = {
-				# 	name = StA_succession_law
-				# 	value = scope:title
-				# }
-				every_in_de_jure_hierarchy = {
-					limit = {
-						NOR = {
-							THIS = scope:title
-							has_variable = StA_title_realm_law
-						}
-						is_title_created = yes
-						is_leased_out = no
-						holder = scope:title.holder
-					}
-					continue = {
-						OR = {
-							THIS = scope:title
-							NOT = { has_variable = StA_title_realm_law }
-						}
-					}
-					if = {
-						limit = { debug_only = yes }
-						debug_log = "INHERITS LAW"
-						debug_log_scopes = no
-						holder = { debug_log_scopes = no }
-					}
-					set_variable = {
-						name = StA_succession_law
-						value = scope:title
-					}
-					add_title_law = StA_$LAW$
-				}
-			}
-			remove_variable = StA_inherit_succession_law
-		}
+		# if = {
+		# 	limit = { exists = scope:title }
+		# 	set_variable = StA_inherit_succession_law
+		# 	scope:title = {
+		# 		if = {
+		# 			limit = { debug_only = yes }
+		# 			debug_log_scopes = no
+		# 		}
+		# 		# set_variable = {
+		# 		# 	name = StA_succession_law
+		# 		# 	value = scope:title
+		# 		# }
+		# 		every_in_de_jure_hierarchy = {
+		# 			limit = {
+		# 				NOR = {
+		# 					THIS = scope:title
+		# 					has_variable = StA_title_realm_law
+		# 				}
+		# 				is_title_created = yes
+		# 				is_leased_out = no
+		# 				holder = scope:title.holder
+		# 			}
+		# 			continue = {
+		# 				OR = {
+		# 					THIS = scope:title
+		# 					NOT = { has_variable = StA_title_realm_law }
+		# 				}
+		# 			}
+		# 			if = {
+		# 				limit = { debug_only = yes }
+		# 				debug_log = "INHERITS LAW"
+		# 				debug_log_scopes = no
+		# 				holder = { debug_log_scopes = no }
+		# 			}
+		# 			set_variable = {
+		# 				name = StA_succession_law
+		# 				value = scope:title
+		# 			}
+		# 			add_title_law = StA_$LAW$
+		# 		}
+		# 	}
+		# 	remove_variable = StA_inherit_succession_law
+		# }
 	# }
 }
 

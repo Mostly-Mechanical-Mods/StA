@@ -160,22 +160,20 @@
 	
 	single_heir_succession_law = {
 		can_title_have = {
-			trigger_if = {
-				limit = {
-					exists = global_var:StA_is_loaded
-					holder = { has_government = feudal_government }
-				}
-				has_variable = StA_title_realm_law
+			exists = global_var:StA_is_loaded
+			holder = {
+				is_ai = no
+				has_government = feudal_government
 			}
-			trigger_else = { always = no }
+			has_variable = StA_title_realm_law
 		}
 		should_show_for_title = { # Never show this in the UI, just apply it through script
-			trigger_if = {
-				limit = { exists = global_var:StA_is_loaded }
-				holder = { has_government = feudal_government }
-				has_variable = StA_title_realm_law
+			exists = global_var:StA_is_loaded
+			holder = {
+				is_ai = no
+				has_government = feudal_government
 			}
-			trigger_else = { always = no }
+			has_variable = StA_title_realm_law
 		}
 		on_pass = {
 			set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law }
@@ -234,22 +232,20 @@
 	
 	single_heir_succession_law_youngest = {
 		can_title_have = {
-			trigger_if = {
-				limit = {
-					exists = global_var:StA_is_loaded
-					holder = { has_government = feudal_government }
-				}
-				has_variable = StA_title_realm_law
+			exists = global_var:StA_is_loaded
+			holder = {
+				is_ai = no
+				has_government = feudal_government
 			}
-			trigger_else = { always = no }
+			has_variable = StA_title_realm_law
 		}
 		should_show_for_title = { # Never show this in the UI, just apply it through script
-			trigger_if = {
-				limit = { exists = global_var:StA_is_loaded }
-				holder = { has_government = feudal_government }
-				has_variable = StA_title_realm_law
+			exists = global_var:StA_is_loaded
+			holder = {
+				is_ai = no
+				has_government = feudal_government
 			}
-			trigger_else = { always = no }
+			has_variable = StA_title_realm_law
 		}
 		on_pass = {
 			set_succession_law_on_dependent_titles = { LAW = single_heir_succession_law_youngest }
@@ -293,22 +289,20 @@
 	
 	single_heir_dynasty_house = {
 		can_title_have = {
-			trigger_if = {
-				limit = {
-					exists = global_var:StA_is_loaded
-					holder = { has_government = feudal_government }
-				}
-				has_variable = StA_title_realm_law
+			exists = global_var:StA_is_loaded
+			holder = {
+				is_ai = no
+				has_government = feudal_government
 			}
-			trigger_else = { always = no }
+			has_variable = StA_title_realm_law
 		}
 		should_show_for_title = { # Never show this in the UI, just apply it through script
-			trigger_if = {
-				limit = { exists = global_var:StA_is_loaded }
-				holder = { has_government = feudal_government }
-				has_variable = StA_title_realm_law
+			exists = global_var:StA_is_loaded
+			holder = {
+				is_ai = no
+				has_government = feudal_government
 			}
-			trigger_else = { always = no }
+			has_variable = StA_title_realm_law
 		}
 		on_pass = {
 			set_succession_law_on_dependent_titles = { LAW = single_heir_dynasty_house }

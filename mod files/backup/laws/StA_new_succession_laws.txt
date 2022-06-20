@@ -25,12 +25,14 @@
 			# has_variable = StA_inherit_succession_law
 		}
 		can_pass = {
-			OR = {
-				# can_change_succession_law_trigger = yes
-			}
+			# OR = {
+			# 	can_change_succession_law_trigger = yes
+			# }
+			always = no
 		}
 		should_start_with = {
-			historical_succession_access_single_heir_succession_law_trigger = yes
+			# historical_succession_access_single_heir_succession_law_trigger = yes
+			always = no
 		}
 		succession = {
 			order_of_succession = inheritance

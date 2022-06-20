@@ -164,5 +164,9 @@ StA_error_suppression.0001 = {
 		fix_variable_error = { X = jizya_special_rights_ }
 		fix_variable_error = { X = marriage_favor_rights_ }
 		fix_variable_error = { X = StA_title_succession_law }
+		fix_variable_error = { X = single_heir_succession_law_youngest }
+		fix_variable_error = { X = single_heir_succession_law }
+		fix_variable_error = { X = single_heir_dynasty_house }
+		fix_variable_error = { X = StA_succession_law }
 	}
 }

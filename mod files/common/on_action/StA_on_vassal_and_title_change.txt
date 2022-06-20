@@ -429,28 +429,28 @@ StA_title_and_vassal_change = {
 					value = ROOT.primary_title
 				}
 			}
-			var:StA_succession_law = {
-				if = {
-					limit = {
-						NOT = { THIS = PREV }
-						has_title_law_flag = advanced_succession_law
-					}
-					debug_log = "STA_SUCCESSION_LAW HAS ADVANCED SUCCESSION LAW"
-					debug_log_scopes = no
-					if = {
-						limit = { has_title_law = single_heir_succession_law }
-						PREV = { add_title_law = StA_single_heir_succession_law }
-					}
-					else_if = {
-						limit = { has_title_law = single_heir_succession_law_youngest }
-						PREV = { add_title_law = StA_single_heir_succession_law_youngest }
-					}
-					else_if = {
-						limit = { has_title_law = single_heir_dynasty_house }
-						PREV = { add_title_law = StA_single_heir_dynasty_house }
-					}
-				}
-			}
+			# var:StA_succession_law = {
+			# 	if = {
+			# 		limit = {
+			# 			NOT = { THIS = PREV }
+			# 			has_title_law_flag = advanced_succession_law
+			# 		}
+			# 		debug_log = "STA_SUCCESSION_LAW HAS ADVANCED SUCCESSION LAW"
+			# 		debug_log_scopes = no
+			# 		if = {
+			# 			limit = { has_title_law = single_heir_succession_law }
+			# 			PREV = { add_title_law = StA_single_heir_succession_law }
+			# 		}
+			# 		else_if = {
+			# 			limit = { has_title_law = single_heir_succession_law_youngest }
+			# 			PREV = { add_title_law = StA_single_heir_succession_law_youngest }
+			# 		}
+			# 		else_if = {
+			# 			limit = { has_title_law = single_heir_dynasty_house }
+			# 			PREV = { add_title_law = StA_single_heir_dynasty_house }
+			# 		}
+			# 	}
+			# }
 			clear_saved_scope = temp_succession_law
 		}
 		remove_variable = StA_inherit_succession_law
